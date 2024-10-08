@@ -1,12 +1,19 @@
 'use client'
 
+import { login } from "@/service/auth/auth.service";
 import { Box, Button, FormControl, FormHelperText, Typography } from "@mui/joy";
 import { Link, TextField } from "@mui/material";
 import { useState } from "react";
 
 export default function LoginForm() {
-   const [ email, setEmail ] = useState<string>();
-   const [ password, setPassword ] = useState<string>();
+   const [ email, setEmail ] = useState<string>('');
+   const [ password, setPassword ] = useState<string>('');
+
+   const handleSignIn = async () => {
+      login({ email: email, password: password })
+         .then(response => console.log(response))
+         .catch(error => console.error(error)); 
+   }
 
    return (
       <Box
@@ -60,6 +67,7 @@ export default function LoginForm() {
                }} 
                color='primary'
                variant='solid'
+               onClick={handleSignIn}
             >
                ENTER
             </Button>

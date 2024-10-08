@@ -1,6 +1,6 @@
 'use client'
 
-import LoginForm from "../components/login/login-form";
+import LoginForm from "../../components/login/login-form";
 import { Box } from "@mui/joy";
 
 export default function Login() {

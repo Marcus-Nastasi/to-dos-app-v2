@@ -1,4 +1,4 @@
-import { UserDetails } from "./user.dto"
+import { UserDetails } from "../user/user.dto"
 
 export interface LoginRequestDto {
    email: string,

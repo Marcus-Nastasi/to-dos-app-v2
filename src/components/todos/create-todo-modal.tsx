@@ -10,7 +10,8 @@ import DialogContent from '@mui/joy/DialogContent';
 import Stack from '@mui/joy/Stack';
 import Add from '@mui/icons-material/Add';
 import { Transition } from 'react-transition-group';
-import { Box, IconButton } from '@mui/joy';
+import { Box, IconButton, Option, Select, selectClasses } from '@mui/joy';
+import { KeyboardArrowDown } from '@mui/icons-material';
 
 export default function CreateTodoModal() {
    const [open, setOpen] = React.useState<boolean>(false);
@@ -30,7 +31,7 @@ export default function CreateTodoModal() {
             onClick={() => setOpen(true)}
             size='lg'
          >
-            <Add />
+            <Add fontWeight={'bold'} />
          </IconButton>
          <Transition in={open} timeout={400}>
             {(state: string) => (
@@ -66,9 +67,10 @@ export default function CreateTodoModal() {
                         entered: { opacity: 1 },
                         }[state],
                      }}
+                     minWidth={'400px'}
                   >
-                     <DialogTitle>Create new project</DialogTitle>
-                     <DialogContent>Fill in the information of the project.</DialogContent>
+                     <DialogTitle>Create new to-do</DialogTitle>
+                     <DialogContent>Fill in the information of the to-do.</DialogContent>
                      <form
                         onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
                         event.preventDefault();
@@ -77,14 +79,50 @@ export default function CreateTodoModal() {
                      >
                         <Stack spacing={2}>
                         <FormControl>
-                           <FormLabel>Name</FormLabel>
+                           <FormLabel>Title</FormLabel>
                            <Input autoFocus required />
+                        </FormControl>
+                        <FormControl>
+                           <FormLabel>Client</FormLabel>
+                           <Input required />
                         </FormControl>
                         <FormControl>
                            <FormLabel>Description</FormLabel>
                            <Input required />
                         </FormControl>
-                        <Button type="submit">Submit</Button>
+                        <FormControl>
+                           <FormLabel>Link</FormLabel>
+                           <Input required />
+                        </FormControl>
+                        <FormControl>
+                           <FormLabel>Due</FormLabel>
+                           {/* <Input required /> */}
+                           <Input
+                              required
+                              type="date"
+                           />
+                        </FormControl>
+                        <FormControl>
+                           <FormLabel>Priority</FormLabel>
+                           <Select
+                              placeholder="Select a priority…"
+                              indicator={<KeyboardArrowDown />}
+                              sx={{
+                              width: 240,
+                              [`& .${selectClasses.indicator}`]: {
+                                 transition: '0.2s',
+                                 [`&.${selectClasses.expanded}`]: {
+                                    transform: 'rotate(-180deg)',
+                                 },
+                              },
+                              }}
+                           >
+                              <Option value="dog">High</Option>
+                              <Option value="cat">Medium</Option>
+                              <Option value="fish">Low</Option>
+                           </Select>
+                        </FormControl>
+                        <Button type="submit" color='primary'>Submit</Button>
                         </Stack>
                      </form>
                   </ModalDialog>

@@ -2,9 +2,10 @@
 
 import MenuDrawer from '@/components/shared/menu-drawer';
 import CreateTodoModal from '@/components/todos/create-todo-modal';
+import TodoCard from '@/components/todos/todo-card';
 import EmojiObjectsIcon from '@mui/icons-material/EmojiObjects';
 import NightlightIcon from '@mui/icons-material/Nightlight';
-import { Box, Button, CssVarsProvider, extendTheme, Typography, useColorScheme } from "@mui/joy";
+import { Box, Button, CssVarsProvider, extendTheme, Stack, Typography, useColorScheme } from "@mui/joy";
 import { Fragment, useEffect } from "react";
 
 function ToggleThemeButton() {
@@ -25,8 +26,8 @@ function ToggleThemeButton() {
             height: 'fit-content',
             padding: 0.3,
             position: 'absolute',
-            right: 5,
-            top: 5,
+            right: 15,
+            top: 15,
             margin: { xs: 2, md: 3 },
          }}
       >
@@ -125,6 +126,26 @@ export default function Home() {
                >
                   To-Dos App
                </Typography>
+
+               <Box
+                  width={'100%'}
+                  minHeight={'100vh'}
+                  maxHeight={'fit-content'}
+                  display={'flex'}
+                  flexWrap={'wrap'}
+                  justifyContent={'center'}
+                  // alignItems={'center'}
+                  sx={{
+                     padding: { xs: 1, sm: 2, md: 5 }
+                  }}
+               >
+                  <TodoCard />
+                  <TodoCard />
+                  <TodoCard />
+                  <TodoCard />
+                  <TodoCard />
+                  <TodoCard />
+               </Box>
                <CreateTodoModal />
             </Box>
          </CssVarsProvider>

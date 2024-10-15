@@ -12,9 +12,8 @@ const AlertContext = createContext<AlertContextProps | undefined>(undefined);
 
 export const useAlert = () => {
    const context = useContext(AlertContext);
-   if (!context) {
+   if (!context) 
       throw new Error('useAlert must be used within an AlertProvider');
-   }
    return context;
 };
 
@@ -23,14 +22,13 @@ export const AlertProvider = ({ children }: { children: ReactNode }) => {
    const [message, setMessage] = useState<string>();
    const [severity, setSeverity] = useState<'success' | 'error' | 'warning' | 'info'>();
 
-   const showAlert = (msg: string, sev: 'success' | 'error' | 'warning' | 'info') => {
+   const showAlert = (
+      msg: string, 
+      sev: 'success' | 'error' | 'warning' | 'info'
+   ): void => {
       setMessage(msg);
       setSeverity(sev);
       setOpen(true);
-   };
-
-   const handleClose = () => {
-      setOpen(false);
    };
 
    return (
@@ -39,10 +37,10 @@ export const AlertProvider = ({ children }: { children: ReactNode }) => {
          <Snackbar 
             open={open} 
             autoHideDuration={6000} 
-            onClose={handleClose}
+            onClose={() => setOpen(false)}
          >
             <Alert 
-               onClose={handleClose} 
+               onClose={() => setOpen(false)} 
                severity={severity} 
                variant='standard' 
                color={severity}

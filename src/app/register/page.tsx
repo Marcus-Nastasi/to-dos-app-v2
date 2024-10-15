@@ -1,7 +1,10 @@
-'use client'
-
 import RegisterForm from "@/components/register/register-form";
 import { Box } from "@mui/joy";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+   title: "Register - To-dos App",
+};
 
 export default function Register() {
    return (

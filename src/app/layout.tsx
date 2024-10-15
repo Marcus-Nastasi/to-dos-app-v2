@@ -6,9 +6,10 @@ import { AlertProvider } from "@/contexts/alert-context";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Home",
+  title: "Home - To-Dos App",
   description: "",
 };
+
 
 export default function RootLayout({
   children,

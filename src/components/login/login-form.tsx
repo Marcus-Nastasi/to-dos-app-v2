@@ -9,18 +9,23 @@ import { useState } from "react";
 export default function LoginForm() {
    const [ email, setEmail ] = useState<string>('');
    const [ password, setPassword ] = useState<string>('');
+   const [ loading, setLoading ] = useState<boolean>();
    const { showAlert } = useAlert();
 
    const handleSignIn = async () => {
-      login({ email: email, password: password })
-         .then(response => {
-            console.log(response);
-            showAlert(`Login successful! You're beeing redirected...`, 'success');
-         })
-         .catch(error => {
+      setLoading(true);
+      setTimeout(async () => {
+         try {
+         const data = await login({ email: email, password: password });
+         console.log(data);
+         setLoading(false);
+         showAlert(`Login successful! You're beeing redirected...`, 'success');
+         } catch(error) {
             console.log(error);
             showAlert(`${error}`, 'error');
-         }); 
+            setLoading(false);
+         }
+      }, 2000);
    }
 
    return (
@@ -68,17 +73,32 @@ export default function LoginForm() {
                onChange={(e) => setPassword(e.target.value)} 
             />
             <FormHelperText sx={{ marginBottom: 2 }}>enter your password</FormHelperText>
-            <Button 
-               sx={{ 
-                  width: { sm: "80%", lg: '30%' }, 
-                  alignSelf: 'center'
-               }} 
-               color='primary'
-               variant='solid'
-               onClick={handleSignIn}
-            >
-               ENTER
-            </Button>
+            {
+               loading
+               && <Button 
+                     loading
+                     loadingPosition='start'
+                     variant='solid'
+                     color='primary'
+                     sx={{
+                        width: { sm: "80%", lg: '30%' }, 
+                        alignSelf: 'center'
+                     }}
+                  >
+                     loading...
+                  </Button>
+               || <Button 
+                     sx={{ 
+                        width: { sm: "80%", lg: '30%' }, 
+                        alignSelf: 'center'
+                     }} 
+                     color='primary'
+                     variant='solid'
+                     onClick={handleSignIn}
+                  >
+                     ENTER
+                  </Button>
+            }
             <FormHelperText sx={{ marginTop: 5, alignSelf: 'end' }}>
                if you don't have an account, 
                <Link href="/register" underline="always" color="primary">

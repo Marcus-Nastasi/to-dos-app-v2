@@ -5,23 +5,37 @@ import { createUser } from "@/service/auth/user.service";
 import { Box, Button, FormControl, FormHelperText, Typography } from "@mui/joy";
 import { Link, TextField } from "@mui/material";
 import { useState } from "react";
-
+ 
 export default function RegisterForm() {
    const [ name, setName ] = useState<string>('');
    const [ email, setEmail ] = useState<string>('');
    const [ password, setPassword ] = useState<string>('');
+   const [ loading, setLoading ] = useState<boolean>();
    const { showAlert } = useAlert();
 
    const handleCreateUser = async () => {
-      createUser({ name: name, email: email, password: password })
-         .then(response => {
-            console.log(response);
-            showAlert('You have created your user! Redirecting to /login...', 'success');
-         })
-         .catch(error => {
-            console.error(error);
+      // createUser({ name: name, email: email, password: password })
+      //    .then(response => {
+      //       console.log(response);
+      //       showAlert('You have created your user! Redirecting to /login...', 'success');
+      //    })
+      //    .catch(error => {
+      //       console.error(error);
+      //       showAlert(`${error}`, 'error');
+      //    }); 
+      setLoading(true);
+      setTimeout(async () => {
+         try {
+         const data = await createUser({ name: name, email: email, password: password });
+         console.log(data);
+         setLoading(false);
+         showAlert('You have created your user! Redirecting to /login...', 'success');
+         } catch(error) {
+            console.log(error);
             showAlert(`${error}`, 'error');
-         }); 
+            setLoading(false);
+         }
+      }, 2000);
    }
 
    return (
@@ -78,17 +92,32 @@ export default function RegisterForm() {
                onChange={(e) => setPassword(e.target.value)} 
             />
             <FormHelperText sx={{ marginBottom: 2 }}>enter your password</FormHelperText>
-            <Button 
-               sx={{ 
-                  width: { sm: "80%", lg: '30%' }, 
-                  alignSelf: 'center'
-               }} 
-               color='primary'
-               variant='solid'
-               onClick={handleCreateUser}
-            >
-               ENTER
-            </Button>
+            {
+               loading
+               && <Button 
+                     loading
+                     loadingPosition='start'
+                     variant='solid'
+                     color='primary'
+                     sx={{
+                        width: { sm: "80%", lg: '30%' }, 
+                        alignSelf: 'center'
+                     }}
+                  >
+                     loading...
+                  </Button>
+               || <Button 
+                     sx={{ 
+                        width: { sm: "80%", lg: '30%' }, 
+                        alignSelf: 'center'
+                     }} 
+                     color='primary'
+                     variant='solid'
+                     onClick={handleCreateUser}
+                  >
+                     ENTER
+                  </Button>
+            }
             <FormHelperText sx={{ marginTop: 5, alignSelf: 'end' }}>
                if you already have an account, 
                <Link href="/login" underline="always" color="primary">

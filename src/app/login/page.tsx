@@ -1,7 +1,10 @@
-'use client'
-
+import { Metadata } from "next";
 import LoginForm from "../../components/login/login-form";
 import { Box } from "@mui/joy";
+
+export const metadata: Metadata = {
+   title: "Login - To-dos App",
+};
 
 export default function Login() {
    return (

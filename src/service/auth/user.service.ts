@@ -4,7 +4,7 @@ import { UserRequestDto, UserResponseDto } from "@/types/user/user.dto";
 
 const url: string = process.env.API_URL || 'http://localhost:8080';
 
-const createUser = async (
+export const createUser = async (
    request: UserRequestDto
 ): Promise<UserResponseDto> => {
    const api_url: string = `${url}/api/user/register`;
@@ -15,7 +15,7 @@ const createUser = async (
       },
       body: JSON.stringify(request)
    });
-   if (response.status !== 201) throw new Error('Error while creating new user');
+   if (response.status !== 201) throw new Error('error while creating new user');
    const data: UserResponseDto = await response.json();
    return data;
 };

@@ -1,6 +1,7 @@
 'use client'
 
-import { login } from "@/service/auth/auth.service";
+import { useAlert } from "@/contexts/alert-context";
+import { createUser } from "@/service/auth/user.service";
 import { Box, Button, FormControl, FormHelperText, Typography } from "@mui/joy";
 import { Link, TextField } from "@mui/material";
 import { useState } from "react";
@@ -9,11 +10,18 @@ export default function RegisterForm() {
    const [ name, setName ] = useState<string>('');
    const [ email, setEmail ] = useState<string>('');
    const [ password, setPassword ] = useState<string>('');
+   const { showAlert } = useAlert();
 
-   const handleSignIn = async () => {
-      login({ email: email, password: password })
-         .then(response => console.log(response))
-         .catch(error => console.error(error)); 
+   const handleCreateUser = async () => {
+      createUser({ name: name, email: email, password: password })
+         .then(response => {
+            console.log(response);
+            showAlert('You have created your user! Redirecting to /login...', 'success');
+         })
+         .catch(error => {
+            console.error(error);
+            showAlert(`${error}`, 'error');
+         }); 
    }
 
    return (
@@ -77,13 +85,13 @@ export default function RegisterForm() {
                }} 
                color='primary'
                variant='solid'
-               onClick={handleSignIn}
+               onClick={handleCreateUser}
             >
                ENTER
             </Button>
             <FormHelperText sx={{ marginTop: 5, alignSelf: 'end' }}>
                if you already have an account, 
-               <Link href="/register" underline="always" color="primary">
+               <Link href="/login" underline="always" color="primary">
                   sign-in
                </Link>
             </FormHelperText>

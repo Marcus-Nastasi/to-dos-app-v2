@@ -11,7 +11,7 @@ export const login = async (request: LoginRequestDto): Promise<LoginResponseDto>
       body: JSON.stringify(request),
       headers: { 'Content-Type': 'application/json' }
    });
-   if (response.status !== 200) throw new Error('Error on login');
+   if (response.status !== 200) throw new Error('error on login, status different than 200');
    const data: LoginResponseDto = await response.json();
    return data;
 }

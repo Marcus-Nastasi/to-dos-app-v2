@@ -1,5 +1,6 @@
 'use client'
 
+import { useAlert } from "@/contexts/alert-context";
 import { login } from "@/service/auth/auth.service";
 import { Box, Button, FormControl, FormHelperText, Typography } from "@mui/joy";
 import { Link, TextField } from "@mui/material";
@@ -8,11 +9,18 @@ import { useState } from "react";
 export default function LoginForm() {
    const [ email, setEmail ] = useState<string>('');
    const [ password, setPassword ] = useState<string>('');
+   const { showAlert } = useAlert();
 
    const handleSignIn = async () => {
       login({ email: email, password: password })
-         .then(response => console.log(response))
-         .catch(error => console.error(error)); 
+         .then(response => {
+            console.log(response);
+            showAlert(`Login successful! You're beeing redirected...`, 'success');
+         })
+         .catch(error => {
+            console.log(error);
+            showAlert(`${error}`, 'error');
+         }); 
    }
 
    return (

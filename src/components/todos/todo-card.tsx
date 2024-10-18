@@ -1,30 +1,34 @@
 import * as React from 'react';
 import Box from '@mui/joy/Box';
-import Button from '@mui/joy/Button';
 import Card from '@mui/joy/Card';
 import CardContent from '@mui/joy/CardContent';
-import CardActions from '@mui/joy/CardActions';
 import Chip from '@mui/joy/Chip';
 import Typography from '@mui/joy/Typography';
-import { Dropdown, Menu, MenuButton, MenuItem } from '@mui/joy';
+import { Accordion, AccordionDetails, AccordionGroup, AccordionSummary, accordionSummaryClasses, Dropdown, Menu, MenuButton, MenuItem } from '@mui/joy';
+import IconButton from '@mui/joy/IconButton';
+import MoreVert from '@mui/icons-material/MoreVert';
+import { AddCircleOutline } from '@mui/icons-material';
 
 export default function TodoCard() {
    return (
       <Card
-         variant="solid"
-         color="primary"
+         variant='outlined'
+         color='neutral'
          invertedColors
          sx={{
-            boxShadow: 'lg',
+            boxShadow: 'md',
             width: {
                xs: '90%',
-               sm: '70%',
-               md: '50%',
-               lg: '30%',
-               xl: '30%'
+               sm: '80%',
+               md: '47%',
+               lg: '40%',
+               xl: 400
             },
             height: 'fit-content',
-            m: 1
+            my: {
+               xs: 1,
+               md: 2,
+            }
          }}
       >
          <Box
@@ -35,12 +39,10 @@ export default function TodoCard() {
          >
             <Dropdown>
                <MenuButton
-                  variant='plain'
-                  sx={{
-                     width: 'fit-content'
-                  }}
+                  slots={{ root: IconButton }}
+                  slotProps={{ root: { variant: 'plain', color: 'neutral' } }}
                >
-                  Format
+                  <MoreVert />
                </MenuButton>
                <Menu>
                   <MenuItem>pending</MenuItem>
@@ -60,6 +62,29 @@ export default function TodoCard() {
          <CardContent>
             <Typography level="title-lg">16/10/2024</Typography>
          </CardContent>
+         <AccordionGroup
+            size='md'
+            sx={{
+               maxWidth: 400,
+               [`& .${accordionSummaryClasses.indicator}`]: {
+                  transition: '0.2s',
+               },
+               [`& [aria-expanded="true"] .${accordionSummaryClasses.indicator}`]: {
+                  transform: 'rotate(45deg)',
+               },
+               borderRadius: 5
+            }}
+         >
+            <Accordion>
+               <AccordionSummary indicator={<AddCircleOutline />}>
+                  Details
+               </AccordionSummary>
+               <AccordionDetails>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                  tempor incididunt ut labore et dolore magna aliqua.
+               </AccordionDetails>
+            </Accordion>
+         </AccordionGroup>
       </Card>
    );
 }

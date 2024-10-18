@@ -7,6 +7,7 @@ import EmojiObjectsIcon from '@mui/icons-material/EmojiObjects';
 import NightlightIcon from '@mui/icons-material/Nightlight';
 import { Box, Button, CssVarsProvider, extendTheme, Stack, Typography, useColorScheme } from "@mui/joy";
 import { Fragment, useEffect } from "react";
+import * as React from 'react';
 
 function ToggleThemeButton() {
    const { mode, setMode } = useColorScheme();
@@ -34,18 +35,18 @@ function ToggleThemeButton() {
          {
             mode == "dark" 
             && <EmojiObjectsIcon  
-               sx={{
-                  fontSize: { xs: 27, md: 29 },
-               }}
-            />  
+                  sx={{
+                     fontSize: { xs: 27, md: 29 },
+                  }}
+               />  
             || <NightlightIcon 
-               sx={{
-                  fontSize: { xs: 30, md: 32 },
-                  ":hover": {
-                     cursor: 'unset'
-                  }
-               }}
-            /> 
+                  sx={{
+                     fontSize: { xs: 30, md: 32 },
+                     ":hover": {
+                        cursor: 'unset'
+                     }
+                  }}
+               /> 
          }
       </Button>
    );
@@ -126,26 +127,21 @@ export default function Home() {
                >
                   To-Dos App
                </Typography>
-
-               <Box
-                  width={'100%'}
-                  minHeight={'100vh'}
-                  maxHeight={'fit-content'}
-                  display={'flex'}
+               <Stack
+                  direction={{ xs: 'column', md: 'row' }}
                   flexWrap={'wrap'}
-                  justifyContent={'center'}
-                  // alignItems={'center'}
                   sx={{
-                     padding: { xs: 1, sm: 2, md: 5 }
+                     width: '100%',
+                     padding: { xs: 2, md: 5 },
+                     justifyContent: 'space-evenly',
+                     alignItems: { xs: 'center', lg: "flex-start" },
                   }}
                >
                   <TodoCard />
                   <TodoCard />
                   <TodoCard />
                   <TodoCard />
-                  <TodoCard />
-                  <TodoCard />
-               </Box>
+               </Stack>
                <CreateTodoModal />
             </Box>
          </CssVarsProvider>

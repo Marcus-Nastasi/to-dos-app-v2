@@ -8,6 +8,7 @@ import { Accordion, AccordionDetails, AccordionGroup, AccordionSummary, accordio
 import IconButton from '@mui/joy/IconButton';
 import MoreVert from '@mui/icons-material/MoreVert';
 import { AddCircleOutline } from '@mui/icons-material';
+import { grey } from '@mui/material/colors';
 
 export default function TodoCard() {
    return (
@@ -45,9 +46,15 @@ export default function TodoCard() {
                   <MoreVert />
                </MenuButton>
                <Menu>
-                  <MenuItem>pending</MenuItem>
-                  <MenuItem>in progress</MenuItem>
-                  <MenuItem>done</MenuItem>
+                  <MenuItem color='danger' sx={{ color: 'gray' }}>
+                     Pending
+                  </MenuItem>
+                  <MenuItem color='primary' sx={{ color: 'gray' }}>
+                     In progress
+                  </MenuItem>
+                  <MenuItem color='success' sx={{ color: 'gray' }}>
+                     Done
+                  </MenuItem>
                </Menu>
             </Dropdown>
          </Box>

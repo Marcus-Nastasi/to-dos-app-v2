@@ -14,10 +14,11 @@ import Sheet from '@mui/joy/Sheet';
 import Typography from '@mui/joy/Typography';
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 import MenuIcon from '@mui/icons-material/Menu';
-import { IconButton } from '@mui/joy';
+import { IconButton, Link } from '@mui/joy';
 import PersonPinIcon from '@mui/icons-material/PersonPin';
 import MiscellaneousServicesRoundedIcon from '@mui/icons-material/MiscellaneousServicesRounded';
 import LineAxisRoundedIcon from '@mui/icons-material/LineAxisRounded';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
 export default function MenuDrawer() {
    const [open, setOpen] = React.useState(false);
@@ -154,7 +155,17 @@ export default function MenuDrawer() {
                   ))}
                </Box>
             </DialogContent>
-            <Divider sx={{ mt: 2, mb: 2 }} />
+            <Divider sx={{ mt: 2,  }} />
+            <Link 
+               href='/about'
+               width={'fit-content'} 
+               underline='none' 
+               color='neutral'
+               variant='plain'
+               startDecorator={<InfoOutlinedIcon />}
+            >
+               About the app
+            </Link>
          </Sheet>
          </Drawer>
       </React.Fragment>

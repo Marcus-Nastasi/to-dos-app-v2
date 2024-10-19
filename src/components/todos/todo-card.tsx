@@ -1,3 +1,5 @@
+'use client'
+
 import * as React from 'react';
 import Box from '@mui/joy/Box';
 import Card from '@mui/joy/Card';
@@ -8,8 +10,10 @@ import { Accordion, AccordionDetails, AccordionGroup, AccordionSummary, accordio
 import IconButton from '@mui/joy/IconButton';
 import MoreVert from '@mui/icons-material/MoreVert';
 import { AddCircleOutline } from '@mui/icons-material';
+import TodoModal from './todo-modal';
 
 export default function TodoCard() {
+   const [open, setOpen] = React.useState<boolean>(false);
    return (
       <Card
          variant='outlined'
@@ -88,7 +92,8 @@ export default function TodoCard() {
                <AccordionDetails>
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
                   tempor incididunt ut labore et dolore magna aliqua.
-                  <Button
+                  <Button 
+                     onClick={() => setOpen(true)}
                      variant='soft'
                      color='neutral'
                      size='sm'
@@ -98,6 +103,7 @@ export default function TodoCard() {
                   >
                      Open
                   </Button>
+                  <TodoModal open={open} setOpen={setOpen} />
                </AccordionDetails>
             </Accordion>
          </AccordionGroup>

@@ -122,7 +122,7 @@ export default function CreateTodoModal() {
                               <Option value="fish">Low</Option>
                            </Select>
                         </FormControl>
-                        <Button type="submit" color='primary'>Submit</Button>
+                        <Button type="submit" color='neutral' variant='solid'>Submit</Button>
                         </Stack>
                      </form>
                   </ModalDialog>

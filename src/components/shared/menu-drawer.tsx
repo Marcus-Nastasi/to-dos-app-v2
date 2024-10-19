@@ -33,8 +33,8 @@ export default function MenuDrawer() {
             onClick={() => { setOpen(true); }}
             sx={{
                position: 'absolute',
-               top: 30,
-               left: 30
+               top: { xs: 20, md: 30},
+               left: { xs: 20, md: 30 }
             }}
          >
             <MenuIcon />

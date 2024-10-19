@@ -19,8 +19,8 @@ export default function CreateTodoModal() {
       <Box
          sx={{
             position: 'fixed',
-            bottom: 40,
-            right: 40,
+            bottom: { xs: 20, md: 40 },
+            right: { xs: 20, md: 40 },
             alignSelf: 'center'
          }}
       >

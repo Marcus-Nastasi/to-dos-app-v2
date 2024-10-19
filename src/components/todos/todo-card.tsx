@@ -4,11 +4,10 @@ import Card from '@mui/joy/Card';
 import CardContent from '@mui/joy/CardContent';
 import Chip from '@mui/joy/Chip';
 import Typography from '@mui/joy/Typography';
-import { Accordion, AccordionDetails, AccordionGroup, AccordionSummary, accordionSummaryClasses, Dropdown, Menu, MenuButton, MenuItem } from '@mui/joy';
+import { Accordion, AccordionDetails, AccordionGroup, AccordionSummary, accordionSummaryClasses, Button, Dropdown, Menu, MenuButton, MenuItem } from '@mui/joy';
 import IconButton from '@mui/joy/IconButton';
 import MoreVert from '@mui/icons-material/MoreVert';
 import { AddCircleOutline } from '@mui/icons-material';
-import { grey } from '@mui/material/colors';
 
 export default function TodoCard() {
    return (
@@ -89,6 +88,16 @@ export default function TodoCard() {
                <AccordionDetails>
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
                   tempor incididunt ut labore et dolore magna aliqua.
+                  <Button
+                     variant='soft'
+                     color='neutral'
+                     size='sm'
+                     sx={{
+                        mt: 2.5
+                     }}
+                  >
+                     Open
+                  </Button>
                </AccordionDetails>
             </Accordion>
          </AccordionGroup>

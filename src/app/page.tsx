@@ -27,8 +27,8 @@ function ToggleThemeButton() {
             height: 'fit-content',
             padding: 0.3,
             position: 'absolute',
-            right: 15,
-            top: 15,
+            right: { xs: 10, md: 15 },
+            top: { xs: 10, md: 15 },
             margin: { xs: 2, md: 3 },
          }}
       >

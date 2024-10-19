@@ -14,7 +14,7 @@ import Sheet from '@mui/joy/Sheet';
 import Typography from '@mui/joy/Typography';
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 import MenuIcon from '@mui/icons-material/Menu';
-import { IconButton, Link } from '@mui/joy';
+import { IconButton, Link, Tooltip } from '@mui/joy';
 import PersonPinIcon from '@mui/icons-material/PersonPin';
 import MiscellaneousServicesRoundedIcon from '@mui/icons-material/MiscellaneousServicesRounded';
 import LineAxisRoundedIcon from '@mui/icons-material/LineAxisRounded';
@@ -26,19 +26,21 @@ export default function MenuDrawer() {
 
    return (
       <React.Fragment>
-         <IconButton
-            variant='plain'
-            color="neutral"
-            size='lg'
-            onClick={() => { setOpen(true); }}
-            sx={{
-               position: 'absolute',
-               top: { xs: 20, md: 30},
-               left: { xs: 20, md: 30 }
-            }}
-         >
-            <MenuIcon />
-         </IconButton>
+         <Tooltip variant='outlined' arrow title="Menu" placement="right">
+            <IconButton
+               variant='plain'
+               color="neutral"
+               size='lg'
+               onClick={() => { setOpen(true); }}
+               sx={{
+                  position: 'absolute',
+                  top: { xs: 20, md: 30},
+                  left: { xs:20, md: 30 }
+               }}
+            >
+               <MenuIcon />
+            </IconButton>
+         </Tooltip>
          <Drawer
             size="md"
             variant="plain"

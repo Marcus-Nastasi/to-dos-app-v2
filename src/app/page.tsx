@@ -5,7 +5,7 @@ import CreateTodoModal from '@/components/todos/create-todo-modal';
 import TodoCard from '@/components/todos/todo-card';
 import EmojiObjectsIcon from '@mui/icons-material/EmojiObjects';
 import NightlightIcon from '@mui/icons-material/Nightlight';
-import { Box, Button, CssVarsProvider, extendTheme, Stack, Typography, useColorScheme } from "@mui/joy";
+import { Box, Button, CssVarsProvider, extendTheme, Stack, Tooltip, Typography, useColorScheme } from "@mui/joy";
 import { Fragment, useEffect } from "react";
 import * as React from 'react';
 
@@ -18,37 +18,40 @@ function ToggleThemeButton() {
    });
 
    return (
-      <Button
-         variant='plain'
-         color={'neutral'} 
-         onClick={toggleMode}
-         sx={{
-            width: 'fit-content',
-            height: 'fit-content',
-            padding: 0.3,
-            position: 'absolute',
-            right: { xs: 10, md: 15 },
-            top: { xs: 10, md: 15 },
-            margin: { xs: 2, md: 3 },
-         }}
-      >
-         {
-            mode == "dark" 
-            && <EmojiObjectsIcon  
-                  sx={{
-                     fontSize: { xs: 27, md: 29 },
-                  }}
-               />  
-            || <NightlightIcon 
-                  sx={{
-                     fontSize: { xs: 30, md: 32 },
-                     ":hover": {
-                        cursor: 'unset'
-                     }
-                  }}
-               /> 
-         }
-      </Button>
+      <Tooltip variant='outlined' arrow title="Theme" placement="left">
+         <Button
+            variant='plain'
+            color={'neutral'} 
+            onClick={toggleMode}
+            sx={{
+               width: 'fit-content',
+               height: 'fit-content',
+               padding: 0.3,
+               position: 'absolute',
+               right: { xs: 10, md: 15 },
+               top: { xs: 10, md: 15 },
+               margin: { xs: 2, md: 3 },
+            }}
+         >
+            {
+               mode == "dark" 
+               && <EmojiObjectsIcon  
+                     sx={{
+                        fontSize: { xs: 27, md: 29 },
+                     }}
+                  />  
+               || <NightlightIcon 
+                     sx={{
+                        fontSize: { xs: 30, md: 32 },
+                        ":hover": {
+                           cursor: 'unset'
+                        }
+                     }}
+                  /> 
+            }
+         </Button>
+      </Tooltip>
+      
    );
 }
 

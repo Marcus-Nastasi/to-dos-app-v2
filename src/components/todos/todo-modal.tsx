@@ -7,14 +7,11 @@ import Modal from '@mui/joy/Modal';
 import ModalDialog from '@mui/joy/ModalDialog';
 import DialogTitle from '@mui/joy/DialogTitle';
 import DialogContent from '@mui/joy/DialogContent';
+import { Typography } from '@mui/joy';
 
 export default function TodoModal({ open, setOpen }: { open: boolean, setOpen: Function }) {
-//   const [open, setOpen] = React.useState<boolean>(false);
   return (
     <React.Fragment>
-      {/* <Button variant="outlined" color="neutral" onClick={() => setOpen(true)}>
-        Open modal
-      </Button> */}
       <Transition in={open} timeout={400}>
         {(state: string) => (
           <Modal
@@ -48,11 +45,22 @@ export default function TodoModal({ open, setOpen }: { open: boolean, setOpen: F
                   entering: { opacity: 1 },
                   entered: { opacity: 1 },
                 }[state],
+                width: { xs: '90%', sm: '80%', md: '60%', lg: '40%', xl: '30%' }
               }}
             >
-              <DialogTitle>Transition modal</DialogTitle>
+              <DialogTitle>Title: asmdkasmdkasdm mksdasdmkasd</DialogTitle>
               <DialogContent>
-                Using `react-transition-group` to create a fade animation.
+                  <Typography
+
+                  >
+                     Using `react-transition-group` to create a fade animation. Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum error maxime expedita dolore, eaque nulla veritatis nesciunt exercitationem. Voluptate, quasi natus distinctio eum inventore et nulla laboriosam quae aut dicta!
+                  </Typography>
+
+                  <Typography
+                     mt={2}
+                  >
+                     Due: 16/10/2024
+                  </Typography>
               </DialogContent>
             </ModalDialog>
           </Modal>

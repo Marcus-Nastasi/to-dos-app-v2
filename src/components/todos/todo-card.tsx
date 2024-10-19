@@ -6,7 +6,7 @@ import Card from '@mui/joy/Card';
 import CardContent from '@mui/joy/CardContent';
 import Chip from '@mui/joy/Chip';
 import Typography from '@mui/joy/Typography';
-import { Accordion, AccordionDetails, AccordionGroup, AccordionSummary, accordionSummaryClasses, Button, Dropdown, Menu, MenuButton, MenuItem } from '@mui/joy';
+import { Accordion, AccordionDetails, AccordionGroup, AccordionSummary, accordionSummaryClasses, Button, Dropdown, Menu, MenuButton, MenuItem, Tooltip } from '@mui/joy';
 import IconButton from '@mui/joy/IconButton';
 import MoreVert from '@mui/icons-material/MoreVert';
 import { AddCircleOutline } from '@mui/icons-material';
@@ -42,12 +42,14 @@ export default function TodoCard() {
             }}
          >
             <Dropdown>
-               <MenuButton
-                  slots={{ root: IconButton }}
-                  slotProps={{ root: { variant: 'plain', color: 'neutral' } }}
-               >
-                  <MoreVert />
-               </MenuButton>
+               <Tooltip variant='outlined' arrow title="Status" placement="top">
+                  <MenuButton
+                     slots={{ root: IconButton }}
+                     slotProps={{ root: { variant: 'plain', color: 'neutral' } }}
+                  >
+                     <MoreVert />
+                  </MenuButton>
+               </Tooltip>
                <Menu>
                   <MenuItem color='danger' sx={{ color: 'gray' }}>
                      Pending

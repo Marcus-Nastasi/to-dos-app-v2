@@ -10,7 +10,7 @@ import DialogContent from '@mui/joy/DialogContent';
 import Stack from '@mui/joy/Stack';
 import Add from '@mui/icons-material/Add';
 import { Transition } from 'react-transition-group';
-import { Box, IconButton, Option, Select, selectClasses } from '@mui/joy';
+import { Box, IconButton, Option, Select, selectClasses, Tooltip } from '@mui/joy';
 import { KeyboardArrowDown } from '@mui/icons-material';
 
 export default function CreateTodoModal() {
@@ -24,15 +24,17 @@ export default function CreateTodoModal() {
             alignSelf: 'center'
          }}
       >
-         <IconButton
-            variant='soft'
-            color='neutral'
-            // startDecorator={<Add />}
-            onClick={() => setOpen(true)}
-            size='lg'
-         >
-            <Add fontWeight={'bold'} />
-         </IconButton>
+         <Tooltip variant='outlined' arrow title="New to-do" placement='top-end'>
+            <IconButton
+               variant='soft'
+               color='neutral'
+               // startDecorator={<Add />}
+               onClick={() => setOpen(true)}
+               size='lg'
+            >
+               <Add fontWeight={'bold'} />
+            </IconButton>
+         </Tooltip>
          <Transition in={open} timeout={400}>
             {(state: string) => (
                <Modal

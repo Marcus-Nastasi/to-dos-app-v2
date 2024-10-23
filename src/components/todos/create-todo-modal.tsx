@@ -28,7 +28,6 @@ export default function CreateTodoModal() {
             <IconButton
                variant='soft'
                color='neutral'
-               // startDecorator={<Add />}
                onClick={() => setOpen(true)}
                size='lg'
             >

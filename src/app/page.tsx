@@ -1,6 +1,7 @@
 'use client'
 
 import MenuDrawer from '@/components/shared/menu-drawer';
+import SearchBox from '@/components/shared/search-box';
 import CreateTodoModal from '@/components/todos/create-todo-modal';
 import TodoCard from '@/components/todos/todo-card';
 import EmojiObjectsIcon from '@mui/icons-material/EmojiObjects';
@@ -130,6 +131,21 @@ export default function Home() {
                >
                   To-Dos App
                </Typography>
+               <Box
+                  display={'flex'}
+                  justifyContent={'center'}
+                  alignItems={'center'}
+               >
+                  <SearchBox />
+                  <Button 
+                     sx={{ ml: 1, ":hover": { cursor: 'default' } }}
+                     size='sm'
+                     color='neutral'
+                     variant='solid'
+                  >
+                     Search
+                  </Button>
+               </Box>
                <Stack
                   direction={{ xs: 'column', md: 'row' }}
                   flexWrap={'wrap'}

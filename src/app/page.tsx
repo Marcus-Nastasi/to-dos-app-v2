@@ -4,11 +4,15 @@ import MenuDrawer from '@/components/shared/menu-drawer';
 import SearchBox from '@/components/shared/search-box';
 import CreateTodoModal from '@/components/todos/create-todo-modal';
 import TodoCard from '@/components/todos/todo-card';
+import { getAll } from '@/service/todos/todos.service';
+import { LoginResponseDto } from '@/types/auth/login.dto';
+import Cookie from '@/util/Cookies';
 import EmojiObjectsIcon from '@mui/icons-material/EmojiObjects';
 import NightlightIcon from '@mui/icons-material/Nightlight';
 import { Box, Button, CssVarsProvider, extendTheme, Stack, Tooltip, Typography, useColorScheme } from "@mui/joy";
+import { Router, useRouter } from 'next/router';
 import { Fragment, useEffect } from "react";
-import * as React from 'react';
+import { useState } from 'react';
 
 function ToggleThemeButton() {
    const { mode, setMode } = useColorScheme();
@@ -35,7 +39,7 @@ function ToggleThemeButton() {
             }}
          >
             {
-               mode == "dark" 
+               mode === "dark" 
                && <EmojiObjectsIcon  
                      sx={{
                         fontSize: { xs: 27, md: 29 },
@@ -52,7 +56,6 @@ function ToggleThemeButton() {
             }
          </Button>
       </Tooltip>
-      
    );
 }
 
@@ -107,6 +110,22 @@ const theme = extendTheme({
 });
 
 export default function Home() {
+   const [ todos, setTodos ] = useState();
+
+   useEffect(() => {
+      const cookie_token: string | null = Cookie.getCookie('todos_app_session');
+      if (!cookie_token || cookie_token == null) {
+         window.open('/login', '_blank');
+         return
+      }
+      const data: LoginResponseDto = JSON.parse(cookie_token);
+      getAll(
+         data.user.id, 
+         data.token,
+         0,
+      ).then(r => console.log(r)).catch(e => console.error(e));
+   }, []);
+
    return (
       <Fragment>
          <CssVarsProvider theme={theme} defaultMode={"light"} >

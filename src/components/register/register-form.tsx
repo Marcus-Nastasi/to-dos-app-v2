@@ -1,7 +1,7 @@
 'use client'
 
 import { useAlert } from "@/contexts/alert-context";
-import { createUser } from "@/service/auth/user.service";
+import { createUser } from "@/service/users/user.service";
 import { Box, Button, FormControl, FormHelperText, Typography } from "@mui/joy";
 import { Link, TextField } from "@mui/material";
 import { useState } from "react";
@@ -14,22 +14,12 @@ export default function RegisterForm() {
    const { showAlert } = useAlert();
 
    const handleCreateUser = async () => {
-      // createUser({ name: name, email: email, password: password })
-      //    .then(response => {
-      //       console.log(response);
-      //       showAlert('You have created your user! Redirecting to /login...', 'success');
-      //    })
-      //    .catch(error => {
-      //       console.error(error);
-      //       showAlert(`${error}`, 'error');
-      //    }); 
       setLoading(true);
       setTimeout(async () => {
          try {
-         const data = await createUser({ name: name, email: email, password: password });
-         console.log(data);
-         setLoading(false);
-         showAlert('You have created your user! Redirecting to /login...', 'success');
+            const data = await createUser({ name: name, email: email, password: password });
+            setLoading(false);
+            showAlert('You have created your user! Redirecting to /login...', 'success');
          } catch(error) {
             console.log(error);
             showAlert(`${error}`, 'error');

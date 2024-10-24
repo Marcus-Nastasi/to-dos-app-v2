@@ -5,6 +5,8 @@ import { login } from "@/service/auth/auth.service";
 import { Box, Button, FormControl, FormHelperText, Typography } from "@mui/joy";
 import { Link, TextField } from "@mui/material";
 import { useState } from "react";
+import { LoginResponseDto } from "@/types/auth/login.dto";
+import Cookie from "@/util/Cookies";
 
 export default function LoginForm() {
    const [ email, setEmail ] = useState<string>('');
@@ -12,14 +14,17 @@ export default function LoginForm() {
    const [ loading, setLoading ] = useState<boolean>();
    const { showAlert } = useAlert();
 
-   const handleSignIn = async () => {
+   const handleSignIn = async (): Promise<void> => {
       setLoading(true);
       setTimeout(async () => {
          try {
-         const data = await login({ email: email, password: password });
-         console.log(data);
-         setLoading(false);
-         showAlert(`Login successful! You're beeing redirected...`, 'success');
+            const data: LoginResponseDto = await login({ 
+               email: email, 
+               password: password 
+            });
+            Cookie.create('todos_app_session', JSON.stringify(data), 48);
+            setLoading(false);
+            showAlert(`Login successful! You're beeing redirected...`, 'success');
          } catch(error) {
             console.log(error);
             showAlert(`${error}`, 'error');

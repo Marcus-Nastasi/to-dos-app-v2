@@ -223,7 +223,7 @@ export default function Home() {
                         </Box>
                   }
                </Stack>
-               <CreateTodoModal />
+               <CreateTodoModal refreshTodos={getTodosData} />
             </Box>
          </CssVarsProvider>
       </Fragment>

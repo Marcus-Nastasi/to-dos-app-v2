@@ -20,7 +20,7 @@ import { LoginResponseDto } from '@/types/auth/login.dto';
 import Cookie from '@/util/Cookies';
 import { create } from '@/service/todos/todos.service';
 
-export default function CreateTodoModal() {
+export default function CreateTodoModal({ refreshTodos }: { refreshTodos: Function }) {
    const [open, setOpen] = useState<boolean>(false);
    const [ title, setTitle ] = useState<string>('');
    const [ client, setClient ] = useState<string>('');
@@ -56,8 +56,11 @@ export default function CreateTodoModal() {
       };
       try {
          const response = await create(data, userToken.token);
+         showAlert('To-do created successfully!', 'success');
+         refreshTodos();
          console.log(response);
       } catch (error) {
+         showAlert('Not able to create to-do! Try again!', 'error');
          console.error(error);
       }
    };

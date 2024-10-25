@@ -9,10 +9,9 @@ export default function SearchBox() {
             placeholder="Search by title or description..."
             sx={{
                width: {
-                  xs: '90%',
-                  sm: '70%',
+                  xs: '60%',
                   md: '50%',
-                  lg: '20%'
+                  lg: '40%'
                },
                '&::before': {
                border: '1.5px solid #424242' , // light theme #CDD7E1

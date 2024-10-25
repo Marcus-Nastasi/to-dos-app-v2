@@ -2,7 +2,6 @@
 
 import * as React from 'react';
 import { Transition } from 'react-transition-group';
-import Button from '@mui/joy/Button';
 import Modal from '@mui/joy/Modal';
 import ModalDialog from '@mui/joy/ModalDialog';
 import { Box, Chip, IconButton, Tooltip, Typography } from '@mui/joy';
@@ -10,13 +9,16 @@ import { Surfing } from '@mui/icons-material';
 import PendingActionsTwoToneIcon from '@mui/icons-material/PendingActionsTwoTone';
 import EditNoteRoundedIcon from '@mui/icons-material/EditNoteRounded';
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
+import { TodoDto } from '@/types/todos/todos.dto';
 
 export default function TodoModal({ 
    open, 
-   setOpen
+   setOpen,
+   todo
 }: { 
    open: boolean, 
-   setOpen: Function 
+   setOpen: Function,
+   todo: TodoDto 
 }) {
   return (
     <React.Fragment>
@@ -54,7 +56,8 @@ export default function TodoModal({
                entered: { opacity: 1 },
                }[state],
                width: { xs: '90%', sm: '80%', md: '60%', lg: '40%', xl: '30%' },
-               height: '98vh',
+               maxHeight: '98vh',
+               minHeight: 'fit-content',
                overflowY: "scroll",
                "&::-webkit-scrollbar": {
                   width: "6px",
@@ -71,15 +74,12 @@ export default function TodoModal({
                },
               }}
             >
-               <Typography level="h1">Title: asmdkasmdkasdm mksdasdmkasd</Typography>
+               <Typography level="h1">Title: { todo.title }</Typography>
                <Typography level="h2" sx={{ fontSize: 'xl', mb: 0.5 }}>
-                  Client
+                  { todo.client }
                </Typography>
                <Typography>
-               Using `react-transition-group` to create a fade animation. Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum error maxime expedita dolore, eaque nulla veritatis nesciunt exercitationem. Voluptate, quasi natus distinctio eum inventore et nulla laboriosam quae aut dicta!
-               </Typography>
-               <Typography>
-                  Using `react-transition-group` to create a fade animation. Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum error maxime expedita dolore, eaque nulla veritatis nesciunt exercitationem. Voluptate, quasi natus distinctio eum inventore et nulla laboriosam quae aut dicta!
+                  { todo.description }
                </Typography>
                <Chip 
                   sx={{ mt: 2, fontWeight: 'bold' }} 
@@ -88,7 +88,7 @@ export default function TodoModal({
                   variant="soft" 
                   startDecorator={<PendingActionsTwoToneIcon color='warning' />}
                >
-                  Pending
+                  { todo.status }
                </Chip>
                <Chip 
                   sx={{ mb: 2, fontWeight: 'bold' }} 
@@ -97,7 +97,7 @@ export default function TodoModal({
                   variant="soft" 
                   startDecorator={<Surfing color='primary' />}
                >
-                  High
+                  { todo.priority }
                </Chip>
                <Typography fontWeight={'bold'} >
                   Due
@@ -106,7 +106,7 @@ export default function TodoModal({
                <Typography fontWeight={'bold'}>
                   Link
                </Typography>
-               <Typography mb={1}>http://localhost:3000</Typography>
+               <Typography mb={1}>{ todo.link }</Typography>
                <Typography fontWeight={'bold'} >
                   Created at
                </Typography>

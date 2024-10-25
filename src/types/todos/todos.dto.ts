@@ -18,3 +18,13 @@ export interface TodosResponseDto {
    total: number,
    data: TodoDto[]
 }
+
+export interface TodosRequestDto {
+   user_id: number,
+   title: string,
+   client: string,
+   description: string,
+   link: string,
+   due: string,
+   priority: string,
+}

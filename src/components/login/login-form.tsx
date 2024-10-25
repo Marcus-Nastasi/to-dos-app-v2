@@ -22,9 +22,10 @@ export default function LoginForm() {
                email: email, 
                password: password 
             });
-            Cookie.create('todos_app_session', JSON.stringify(data), 48);
+            Cookie.create('todos_app_session', JSON.stringify(data), 7);
             setLoading(false);
             showAlert(`Login successful! You're beeing redirected...`, 'success');
+            window.open('/', '_self');
          } catch(error) {
             console.log(error);
             showAlert(`${error}`, 'error');

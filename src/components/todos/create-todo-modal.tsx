@@ -1,4 +1,6 @@
-import * as React from 'react';
+'use client'
+
+import { FormEvent, useState } from 'react';
 import Button from '@mui/joy/Button';
 import FormControl from '@mui/joy/FormControl';
 import FormLabel from '@mui/joy/FormLabel';
@@ -12,9 +14,54 @@ import Add from '@mui/icons-material/Add';
 import { Transition } from 'react-transition-group';
 import { Box, IconButton, Option, Select, selectClasses, Tooltip } from '@mui/joy';
 import { KeyboardArrowDown } from '@mui/icons-material';
+import { useAlert } from '@/contexts/alert-context';
+import { TodosRequestDto } from '@/types/todos/todos.dto';
+import { LoginResponseDto } from '@/types/auth/login.dto';
+import Cookie from '@/util/Cookies';
+import { create } from '@/service/todos/todos.service';
 
 export default function CreateTodoModal() {
-   const [open, setOpen] = React.useState<boolean>(false);
+   const [open, setOpen] = useState<boolean>(false);
+   const [ title, setTitle ] = useState<string>('');
+   const [ client, setClient ] = useState<string>('');
+   const [ description, setDescription ] = useState<string>('');
+   const [ link, setLink ] = useState<string>('');
+   const [ due, setDue ] = useState<string>('');
+   const [ priority, setPriority ] = useState<'HIGH' | 'MEDIUM' | 'LOW'>('LOW');
+   const { showAlert } = useAlert();
+
+   const getUserToken = (): LoginResponseDto | null => {
+      const cookie_token: string | null = Cookie.getCookie('todos_app_session');
+      if (!cookie_token || cookie_token == null) {
+         window.open('/login', '_blank');
+         return null;
+      }
+      const data: LoginResponseDto = JSON.parse(cookie_token);
+      return data;
+   };
+
+   const handleSubmit = async (e: FormEvent) => {
+      if (!title && !client && !description && !link && !due && !priority)
+         throw new Error();
+      const userToken: LoginResponseDto | null = getUserToken();
+      if (!userToken) return;
+      const data: TodosRequestDto = {
+         user_id: 1,
+         title,
+         client,
+         description,
+         link,
+         due,
+         priority
+      };
+      try {
+         const response = await create(data, userToken.token);
+         console.log(response);
+      } catch (error) {
+         console.error(error);
+      }
+   };
+
    return (
       <Box
          sx={{
@@ -74,26 +121,44 @@ export default function CreateTodoModal() {
                      <DialogContent>Fill in the information of the to-do.</DialogContent>
                      <form
                         onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
-                        event.preventDefault();
-                        setOpen(false);
+                           event.preventDefault();
+                           setOpen(false);
+                           handleSubmit(event);
                         }}
                      >
                         <Stack spacing={2}>
                         <FormControl>
                            <FormLabel>Title</FormLabel>
-                           <Input autoFocus required />
+                           <Input 
+                              autoFocus 
+                              required 
+                              value={title}
+                              onChange={(e: any) => setTitle(e.target.value)} 
+                           />
                         </FormControl>
                         <FormControl>
                            <FormLabel>Client</FormLabel>
-                           <Input required />
+                           <Input 
+                              required
+                              value={client}
+                              onChange={(e: any) => setClient(e.target.value)} 
+                           />
                         </FormControl>
                         <FormControl>
                            <FormLabel>Description</FormLabel>
-                           <Input required />
+                           <Input 
+                              required
+                              value={description}
+                              onChange={(e: any) => setDescription(e.target.value)} 
+                           />
                         </FormControl>
                         <FormControl>
                            <FormLabel>Link</FormLabel>
-                           <Input required />
+                           <Input 
+                              required 
+                              value={link}
+                              onChange={(e: any) => setLink(e.target.value)} 
+                           />
                         </FormControl>
                         <FormControl>
                            <FormLabel>Due</FormLabel>
@@ -101,6 +166,8 @@ export default function CreateTodoModal() {
                            <Input
                               required
                               type="date"
+                              value={due}
+                              onChange={e => setDue(e.target.value)}
                            />
                         </FormControl>
                         <FormControl>
@@ -108,19 +175,26 @@ export default function CreateTodoModal() {
                            <Select
                               placeholder="Select a priority…"
                               indicator={<KeyboardArrowDown />}
+                              value={priority}
                               sx={{
-                              width: 240,
-                              [`& .${selectClasses.indicator}`]: {
-                                 transition: '0.2s',
-                                 [`&.${selectClasses.expanded}`]: {
-                                    transform: 'rotate(-180deg)',
+                                 width: 240,
+                                 [`& .${selectClasses.indicator}`]: {
+                                    transition: '0.2s',
+                                    [`&.${selectClasses.expanded}`]: {
+                                       transform: 'rotate(-180deg)',
+                                    },
                                  },
-                              },
                               }}
                            >
-                              <Option value="dog">High</Option>
-                              <Option value="cat">Medium</Option>
-                              <Option value="fish">Low</Option>
+                              <Option value="HIGH" onClick={() => setPriority('HIGH')}>
+                                 High
+                              </Option>
+                              <Option value="MEDIUM" onClick={() => setPriority('MEDIUM')}>
+                                 Medium
+                              </Option>
+                              <Option value="LOW" onClick={() => setPriority('LOW')}>
+                                 Low
+                              </Option>
                            </Select>
                         </FormControl>
                         <Button type="submit" color='neutral' variant='solid'>Submit</Button>

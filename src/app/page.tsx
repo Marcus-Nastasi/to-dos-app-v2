@@ -6,10 +6,11 @@ import CreateTodoModal from '@/components/todos/create-todo-modal';
 import TodoCard from '@/components/todos/todo-card';
 import { getAll } from '@/service/todos/todos.service';
 import { LoginResponseDto } from '@/types/auth/login.dto';
+import { TodoDto, TodosResponseDto } from '@/types/todos/todos.dto';
 import Cookie from '@/util/Cookies';
 import EmojiObjectsIcon from '@mui/icons-material/EmojiObjects';
 import NightlightIcon from '@mui/icons-material/Nightlight';
-import { Box, Button, CssVarsProvider, extendTheme, Stack, Tooltip, Typography, useColorScheme } from "@mui/joy";
+import { AspectRatio, Box, Button, CssVarsProvider, extendTheme, Skeleton, Stack, Tooltip, Typography, useColorScheme } from "@mui/joy";
 import { Router, useRouter } from 'next/router';
 import { Fragment, useEffect } from "react";
 import { useState } from 'react';
@@ -110,21 +111,39 @@ const theme = extendTheme({
 });
 
 export default function Home() {
-   const [ todos, setTodos ] = useState();
+   const [ todos, setTodos ] = useState<TodosResponseDto>();
+   const [ loading, setLoading ] = useState<boolean>();
 
    useEffect(() => {
+      getUserToken();
+      setTimeout(() => {
+         getTodosData();
+      }, 5000);
+   }, []);
+
+   const getUserToken = (): LoginResponseDto | null => {
       const cookie_token: string | null = Cookie.getCookie('todos_app_session');
       if (!cookie_token || cookie_token == null) {
          window.open('/login', '_blank');
-         return
+         return null;
       }
       const data: LoginResponseDto = JSON.parse(cookie_token);
-      getAll(
-         data.user.id, 
-         data.token,
-         0,
-      ).then(r => console.log(r)).catch(e => console.error(e));
-   }, []);
+      return data;
+   };
+
+   const getTodosData = async () => {
+      setLoading(true);
+      const userData = getUserToken();
+      if (!userData) throw new Error();
+      try {
+         const response: TodosResponseDto = await getAll(userData.user.id, userData.token, 0);
+         if (!response) throw new Error();
+         setTodos(response);
+         setLoading(false);
+      } catch (error) {
+         console.error(error);
+      }
+   }
 
    return (
       <Fragment>
@@ -175,10 +194,34 @@ export default function Home() {
                      alignItems: { xs: 'center', lg: "flex-start" },
                   }}
                >
-                  <TodoCard />
-                  <TodoCard />
-                  <TodoCard />
-                  <TodoCard />
+                  { 
+                     todos 
+                     && !loading
+                     && todos.data.map((t: TodoDto) => <TodoCard todo={t} />) 
+                     || <Box
+                           sx={{
+                              display: 'flex',
+                              flexWrap: 'wrap'
+                           }}
+                        >
+                           <AspectRatio variant="plain" sx={{ width: '20vw', m: 2 }}>
+                              <Skeleton loading={loading}>
+                              </Skeleton>
+                           </AspectRatio>
+                           <AspectRatio variant="plain" sx={{ width: '20vw', m: 2 }}>
+                              <Skeleton loading={loading}>
+                              </Skeleton>
+                           </AspectRatio>
+                           <AspectRatio variant="plain" sx={{ width: '20vw', m: 2 }}>
+                              <Skeleton loading={loading}>
+                              </Skeleton>
+                           </AspectRatio>
+                           <AspectRatio variant="plain" sx={{ width: '20vw', m: 2 }}>
+                              <Skeleton loading={loading}>
+                              </Skeleton>
+                           </AspectRatio>
+                        </Box>
+                  }
                </Stack>
                <CreateTodoModal />
             </Box>

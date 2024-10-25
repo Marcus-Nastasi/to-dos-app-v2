@@ -11,8 +11,9 @@ import IconButton from '@mui/joy/IconButton';
 import MoreVert from '@mui/icons-material/MoreVert';
 import { AddCircleOutline } from '@mui/icons-material';
 import TodoModal from './todo-modal';
+import { TodoDto, TodosResponseDto } from '@/types/todos/todos.dto';
 
-export default function TodoCard() {
+export default function TodoCard({ todo }: { todo: TodoDto }) {
    const [open, setOpen] = React.useState<boolean>(false);
    return (
       <Card
@@ -65,10 +66,10 @@ export default function TodoCard() {
          </Box>
          <Box>
             <Typography level="h2" mb={3}>
-               Title bla bla bla
+               { todo.title }
             </Typography>
             <Chip size="md" variant="soft" color='warning' sx={{ mb: 3 }}>
-               High
+               { todo.priority }
             </Chip>
          </Box>
          <CardContent>
@@ -92,8 +93,7 @@ export default function TodoCard() {
                   Details
                </AccordionSummary>
                <AccordionDetails>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                  tempor incididunt ut labore et dolore magna aliqua.
+                  { todo.description }
                   <Button 
                      onClick={() => setOpen(true)}
                      variant='soft'
@@ -105,7 +105,7 @@ export default function TodoCard() {
                   >
                      Open
                   </Button>
-                  <TodoModal open={open} setOpen={setOpen} />
+                  <TodoModal todo={todo} open={open} setOpen={setOpen} />
                </AccordionDetails>
             </Accordion>
          </AccordionGroup>

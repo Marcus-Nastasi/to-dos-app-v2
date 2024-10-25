@@ -197,7 +197,7 @@ export default function Home() {
                   { 
                      todos 
                      && !loading
-                     && todos.data.map((t: TodoDto) => <TodoCard todo={t} />) 
+                     && todos.data.map((t: TodoDto) => <TodoCard todo={t} refreshTodos={getTodosData} />) 
                      || <Box
                            sx={{
                               display: 'flex',

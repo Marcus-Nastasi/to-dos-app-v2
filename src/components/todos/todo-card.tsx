@@ -8,12 +8,18 @@ import Chip from '@mui/joy/Chip';
 import Typography from '@mui/joy/Typography';
 import { Accordion, AccordionDetails, AccordionGroup, AccordionSummary, accordionSummaryClasses, Button, Dropdown, Menu, MenuButton, MenuItem, Tooltip } from '@mui/joy';
 import IconButton from '@mui/joy/IconButton';
+import KeyboardDoubleArrowUpRoundedIcon from '@mui/icons-material/KeyboardDoubleArrowUpRounded';
+import KeyboardDoubleArrowRightRoundedIcon from '@mui/icons-material/KeyboardDoubleArrowRightRounded';
+import KeyboardDoubleArrowDownRoundedIcon from '@mui/icons-material/KeyboardDoubleArrowDownRounded';
+import RotateRightRoundedIcon from '@mui/icons-material/RotateRightRounded';
+import TaskAltRoundedIcon from '@mui/icons-material/TaskAltRounded';
+import PendingActionsTwoToneIcon from '@mui/icons-material/PendingActionsTwoTone';
 import MoreVert from '@mui/icons-material/MoreVert';
 import { AddCircleOutline } from '@mui/icons-material';
 import TodoModal from './todo-modal';
 import { TodoDto, TodosResponseDto } from '@/types/todos/todos.dto';
 
-export default function TodoCard({ todo }: { todo: TodoDto }) {
+export default function TodoCard({ todo, refreshTodos }: { todo: TodoDto, refreshTodos: Function }) {
    const [open, setOpen] = React.useState<boolean>(false);
    return (
       <Card
@@ -65,12 +71,80 @@ export default function TodoCard({ todo }: { todo: TodoDto }) {
             </Dropdown>
          </Box>
          <Box>
-            <Typography level="h2" mb={3}>
+            <Typography level="h2" >
                { todo.title }
             </Typography>
-            <Chip size="md" variant="soft" color='warning' sx={{ mb: 3 }}>
-               { todo.priority }
-            </Chip>
+            <Box
+               display={'flex'}
+               alignItems={'center'}
+               mt={1}
+               mb={1}
+            >
+               {
+                  todo.priority == 'HIGH' 
+                  ?  <Chip 
+                        sx={{ fontWeight: 'bold', mr: 1 }} 
+                        size='md'
+                        color='warning' 
+                        variant="soft" 
+                        startDecorator={<KeyboardDoubleArrowUpRoundedIcon color='warning' />}
+                     >
+                        { todo.priority }
+                     </Chip>
+                  : todo.priority == 'MEDIUM'
+                  ?  <Chip 
+                        sx={{ fontWeight: 'bold', mr: 1 }} 
+                        size='md'
+                        color='primary' 
+                        variant="soft" 
+                        startDecorator={<KeyboardDoubleArrowRightRoundedIcon color='primary' />}
+                     >
+                        { todo.priority }
+                     </Chip>
+                  : todo.priority == 'LOW'
+                  ?  <Chip 
+                        sx={{ fontWeight: 'bold', mr: 1 }} 
+                        size='md'
+                        color='success' 
+                        variant="soft" 
+                        startDecorator={<KeyboardDoubleArrowDownRoundedIcon color='success' />}
+                     >
+                        { todo.priority }
+                     </Chip> : ''
+               }
+               {
+                  todo.status == 'PENDING' 
+                  ?  <Chip 
+                        sx={{ fontWeight: 'bold' }} 
+                        size='md'
+                        color='danger' 
+                        variant="soft" 
+                        startDecorator={<PendingActionsTwoToneIcon color='warning' />}
+                     >
+                        { todo.status }
+                     </Chip>
+                  : todo.status == 'PROGRESS'
+                  ?  <Chip 
+                        sx={{ fontWeight: 'bold' }} 
+                        size='md'
+                        color='primary' 
+                        variant="soft" 
+                        startDecorator={<RotateRightRoundedIcon color='primary' />}
+                     >
+                        { todo.status }
+                     </Chip>
+                  : todo.status == 'DONE'
+                  ?  <Chip 
+                        sx={{ fontWeight: 'bold' }} 
+                        size='md'
+                        color='success' 
+                        variant="soft" 
+                        startDecorator={<TaskAltRoundedIcon color='success' />}
+                     >
+                        { todo.status }
+                     </Chip> : ''
+               }
+            </Box>
          </Box>
          <CardContent>
             <Typography level="title-lg">16/10/2024</Typography>
@@ -105,7 +179,7 @@ export default function TodoCard({ todo }: { todo: TodoDto }) {
                   >
                      Open
                   </Button>
-                  <TodoModal todo={todo} open={open} setOpen={setOpen} />
+                  <TodoModal todo={todo} open={open} setOpen={setOpen} refreshTodos={refreshTodos} />
                </AccordionDetails>
             </Accordion>
          </AccordionGroup>

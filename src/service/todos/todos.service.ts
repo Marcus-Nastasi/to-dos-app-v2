@@ -17,7 +17,7 @@ export const getAll = async (
    due: string = ''
 ) => {
    const api_url = `${url}/api/todos/all/${user_id}` +
-      `?page=${page}&size=10&query=${query}&client=${client}` +
+      `?page=${page}&size=12&query=${query}&client=${client}` +
       `&status=${status}&priority=${priority}&from=${from}&to=${to}&due=${due}`;
    const response: Response = await fetch(api_url, {
       method: 'GET',

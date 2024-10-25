@@ -64,18 +64,6 @@ const theme = extendTheme({
    colorSchemes: {
       dark: {
          palette: {
-            // primary: {
-            //    50: "#fffbeb",
-            //    100: "#fef3c7",
-            //    200: "#fde68a",
-            //    300: "#fcd34d",
-            //    400: "#fbbf24",
-            //    500: "#f59e0b",
-            //    600: "#d97706",
-            //    700: "#b45309",
-            //    800: "#92400e",
-            //    900: "#78350f"
-            // },
             background: {
                body: '#2D2D2D', // Definir a cor do fundo do corpo para escuro (0C0D0E)
             },
@@ -86,18 +74,6 @@ const theme = extendTheme({
       },
       light: {
          palette: {
-            // primary: {
-            //    50: "#fafafa",  // Um tom quase branco, para áreas muito claras
-            //    100: "#f5f5f5", // Off-white suave, ideal para fundos de componentes
-            //    200: "#eaeaea", // Tom mais acinzentado, útil para bordas ou fundos de destaque
-            //    300: "#d6d6d6", // Cinza claro, para hover ou elementos de interação
-            //    400: "#bdbdbd", // Tom intermediário, bom para botões em estado normal
-            //    500: "#9e9e9e", // Cinza médio, pode ser usado em textos ou ícones
-            //    600: "#757575", // Cinza escuro, excelente para textos ou ícones em destaque
-            //    700: "#616161", // Cinza muito escuro, quase preto, para títulos ou headers
-            //    800: "#424242", // Usado para contrastar em áreas pequenas
-            //    900: "#212121", // Preto suave, ideal para textos principais
-            // },
             background: {
                body: "#eaeaea", // Cor de fundo geral da aplicação
             },
@@ -113,12 +89,20 @@ const theme = extendTheme({
 export default function Home() {
    const [ todos, setTodos ] = useState<TodosResponseDto>();
    const [ loading, setLoading ] = useState<boolean>();
+   let [ page, setPage ] = useState<number>(0);
+   const [ query, setQuery ] = useState<string>('');
+   const [ client, setClient ] = useState<string>('');
+   const [ status, setStatus ] = useState<string>('');
+   const [ priority, setPriority ] = useState<string>('');
+   const [ from, setFrom ] = useState<string>('');
+   const [ to, setTo ] = useState<string>('');
+   const [ due, setDue ] = useState<string>('');
 
    useEffect(() => {
       getUserToken();
       setTimeout(() => {
          getTodosData();
-      }, 5000);
+      }, 2000);
    }, []);
 
    const getUserToken = (): LoginResponseDto | null => {
@@ -136,9 +120,25 @@ export default function Home() {
       const userData = getUserToken();
       if (!userData) throw new Error();
       try {
-         const response: TodosResponseDto = await getAll(userData.user.id, userData.token, 0);
+         const response: TodosResponseDto = await getAll(
+            userData.user.id, 
+            userData.token, 
+            page, 
+            query,
+            client,
+            status, 
+            priority, 
+            from, 
+            to, 
+            due
+         );
          if (!response) throw new Error();
-         setTodos(response);
+         if (!todos) {
+            setTodos(response);
+            setLoading(false);
+            return
+         }
+         response.data.forEach((d: TodoDto) => todos.data.push(d));
          setLoading(false);
       } catch (error) {
          console.error(error);
@@ -174,12 +174,16 @@ export default function Home() {
                   justifyContent={'center'}
                   alignItems={'center'}
                >
-                  <SearchBox />
+                  <SearchBox 
+                     query={query} 
+                     setQuery={setQuery} 
+                  />
                   <Button 
                      sx={{ ml: 1, ":hover": { cursor: 'default' } }}
                      size='sm'
                      color='neutral'
                      variant='solid'
+                     onClick={getTodosData}
                   >
                      Search
                   </Button>
@@ -224,6 +228,22 @@ export default function Home() {
                   }
                </Stack>
                <CreateTodoModal refreshTodos={getTodosData} />
+               <Box
+                  width={'100%'}
+                  display={'flex'}
+                  justifyContent={'center'}
+               >
+                  <Button 
+                     variant='soft' 
+                     color='neutral'
+                     onClick={() => {
+                        setPage(page++);
+                        getTodosData();
+                     }}
+                  >
+                     Load more...
+                  </Button>
+               </Box>
             </Box>
          </CssVarsProvider>
       </Fragment>

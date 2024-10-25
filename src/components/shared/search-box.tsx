@@ -1,12 +1,20 @@
 import * as React from 'react';
 import Input from '@mui/joy/Input';
 
-export default function SearchBox() {
+export default function SearchBox({ 
+   query, 
+   setQuery
+}: { 
+   query: string, 
+   setQuery: Function, 
+}) {
    return (
       <>
          <Input  
             color='neutral'
             placeholder="Search by title or description..."
+            value={query}
+            onChange={e => setQuery(e.target.value)}
             sx={{
                width: {
                   xs: '60%',

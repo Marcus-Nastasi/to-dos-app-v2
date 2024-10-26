@@ -89,6 +89,7 @@ const theme = extendTheme({
 export default function Home() {
    const [ todos, setTodos ] = useState<TodosResponseDto>();
    const [ loading, setLoading ] = useState<boolean>();
+   const [ loadingMore, setLoadingMore ] = useState<boolean>(false);
    let [ page, setPage ] = useState<number>(0);
    const [ query, setQuery ] = useState<string>('');
    const [ client, setClient ] = useState<string>('');
@@ -99,9 +100,8 @@ export default function Home() {
    const [ due, setDue ] = useState<string>('');
 
    useEffect(() => {
-      getUserToken();
       setTimeout(() => {
-         getTodosData();
+         getTodosData(false);
       }, 2000);
    }, []);
 
@@ -115,9 +115,8 @@ export default function Home() {
       return data;
    };
 
-   const getTodosData = async () => {
-      setLoading(true);
-      const userData = getUserToken();
+   const callApi = async (): Promise<TodosResponseDto | null> => {
+      const userData: LoginResponseDto | null = getUserToken();
       if (!userData) throw new Error();
       try {
          const response: TodosResponseDto = await getAll(
@@ -133,15 +132,53 @@ export default function Home() {
             due
          );
          if (!response) throw new Error();
-         if (!todos) {
-            setTodos(response);
+         console.log(page, --response.total)
+         return response;
+      } catch (error) {
+         console.error(error);
+         return null;
+      }
+   }
+
+   const getTodosData = async (loadMore: boolean) => {
+      // setLoading(true);
+      const userData = getUserToken();
+      if (!userData) throw new Error();
+      try {
+         if (loadMore && todos) {
+            // response.data.forEach((d: TodoDto) => todos.data.push(d));
             setLoading(false);
+            await loadMoreTodos();
             return
          }
-         response.data.forEach((d: TodoDto) => todos.data.push(d));
+         const response: TodosResponseDto | null = await callApi();
+         if (!response) throw new Error();
+         setTodos(response);
          setLoading(false);
       } catch (error) {
          console.error(error);
+      }
+   }
+
+   const loadMoreTodos = async () => {
+      setLoadingMore(true);
+      const userData = getUserToken();
+      if (!userData) throw new Error();
+      try {
+         const response: TodosResponseDto | null = await callApi();
+         if (!response) throw new Error();
+         if (todos) {
+            response.data.forEach((d: TodoDto) => todos.data.push(d));
+            setLoading(false);
+            return
+         }
+         // setTodos(response);
+         // setLoading(false);
+      } catch (error) {
+         console.error(error);
+      } finally {
+         setLoadingMore(false);
+         setLoading(false);
       }
    }
 
@@ -183,7 +220,11 @@ export default function Home() {
                      size='sm'
                      color='neutral'
                      variant='solid'
-                     onClick={getTodosData}
+                     onClick={() => {
+                        setPage(0);
+                        setTodos(undefined);
+                        getTodosData(false);
+                     }}
                   >
                      Search
                   </Button>
@@ -199,9 +240,16 @@ export default function Home() {
                   }}
                >
                   { 
-                     todos 
-                     && !loading
-                     && todos.data.map((t: TodoDto) => <TodoCard todo={t} refreshTodos={getTodosData} />) 
+                     todos && !loading
+                     && todos.data.map((t: TodoDto) => 
+                        <TodoCard 
+                           todo={t} 
+                           refreshTodos={() => {
+                              setTodos(undefined);
+                              setPage(0);
+                              getTodosData(false);
+                           }} 
+                        />) 
                      || <Box
                            sx={{
                               display: 'flex',
@@ -227,23 +275,35 @@ export default function Home() {
                         </Box>
                   }
                </Stack>
-               <CreateTodoModal refreshTodos={getTodosData} />
-               <Box
-                  width={'100%'}
-                  display={'flex'}
-                  justifyContent={'center'}
-               >
-                  <Button 
-                     variant='soft' 
-                     color='neutral'
-                     onClick={() => {
-                        setPage(page++);
-                        getTodosData();
-                     }}
-                  >
-                     Load more...
-                  </Button>
-               </Box>
+               <CreateTodoModal 
+                  refreshTodos={() => {
+                     setTodos(undefined);
+                     setPage(0);
+                     getTodosData(false);
+                  }}  
+               />
+               {
+                  // refatorar paginação
+                  todos?.data && todos?.total > 1 && todos.page <= (todos.total - 1)
+                  && <Box
+                        width={'100%'}
+                        pb={4}
+                        display={'flex'}
+                        justifyContent={'center'}
+                     >
+                        <Button 
+                           variant='soft' 
+                           color='neutral'
+                           loading={loadingMore}
+                           onClick={() => {
+                              setPage(++page);
+                              getTodosData(true);
+                           }}
+                        >
+                           Load more...
+                        </Button>
+                     </Box>
+               }
             </Box>
          </CssVarsProvider>
       </Fragment>

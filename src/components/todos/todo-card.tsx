@@ -154,7 +154,7 @@ export default function TodoCard({ todo, refreshTodos }: { todo: TodoDto, refres
          <AccordionGroup
             size='md'
             sx={{
-               maxWidth: 400,
+               width: '100%',
                [`& .${accordionSummaryClasses.indicator}`]: {
                   transition: '0.2s',
                },

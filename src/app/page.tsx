@@ -11,8 +11,8 @@ import { UserDetails } from '@/types/user/user.dto';
 import Cookie from '@/util/Cookies';
 import EmojiObjectsIcon from '@mui/icons-material/EmojiObjects';
 import NightlightIcon from '@mui/icons-material/Nightlight';
-import { AspectRatio, Box, Button, CssVarsProvider, extendTheme, Skeleton, Stack, Tooltip, Typography, useColorScheme } from "@mui/joy";
-import { Router, useRouter } from 'next/router';
+import FilterAltIcon from '@mui/icons-material/FilterAlt';
+import { AspectRatio, Box, Button, CssVarsProvider, extendTheme, IconButton, Skeleton, Stack, Tooltip, Typography, useColorScheme } from "@mui/joy";
 import { Fragment, useEffect } from "react";
 import { useState } from 'react';
 
@@ -66,7 +66,7 @@ const theme = extendTheme({
       dark: {
          palette: {
             background: {
-               body: '#2D2D2D', // Definir a cor do fundo do corpo para escuro (0C0D0E)
+               body: '#2D2D2D',
             },
             text: {
                primary: '#eaeaea',
@@ -76,11 +76,11 @@ const theme = extendTheme({
       light: {
          palette: {
             background: {
-               body: "#eaeaea", // Cor de fundo geral da aplicação
+               body: "#eaeaea",
             },
             text: {
-               primary: "#212121",  // Texto principal em cinza escuro
-               secondary: "#424242", // Texto secundário ou descrição
+               primary: "#212121",
+               secondary: "#424242",
             },
          },
       },
@@ -203,7 +203,6 @@ export default function Home() {
                      fontWeight: 'bold'
                   }}
                >
-                  {/* To-Dos App */}
                   Welcome, { user?.name }
                </Typography>
                <Box
@@ -216,7 +215,16 @@ export default function Home() {
                      setQuery={setQuery} 
                   />
                   <Button 
-                     sx={{ ml: 1, ":hover": { cursor: 'default' } }}
+                     sx={{ 
+                        ml: 1,
+                        mr: {
+                           xs: 1,
+                           sm: 2,
+                           md: 3,
+                           lg: 4
+                        },
+                        ":hover": { cursor: 'default' } 
+                     }}
                      size='sm'
                      color='neutral'
                      variant='solid'
@@ -228,6 +236,11 @@ export default function Home() {
                   >
                      Search
                   </Button>
+                  <Tooltip variant='outlined' arrow title="Filters" placement="top">
+                     <IconButton>
+                        <FilterAltIcon />
+                     </IconButton>
+                  </Tooltip>
                </Box>
                <Stack
                   direction={{ xs: 'column', md: 'row' }}

@@ -247,6 +247,19 @@ export default function Home() {
                   <FilterDrawer 
                      openFilters={openFilters} 
                      setOpenFilters={setOpenFilters} 
+                     client={client}
+                     setClient={setClient}
+                     due={due}
+                     setDue={setDue}
+                     from={from}
+                     setFrom={setFrom}
+                     to={to}
+                     setTo={setTo}
+                     priority={priority}
+                     setPriority={setPriority}
+                     status={status}
+                     setStatus={setStatus}
+                     getTodosData={getTodosData}
                   />
                </Box>
                <Stack

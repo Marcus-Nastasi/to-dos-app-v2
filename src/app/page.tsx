@@ -15,6 +15,7 @@ import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import { AspectRatio, Box, Button, CssVarsProvider, extendTheme, IconButton, Skeleton, Stack, Tooltip, Typography, useColorScheme } from "@mui/joy";
 import { Fragment, useEffect } from "react";
 import { useState } from 'react';
+import FilterDrawer from '@/components/shared/filter-drawer';
 
 function ToggleThemeButton() {
    const { mode, setMode } = useColorScheme();
@@ -99,6 +100,7 @@ export default function Home() {
    const [ to, setTo ] = useState<string>('');
    const [ due, setDue ] = useState<string>('');
    const [ user, setUser ] = useState<UserDetails>();
+   const [ openFilters, setOpenFilters ] = useState<boolean>(false);
    let [ page, setPage ] = useState<number>(0);
 
    useEffect(() => {
@@ -237,10 +239,16 @@ export default function Home() {
                      Search
                   </Button>
                   <Tooltip variant='outlined' arrow title="Filters" placement="top">
-                     <IconButton>
+                     <IconButton
+                        onClick={() => setOpenFilters(true)}
+                     >
                         <FilterAltIcon />
                      </IconButton>
                   </Tooltip>
+                  <FilterDrawer 
+                     openFilters={openFilters} 
+                     setOpenFilters={setOpenFilters} 
+                  />
                </Box>
                <Stack
                   direction={{ xs: 'column', md: 'row' }}

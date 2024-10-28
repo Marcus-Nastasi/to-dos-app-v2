@@ -92,6 +92,7 @@ export default function Home() {
    const [ todos, setTodos ] = useState<TodosResponseDto>();
    const [ loading, setLoading ] = useState<boolean>();
    const [ loadingMore, setLoadingMore ] = useState<boolean>(false);
+   // const [ moreTodos, setMoreTodos ] = useState<boolean>();
    const [ query, setQuery ] = useState<string>('');
    const [ client, setClient ] = useState<string>('');
    const [ status, setStatus ] = useState<string>('');
@@ -104,9 +105,7 @@ export default function Home() {
    let [ page, setPage ] = useState<number>(0);
 
    useEffect(() => {
-      setTimeout(() => {
-         getTodosData(false);
-      }, 2000);
+      getTodosData(false);
    }, []);
 
    const getUserToken = (): LoginResponseDto | null => {
@@ -137,7 +136,6 @@ export default function Home() {
             due
          );
          if (!response) throw new Error();
-         console.log(page, response.total)
          return response;
       } catch (error) {
          console.error(error);
@@ -160,6 +158,7 @@ export default function Home() {
       } catch (error) {
          console.error(error);
       } finally {
+         // (todos && todos.page < todos.total) ? setMoreTodos(true) : setMoreTodos(false);
          setLoadingMore(false);
          setLoading(false);
       }
@@ -304,7 +303,7 @@ export default function Home() {
                   }}  
                />
                {
-                  todos?.data && todos?.total > 1 
+                  todos?.data && todos?.total > 1 && (todos.page + 1) <= todos.total 
                   && <Box
                         width={'100%'}
                         pb={4}

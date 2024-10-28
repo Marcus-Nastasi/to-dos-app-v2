@@ -27,8 +27,16 @@ import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 import ApartmentRoundedIcon from '@mui/icons-material/ApartmentRounded';
 import MeetingRoomRoundedIcon from '@mui/icons-material/MeetingRoomRounded';
 import HotelRoundedIcon from '@mui/icons-material/HotelRounded';
+import { Done } from '@mui/icons-material';
+import { Input } from '@mui/joy';
 
-export default function FilterDrawer({ openFilters, setOpenFilters }: { openFilters: boolean, setOpenFilters: Function }) {
+export default function FilterDrawer({ 
+   openFilters, 
+   setOpenFilters 
+}: { 
+   openFilters: boolean, 
+   setOpenFilters: Function 
+}) {
    const [type, setType] = React.useState('Guesthouse');
    const [amenities, setAmenities] = React.useState([0, 6]);
 
@@ -77,163 +85,212 @@ export default function FilterDrawer({ openFilters, setOpenFilters }: { openFilt
             <DialogTitle>Filters</DialogTitle>
             <ModalClose />
             <Divider sx={{ mt: 'auto' }} />
-            <DialogContent sx={{ gap: 2 }}>
+            <DialogContent 
+               sx={{ 
+                  gap: 2,
+                  p: 2,
+                  overflowY: "scroll",
+                  "&::-webkit-scrollbar": {
+                     width: "6px",
+                  },
+                  "&::-webkit-scrollbar-track": {
+                     backgroundColor: "#f1f1f1",
+                  },
+                  "&::-webkit-scrollbar-thumb": {
+                     backgroundColor: "#888",
+                     borderRadius: "10px",
+                  },
+                  "&::-webkit-scrollbar-thumb:hover": {
+                     backgroundColor: "#555",
+                  }, 
+               }}
+            >
                <FormControl>
                <FormLabel sx={{ typography: 'title-md', fontWeight: 'bold' }}>
-                  Property type
+                  Status
                </FormLabel>
                <RadioGroup
                   value={type || ''}
-                  onChange={(event) => {
-                     setType(event.target.value);
-                  }}
+                  onChange={(event) => setType(event.target.value)}
                >
                   <Box
                      sx={{
-                     display: 'grid',
-                     gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))',
-                     gap: 1.5,
+                        display: 'grid',
+                        gridTemplateColumns: 'repeat(auto-fill, minmax(110px, 1fr))',
+                        gap: 1.5,
                      }}
                   >
                      {[
-                     {
-                        name: 'House',
-                        icon: <HomeRoundedIcon />,
-                     },
-                     {
-                        name: 'Apartment',
-                        icon: <ApartmentRoundedIcon />,
-                     },
-                     {
-                        name: 'Guesthouse',
-                        icon: <MeetingRoomRoundedIcon />,
-                     },
-                     {
-                        name: 'Hotel',
-                        icon: <HotelRoundedIcon />,
-                     },
+                        {
+                           name: 'Pending',
+                           icon: <HomeRoundedIcon />,
+                        },
+                        {
+                           name: 'In Progress',
+                           icon: <ApartmentRoundedIcon />,
+                        },
+                        {
+                           name: 'Done',
+                           icon: <MeetingRoomRoundedIcon />,
+                        },
                      ].map((item) => (
-                     <Card
-                        key={item.name}
-                        sx={{
-                           boxShadow: 'none',
-                           '&:hover': { bgcolor: 'background.level1' },
-                        }}
-                     >
-                        <CardContent>
-                           {item.icon}
-                           <Typography level="title-md">{item.name}</Typography>
-                        </CardContent>
-                        <Radio
-                           disableIcon
-                           overlay
-                           checked={type === item.name}
-                           variant="outlined"
-                           color="neutral"
-                           value={item.name}
-                           sx={{ mt: -2 }}
-                           slotProps={{
-                           action: {
-                              sx: {
-                                 ...(type === item.name && {
-                                 borderWidth: 2,
-                                 borderColor:
-                                    'var(--joy-palette-primary-outlinedBorder)',
-                                 }),
-                                 '&:hover': {
-                                 bgcolor: 'transparent',
+                        <Card
+                           key={item.name}
+                           sx={{
+                              boxShadow: 'none',
+                              '&:hover': { bgcolor: 'background.level1' },
+                           }}
+                        >
+                           <CardContent>
+                              {item.icon}
+                              <Typography level="title-md">{item.name}</Typography>
+                           </CardContent>
+                           <Radio
+                              disableIcon
+                              overlay
+                              checked={type === item.name}
+                              variant="outlined"
+                              color="neutral"
+                              value={item.name}
+                              sx={{ mt: -2 }}
+                              slotProps={{
+                              action: {
+                                 sx: {
+                                    ...(type === item.name && {
+                                       borderWidth: 2,
+                                       borderColor:
+                                          'var(--joy-palette-primary-outlinedBorder)',
+                                    }),
+                                    '&:hover': {
+                                       bgcolor: 'transparent',
+                                    },
                                  },
                               },
-                           },
-                           }}
-                        />
-                     </Card>
+                              }}
+                           />
+                        </Card>
                      ))}
                   </Box>
                </RadioGroup>
                </FormControl>
-
-               <Typography level="title-md" sx={{ fontWeight: 'bold', mt: 1 }}>
-               Amenities
-               </Typography>
-               <div role="group" aria-labelledby="rank">
-               <List
-                  orientation="horizontal"
-                  size="sm"
-                  sx={{ '--List-gap': '12px', '--ListItem-radius': '20px' }}
+               <FormControl>
+               <FormLabel sx={{ typography: 'title-md', fontWeight: 'bold' }}>
+                  Priority
+               </FormLabel>
+               <RadioGroup
+                  value={type || ''}
+                  onChange={(event) => setType(event.target.value)}
                >
-                  {['Wi-fi', 'Washer', 'A/C', 'Kitchen'].map((item, index) => {
-                     const selected = amenities.includes(index);
-                     return (
-                     <ListItem key={item}>
-                        <AspectRatio
-                           variant={selected ? 'solid' : 'outlined'}
-                           color={selected ? 'primary' : 'neutral'}
-                           ratio={1}
-                           sx={{ width: 20, borderRadius: 20, ml: -0.5, mr: 0.75 }}
+                  <Box
+                     sx={{
+                        display: 'grid',
+                        gridTemplateColumns: 'repeat(auto-fill, minmax(110px, 1fr))',
+                        gap: 1.5,
+                     }}
+                  >
+                     {[
+                        {
+                           name: 'Low',
+                           icon: <HomeRoundedIcon />,
+                        },
+                        {
+                           name: 'Medium',
+                           icon: <ApartmentRoundedIcon />,
+                        },
+                        {
+                           name: 'High',
+                           icon: <MeetingRoomRoundedIcon />,
+                        },
+                     ].map((item) => (
+                        <Card
+                           key={item.name}
+                           sx={{
+                              boxShadow: 'none',
+                              '&:hover': { bgcolor: 'background.level1' },
+                           }}
                         >
-                           {/* <div>{selected && <Done fontSize="md" />}</div> */}
-                        </AspectRatio>
-                        <Checkbox
-                           size="sm"
-                           color="neutral"
-                           disableIcon
-                           overlay
-                           label={item}
-                           variant="outlined"
-                           checked={selected}
-                           onChange={(event) =>
-                           setAmenities((prev) => {
-                              const set = new Set([...prev, index]);
-                              if (!event.target.checked) {
-                                 set.delete(index);
-                              }
-                              // @ts-ignore
-                              return [...set];
-                           })
-                           }
-                           slotProps={{
-                           action: {
-                              sx: {
-                                 '&:hover': {
-                                 bgcolor: 'transparent',
+                           <CardContent>
+                              {item.icon}
+                              <Typography level="title-md">{item.name}</Typography>
+                           </CardContent>
+                           <Radio
+                              disableIcon
+                              overlay
+                              checked={type === item.name}
+                              variant="outlined"
+                              color="neutral"
+                              value={item.name}
+                              sx={{ mt: -2 }}
+                              slotProps={{
+                              action: {
+                                 sx: {
+                                    ...(type === item.name && {
+                                    borderWidth: 2,
+                                    borderColor:
+                                       'var(--joy-palette-primary-outlinedBorder)',
+                                    }),
+                                    '&:hover': {
+                                       bgcolor: 'transparent',
+                                    },
                                  },
                               },
-                           },
-                           }}
-                        />
-                     </ListItem>
-                     );
-                  })}
-               </List>
-               </div>
-
+                              }}
+                           />
+                        </Card>
+                     ))}
+                  </Box>
+               </RadioGroup>
+               </FormControl>
+               <Typography 
+                  level="title-md" 
+                  sx={{ 
+                     fontWeight: 'bold', 
+                     mt: 1 
+                  }}
+               >
+                  Client
+               </Typography>
+               <Input 
+                  type='text' 
+                  variant='outlined' 
+                  color='neutral'
+                  placeholder="Client's name..."
+               />
                <Typography level="title-md" sx={{ fontWeight: 'bold', mt: 2 }}>
-               Booking options
+                  Creation date
                </Typography>
                <FormControl orientation="horizontal">
-               <Box sx={{ flex: 1, pr: 1 }}>
-                  <FormLabel sx={{ typography: 'title-sm' }}>
-                     Instant booking
-                  </FormLabel>
-                  <FormHelperText sx={{ typography: 'body-sm' }}>
-                     Listings that you can book without waiting for host approval.
-                  </FormHelperText>
-               </Box>
-               <Switch />
+                  <FormLabel sx={{ m: 0.2 }}>From</FormLabel>
+                  <Input
+                     sx={{ m: 1 }}
+                     required
+                     type="date"
+                     // value={due}
+                     // onChange={e => setDue(e.target.value)}
+                  />
+                  <FormLabel sx={{ m: 0.2 }}>To</FormLabel>
+                  <Input
+                     sx={{ m: 1 }}
+                     required
+                     type="date"
+                     // value={due}
+                     // onChange={e => setDue(e.target.value)}
+                  />
                </FormControl>
-
+               <Typography level="title-md" sx={{ fontWeight: 'bold', mt: 2 }}>
+                  Due date
+               </Typography>
                <FormControl orientation="horizontal">
-               <Box sx={{ flex: 1, mt: 1, mr: 1 }}>
-                  <FormLabel sx={{ typography: 'title-sm' }}>Self check-in</FormLabel>
-                  <FormHelperText sx={{ typography: 'body-sm' }}>
-                     Easy access to the property when you arrive.
-                  </FormHelperText>
-               </Box>
-               <Switch />
+                  <FormLabel sx={{ m: 0.2 }}>Until</FormLabel>
+                  <Input
+                     sx={{ m: 1, width: '100%' }}
+                     required
+                     type="date"
+                     // value={due}
+                     // onChange={e => setDue(e.target.value)}
+                  />
                </FormControl>
             </DialogContent>
-
             <Divider sx={{ mt: 'auto' }} />
             <Stack
                direction="row"

@@ -5,11 +5,11 @@ export interface TodoDto {
    title: string,
    description: string,
    link: string,
-   creation: Date,
-   due: Date,
+   creation: number[],
+   due: number[],
    status: string,
    priority: string,
-   last_updated: Date
+   last_updated: number[]
 }
 
 export interface TodosResponseDto {

@@ -7,6 +7,7 @@ import TodoCard from '@/components/todos/todo-card';
 import { getAll } from '@/service/todos/todos.service';
 import { LoginResponseDto } from '@/types/auth/login.dto';
 import { TodoDto, TodosResponseDto } from '@/types/todos/todos.dto';
+import { UserDetails } from '@/types/user/user.dto';
 import Cookie from '@/util/Cookies';
 import EmojiObjectsIcon from '@mui/icons-material/EmojiObjects';
 import NightlightIcon from '@mui/icons-material/Nightlight';
@@ -90,7 +91,6 @@ export default function Home() {
    const [ todos, setTodos ] = useState<TodosResponseDto>();
    const [ loading, setLoading ] = useState<boolean>();
    const [ loadingMore, setLoadingMore ] = useState<boolean>(false);
-   let [ page, setPage ] = useState<number>(0);
    const [ query, setQuery ] = useState<string>('');
    const [ client, setClient ] = useState<string>('');
    const [ status, setStatus ] = useState<string>('');
@@ -98,6 +98,8 @@ export default function Home() {
    const [ from, setFrom ] = useState<string>('');
    const [ to, setTo ] = useState<string>('');
    const [ due, setDue ] = useState<string>('');
+   const [ user, setUser ] = useState<UserDetails>();
+   let [ page, setPage ] = useState<number>(0);
 
    useEffect(() => {
       setTimeout(() => {
@@ -118,6 +120,7 @@ export default function Home() {
    const callApi = async (): Promise<TodosResponseDto | null> => {
       const userData: LoginResponseDto | null = getUserToken();
       if (!userData) throw new Error();
+      setUser(userData.user);
       try {
          const response: TodosResponseDto = await getAll(
             userData.user.id, 
@@ -132,31 +135,11 @@ export default function Home() {
             due
          );
          if (!response) throw new Error();
-         console.log(page, --response.total)
+         console.log(page, response.total)
          return response;
       } catch (error) {
          console.error(error);
          return null;
-      }
-   }
-
-   const getTodosData = async (loadMore: boolean) => {
-      // setLoading(true);
-      const userData = getUserToken();
-      if (!userData) throw new Error();
-      try {
-         if (loadMore && todos) {
-            // response.data.forEach((d: TodoDto) => todos.data.push(d));
-            setLoading(false);
-            await loadMoreTodos();
-            return
-         }
-         const response: TodosResponseDto | null = await callApi();
-         if (!response) throw new Error();
-         setTodos(response);
-         setLoading(false);
-      } catch (error) {
-         console.error(error);
       }
    }
 
@@ -172,13 +155,29 @@ export default function Home() {
             setLoading(false);
             return
          }
-         // setTodos(response);
-         // setLoading(false);
       } catch (error) {
          console.error(error);
       } finally {
          setLoadingMore(false);
          setLoading(false);
+      }
+   }
+
+   const getTodosData = async (loadMore: boolean) => {
+      const userData = getUserToken();
+      if (!userData) throw new Error();
+      try {
+         if (loadMore && todos) {
+            setLoading(false);
+            await loadMoreTodos();
+            return
+         }
+         const response: TodosResponseDto | null = await callApi();
+         if (!response) throw new Error();
+         setTodos(response);
+         setLoading(false);
+      } catch (error) {
+         console.error(error);
       }
    }
 
@@ -204,7 +203,8 @@ export default function Home() {
                      fontWeight: 'bold'
                   }}
                >
-                  To-Dos App
+                  {/* To-Dos App */}
+                  Welcome, { user?.name }
                </Typography>
                <Box
                   display={'flex'}
@@ -245,8 +245,8 @@ export default function Home() {
                         <TodoCard 
                            todo={t} 
                            refreshTodos={() => {
-                              setTodos(undefined);
                               setPage(0);
+                              setTodos(undefined);
                               getTodosData(false);
                            }} 
                         />) 
@@ -283,8 +283,7 @@ export default function Home() {
                   }}  
                />
                {
-                  // refatorar paginação
-                  todos?.data && todos?.total > 1 && todos.page <= (todos.total - 1)
+                  todos?.data && todos?.total > 1 
                   && <Box
                         width={'100%'}
                         pb={4}

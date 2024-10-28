@@ -17,7 +17,7 @@ import PendingActionsTwoToneIcon from '@mui/icons-material/PendingActionsTwoTone
 import MoreVert from '@mui/icons-material/MoreVert';
 import { AddCircleOutline } from '@mui/icons-material';
 import TodoModal from './todo-modal';
-import { TodoDto, TodosResponseDto } from '@/types/todos/todos.dto';
+import { TodoDto } from '@/types/todos/todos.dto';
 
 export default function TodoCard({ todo, refreshTodos }: { todo: TodoDto, refreshTodos: Function }) {
    const [open, setOpen] = React.useState<boolean>(false);
@@ -147,7 +147,9 @@ export default function TodoCard({ todo, refreshTodos }: { todo: TodoDto, refres
             </Box>
          </Box>
          <CardContent>
-            <Typography level="title-lg">16/10/2024</Typography>
+            <Typography level="title-lg">
+               { `${todo.due[2]}/${todo.due[1]}/${todo.due[0]}` }
+            </Typography>
          </CardContent>
          <AccordionGroup
             size='md'

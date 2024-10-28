@@ -184,7 +184,9 @@ export default function TodoModal({
                      <Typography fontWeight={'bold'} >
                         Due
                      </Typography>
-                     <Typography mb={1}>16/10/2024</Typography>
+                     <Typography mb={1}>
+                        { `${todo.due[2]}/${todo.due[1]}/${todo.due[0]}` }
+                     </Typography>
                      <Typography fontWeight={'bold'}>
                         Link
                      </Typography>
@@ -192,11 +194,15 @@ export default function TodoModal({
                      <Typography fontWeight={'bold'} >
                         Created at
                      </Typography>
-                     <Typography mb={1}>12/12/2022</Typography>
+                     <Typography mb={1}>
+                        { `${todo.creation[2]}/${todo.creation[1]}/${todo.creation[0]}` }
+                     </Typography>
                      <Typography fontWeight={'bold'}>
                         Last Updated at
                      </Typography>
-                     <Typography>12/12/2022</Typography>
+                     <Typography>
+                        { `${todo.last_updated[2]}/${todo.last_updated[1]}/${todo.last_updated[0]}` }
+                     </Typography>
                      <Box
                         display={'flex'}
                         justifyContent={'end'}

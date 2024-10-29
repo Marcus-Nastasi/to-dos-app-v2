@@ -97,10 +97,11 @@ export default function TodoCard({
                </Tooltip>
                <Menu>
                   <MenuItem 
-                     color='danger' 
+                     color='warning' 
                      onClick={() => updateSt('PENDING')}
                      sx={{ color: 'gray' }}
                   >
+                     <PendingActionsTwoToneIcon color='warning' />
                      Pending
                   </MenuItem>
                   <MenuItem 
@@ -108,6 +109,7 @@ export default function TodoCard({
                      onClick={() => updateSt('PROGRESS')}
                      sx={{ color: 'gray' }}
                   >
+                     <RotateRightRoundedIcon color='primary' />
                      In progress
                   </MenuItem>
                   <MenuItem 
@@ -115,6 +117,7 @@ export default function TodoCard({
                      onClick={() => updateSt('DONE')} 
                      sx={{ color: 'gray' }}
                   >
+                     <TaskAltRoundedIcon color='success' />
                      Done
                   </MenuItem>
                </Menu>
@@ -232,7 +235,12 @@ export default function TodoCard({
                   >
                      Open
                   </Button>
-                  <TodoModal todo={todo} open={open} setOpen={setOpen} refreshTodos={refreshTodos} />
+                  <TodoModal 
+                     todo={todo} 
+                     open={open} 
+                     setOpen={setOpen} 
+                     refreshTodos={refreshTodos} 
+                  />
                </AccordionDetails>
             </Accordion>
          </AccordionGroup>

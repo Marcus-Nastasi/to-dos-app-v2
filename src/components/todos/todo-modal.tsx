@@ -112,7 +112,9 @@ export default function TodoModal({
                      },
                   }}
                   >
-                     <Typography level="h1">Title: { todo.title }</Typography>
+                     <Typography level="h1">
+                        { todo.title }
+                     </Typography>
                      <Typography level="h2" sx={{ fontSize: 'xl', mb: 0.5 }}>
                         { todo.client }
                      </Typography>

@@ -209,7 +209,13 @@ export default function Home() {
                   textAlign={'center'}
                   paddingY={5}
                   sx={{
-                     fontSize: {xs: 25, sm: 30, md: 35, lg: 40, xl: 45},
+                     fontSize: {
+                        xs: 25, 
+                        sm: 30, 
+                        md: 35, 
+                        lg: 40, 
+                        xl: 45
+                     },
                      fontWeight: 'bold'
                   }}
                >
@@ -246,7 +252,12 @@ export default function Home() {
                   >
                      Search
                   </Button>
-                  <Tooltip variant='outlined' arrow title="Filters" placement="top">
+                  <Tooltip 
+                     arrow
+                     variant='outlined' 
+                     title="Filters" 
+                     placement="top"
+                  >
                      <IconButton
                         onClick={() => setOpenFilters(true)}
                      >
@@ -274,13 +285,19 @@ export default function Home() {
                   />
                </Box>
                <Stack
-                  direction={{ xs: 'column', md: 'row' }}
+                  direction={{ 
+                     xs: 'column', 
+                     md: 'row' 
+                  }}
                   flexWrap={'wrap'}
                   sx={{
                      width: '100%',
                      padding: { xs: 2, md: 5 },
                      justifyContent: 'space-evenly',
-                     alignItems: { xs: 'center', lg: "flex-start" },
+                     alignItems: { 
+                        xs: 'center', 
+                        lg: "flex-start" 
+                     },
                   }}
                >
                   { 
@@ -300,19 +317,31 @@ export default function Home() {
                               flexWrap: 'wrap'
                            }}
                         >
-                           <AspectRatio variant="plain" sx={{ width: '20vw', m: 2 }}>
+                           <AspectRatio 
+                              variant="plain" 
+                              sx={{ width: '20vw', m: 2 }}
+                           >
                               <Skeleton loading={loading}>
                               </Skeleton>
                            </AspectRatio>
-                           <AspectRatio variant="plain" sx={{ width: '20vw', m: 2 }}>
+                           <AspectRatio 
+                              variant="plain" 
+                              sx={{ width: '20vw', m: 2 }}
+                           >
                               <Skeleton loading={loading}>
                               </Skeleton>
                            </AspectRatio>
-                           <AspectRatio variant="plain" sx={{ width: '20vw', m: 2 }}>
+                           <AspectRatio 
+                              variant="plain" 
+                              sx={{ width: '20vw', m: 2 }}
+                           >
                               <Skeleton loading={loading}>
                               </Skeleton>
                            </AspectRatio>
-                           <AspectRatio variant="plain" sx={{ width: '20vw', m: 2 }}>
+                           <AspectRatio 
+                              variant="plain" 
+                              sx={{ width: '20vw', m: 2 }}
+                           >
                               <Skeleton loading={loading}>
                               </Skeleton>
                            </AspectRatio>

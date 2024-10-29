@@ -18,6 +18,7 @@ import { LoginResponseDto } from '@/types/auth/login.dto';
 import Cookie from '@/util/Cookies';
 import { deleteTodo } from '@/service/todos/todos.service';
 import { useAlert } from '@/contexts/alert-context';
+import UpdateTodoModal from './update-todo-modal';
 
 export default function TodoModal({ 
    open, 
@@ -30,6 +31,7 @@ export default function TodoModal({
    todo: TodoDto,
    refreshTodos: Function 
 }) {
+   const [ openEdit, setOpenEdit ] = React.useState<boolean>(false);
    const { showAlert } = useAlert();
 
    const getUserToken = (): LoginResponseDto | null => {
@@ -208,6 +210,12 @@ export default function TodoModal({
                         justifyContent={'end'}
                         marginTop={2}
                      >
+                        <UpdateTodoModal 
+                           refreshTodos={refreshTodos} 
+                           open={openEdit} 
+                           setOpen={setOpenEdit} 
+                           todo={todo}
+                        />
                         <Tooltip 
                            arrow 
                            variant='outlined' 
@@ -215,10 +223,11 @@ export default function TodoModal({
                            placement="top"
                         >
                            <IconButton 
-                              sx={{ mr: 1 }}
                               disabled={false} 
                               variant="plain"
                               color='primary'
+                              onClick={() => setOpenEdit(true)}
+                              sx={{ mr: 1 }}
                            >
                               <EditNoteRoundedIcon />
                            </IconButton>

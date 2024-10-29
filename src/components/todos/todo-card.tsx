@@ -17,10 +17,47 @@ import PendingActionsTwoToneIcon from '@mui/icons-material/PendingActionsTwoTone
 import MoreVert from '@mui/icons-material/MoreVert';
 import { AddCircleOutline } from '@mui/icons-material';
 import TodoModal from './todo-modal';
-import { TodoDto } from '@/types/todos/todos.dto';
+import { TodoDto, TodosResponseDto } from '@/types/todos/todos.dto';
+import { LoginResponseDto } from '@/types/auth/login.dto';
+import Cookie from '@/util/Cookies';
+import { useAlert } from '@/contexts/alert-context';
+import { updateStatus } from '@/service/todos/todos.service';
 
-export default function TodoCard({ todo, refreshTodos }: { todo: TodoDto, refreshTodos: Function }) {
+export default function TodoCard({ 
+   todo, 
+   refreshTodos 
+}: { 
+   todo: TodoDto, 
+   refreshTodos: Function 
+}) {
    const [open, setOpen] = React.useState<boolean>(false);
+   const { showAlert } = useAlert();
+
+   const getUserToken = (): LoginResponseDto | null => {
+      const cookie_token: string | null = Cookie.getCookie('todos_app_session');
+      if (!cookie_token || cookie_token == null) {
+         window.open('/login', '_blank');
+         return null;
+      }
+      const data: LoginResponseDto = JSON.parse(cookie_token);
+      return data;
+   };
+
+   const updateSt = async (status: 'PENDING' | 'PROGRESS' | 'DONE') => {
+      const userToken: LoginResponseDto | null = getUserToken();
+      if (!userToken) throw new Error();
+      try {
+         const response: TodosResponseDto = await updateStatus(status, todo.id, userToken.token);
+         if (!response) throw new Error('cannot update to-do');
+         refreshTodos();
+         return response;
+      } catch (error) {
+         showAlert('Unable to get to-dos!' + error, 'error');
+         console.error(error);
+         return null;
+      }
+   }
+
    return (
       <Card
          variant='outlined'
@@ -58,13 +95,25 @@ export default function TodoCard({ todo, refreshTodos }: { todo: TodoDto, refres
                   </MenuButton>
                </Tooltip>
                <Menu>
-                  <MenuItem color='danger' sx={{ color: 'gray' }}>
+                  <MenuItem 
+                     color='danger' 
+                     onClick={() => updateSt('PENDING')}
+                     sx={{ color: 'gray' }}
+                  >
                      Pending
                   </MenuItem>
-                  <MenuItem color='primary' sx={{ color: 'gray' }}>
+                  <MenuItem 
+                     color='primary' 
+                     onClick={() => updateSt('PROGRESS')}
+                     sx={{ color: 'gray' }}
+                  >
                      In progress
                   </MenuItem>
-                  <MenuItem color='success' sx={{ color: 'gray' }}>
+                  <MenuItem 
+                     color='success'
+                     onClick={() => updateSt('DONE')} 
+                     sx={{ color: 'gray' }}
+                  >
                      Done
                   </MenuItem>
                </Menu>

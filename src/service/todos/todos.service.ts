@@ -19,7 +19,6 @@ export const getAll = async (
    const api_url = `${url}/api/todos/all/${user_id}` +
       `?page=${page}&size=12&query=${query}&client=${client}` +
       `&status=${status}&priority=${priority}&from=${from}&to=${to}&due=${due}`;
-   console.log(api_url);
    const response: Response = await fetch(api_url, {
       method: 'GET',
       headers: {

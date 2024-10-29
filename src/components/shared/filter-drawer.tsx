@@ -40,7 +40,9 @@ export default function FilterDrawer({
    setTo,
    due, 
    setDue,
-   getTodosData
+   getTodosData,
+   page, 
+   setPage
 }: { 
    openFilters: boolean, 
    setOpenFilters: Function ,
@@ -56,13 +58,10 @@ export default function FilterDrawer({
    setTo: Function,
    due: string, 
    setDue: Function,
-   getTodosData: Function
+   getTodosData: Function,
+   page: number, 
+   setPage: Function
 }) {
-   const [amenities, setAmenities] = React.useState([0, 6]);
-
-   React.useEffect(() => {
-   }, []);
-
    return (
       <React.Fragment>
          <Drawer
@@ -78,8 +77,8 @@ export default function FilterDrawer({
                      p: { md: 3, sm: 0 },
                      boxShadow: 'none',
                      height: {
-                        xs: '90vh',
-                        sm: '80vh',
+                        xs: '80vh',
+                        md: '90vh'
                      },
                      width: {
                         xs: '100%',
@@ -336,15 +335,8 @@ export default function FilterDrawer({
                   variant='solid'
                   color='neutral'
                   onClick={async () => {
+                     setPage(0);
                      setOpenFilters(false);
-                     console.log({
-                        client, 
-                        status, 
-                        priority, 
-                        from, 
-                        to, 
-                        due
-                     });
                      getTodosData(false);
                   }}
                >
@@ -360,7 +352,6 @@ export default function FilterDrawer({
                      setFrom('');
                      setTo('');
                      setDue('');
-                     setAmenities([]);
                   }}
                >
                   Clear

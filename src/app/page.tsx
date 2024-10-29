@@ -260,6 +260,8 @@ export default function Home() {
                      status={status}
                      setStatus={setStatus}
                      getTodosData={getTodosData}
+                     page={page}
+                     setPage={setPage}
                   />
                </Box>
                <Stack

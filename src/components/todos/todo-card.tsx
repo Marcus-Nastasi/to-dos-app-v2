@@ -76,7 +76,8 @@ export default function TodoCard({
             my: {
                xs: 1,
                md: 2,
-            }
+            },
+            m: 1
          }}
       >
          <Box
@@ -201,6 +202,7 @@ export default function TodoCard({
             </Typography>
          </CardContent>
          <AccordionGroup
+            transition="1s ease"
             size='md'
             sx={{
                width: '100%',

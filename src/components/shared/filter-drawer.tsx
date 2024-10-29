@@ -80,7 +80,7 @@ export default function FilterDrawer({
                      boxShadow: 'none',
                      height: {
                         xs: '80vh',
-                        md: '90vh'
+                        md: '100vh'
                      },
                      width: {
                         xs: '100%',

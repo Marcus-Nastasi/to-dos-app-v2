@@ -136,10 +136,10 @@ export default function Home() {
             to, 
             due
          );
-         if (!response) throw new Error('cannot get to-dos');
+         if (!response) throw new Error('Cannot get to-dos');
          return response;
       } catch (error) {
-         showAlert('Unable to get to-dos!' + error, 'error');
+         showAlert('Unable to get to-dos!', 'error');
          console.error(error);
          return null;
       } finally {
@@ -161,7 +161,7 @@ export default function Home() {
             return
          }
       } catch (error) {
-         showAlert('Unable to get to-dos!' + error, 'error');
+         showAlert('Unable to get to-dos!', 'error');
          console.error(error);
       } finally {
          setLoadingMore(false);
@@ -183,7 +183,7 @@ export default function Home() {
          setTodos(response);
          setLoading(false);
       } catch (error) {
-         showAlert('Unable to get to-dos!' + error, 'error');
+         showAlert('Unable to get to-dos!', 'error');
          console.error(error);
       } finally {
          setLoadingMore(false);
@@ -293,7 +293,7 @@ export default function Home() {
                   sx={{
                      width: '100%',
                      padding: { xs: 2, md: 5 },
-                     justifyContent: 'space-evenly',
+                     justifyContent: 'center',
                      alignItems: { 
                         xs: 'center', 
                         lg: "flex-start" 

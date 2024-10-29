@@ -62,6 +62,8 @@ export default function FilterDrawer({
    page: number, 
    setPage: Function
 }) {
+   const [ loading, setLoading ] = React.useState<boolean>(false);
+
    return (
       <React.Fragment>
          <Drawer
@@ -334,10 +336,16 @@ export default function FilterDrawer({
                <Button 
                   variant='solid'
                   color='neutral'
+                  loading={loading}
                   onClick={async () => {
+                     setLoading(true);
                      setPage(0);
-                     setOpenFilters(false);
-                     getTodosData(false);
+                     // to remove setTimeout... 
+                     setTimeout(async () => {
+                        await getTodosData(false);
+                        setLoading(false);
+                        setOpenFilters(false);
+                     }, 2000);
                   }}
                >
                   Apply filters

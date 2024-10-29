@@ -16,6 +16,7 @@ import { AspectRatio, Box, Button, CssVarsProvider, extendTheme, IconButton, Ske
 import { Fragment, useEffect } from "react";
 import { useState } from 'react';
 import FilterDrawer from '@/components/shared/filter-drawer';
+import { useAlert } from '@/contexts/alert-context';
 
 function ToggleThemeButton() {
    const { mode, setMode } = useColorScheme();
@@ -92,7 +93,6 @@ export default function Home() {
    const [ todos, setTodos ] = useState<TodosResponseDto>();
    const [ loading, setLoading ] = useState<boolean>();
    const [ loadingMore, setLoadingMore ] = useState<boolean>(false);
-   // const [ moreTodos, setMoreTodos ] = useState<boolean>();
    const [ query, setQuery ] = useState<string>('');
    const [ client, setClient ] = useState<string>('');
    const [ status, setStatus ] = useState<string>('');
@@ -103,6 +103,7 @@ export default function Home() {
    const [ user, setUser ] = useState<UserDetails>();
    const [ openFilters, setOpenFilters ] = useState<boolean>(false);
    let [ page, setPage ] = useState<number>(0);
+   const { showAlert } = useAlert();
 
    useEffect(() => {
       getTodosData(false);
@@ -135,11 +136,15 @@ export default function Home() {
             to, 
             due
          );
-         if (!response) throw new Error();
+         if (!response) throw new Error('cannot get to-dos');
          return response;
       } catch (error) {
+         showAlert('Unable to get to-dos!' + error, 'error');
          console.error(error);
          return null;
+      } finally {
+         setLoadingMore(false);
+         setLoading(false);
       }
    }
 
@@ -156,9 +161,9 @@ export default function Home() {
             return
          }
       } catch (error) {
+         showAlert('Unable to get to-dos!' + error, 'error');
          console.error(error);
       } finally {
-         // (todos && todos.page < todos.total) ? setMoreTodos(true) : setMoreTodos(false);
          setLoadingMore(false);
          setLoading(false);
       }
@@ -178,7 +183,11 @@ export default function Home() {
          setTodos(response);
          setLoading(false);
       } catch (error) {
+         showAlert('Unable to get to-dos!' + error, 'error');
          console.error(error);
+      } finally {
+         setLoadingMore(false);
+         setLoading(false);
       }
    }
 

@@ -44,9 +44,12 @@ export default function CreateTodoModal({ refreshTodos }: { refreshTodos: Functi
       if (!title && !client && !description && !link && !due && !priority)
          throw new Error();
       const userToken: LoginResponseDto | null = getUserToken();
-      if (!userToken) return;
+      if (!userToken) {
+         window.open('/login', '_self');
+         throw new Error('Invalid user');
+      }
       const data: TodosRequestDto = {
-         user_id: 1,
+         user_id: userToken.user.id,
          title,
          client,
          description,
@@ -58,7 +61,6 @@ export default function CreateTodoModal({ refreshTodos }: { refreshTodos: Functi
          const response = await create(data, userToken.token);
          showAlert('To-do created successfully!', 'success');
          refreshTodos();
-         console.log(response);
       } catch (error) {
          showAlert('Not able to create to-do! Try again!', 'error');
          console.error(error);
@@ -97,8 +99,8 @@ export default function CreateTodoModal({ refreshTodos }: { refreshTodos: Functi
                         backdropFilter: 'none',
                         transition: `opacity 400ms, backdrop-filter 400ms`,
                         ...{
-                        entering: { opacity: 1, backdropFilter: 'blur(8px)' },
-                        entered: { opacity: 1, backdropFilter: 'blur(8px)' },
+                           entering: { opacity: 1, backdropFilter: 'blur(8px)' },
+                           entered: { opacity: 1, backdropFilter: 'blur(8px)' },
                         }[state],
                      },
                   },
@@ -114,8 +116,8 @@ export default function CreateTodoModal({ refreshTodos }: { refreshTodos: Functi
                         opacity: 0,
                         transition: `opacity 300ms`,
                         ...{
-                        entering: { opacity: 1 },
-                        entered: { opacity: 1 },
+                           entering: { opacity: 1 },
+                           entered: { opacity: 1 },
                         }[state],
                      }}
                      minWidth={'400px'}
@@ -165,7 +167,6 @@ export default function CreateTodoModal({ refreshTodos }: { refreshTodos: Functi
                         </FormControl>
                         <FormControl>
                            <FormLabel>Due</FormLabel>
-                           {/* <Input required /> */}
                            <Input
                               required
                               type="date"

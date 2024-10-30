@@ -10,9 +10,8 @@ import ModalDialog from '@mui/joy/ModalDialog';
 import DialogTitle from '@mui/joy/DialogTitle';
 import DialogContent from '@mui/joy/DialogContent';
 import Stack from '@mui/joy/Stack';
-import Add from '@mui/icons-material/Add';
 import { Transition } from 'react-transition-group';
-import { Box, IconButton, Option, Select, selectClasses, Tooltip } from '@mui/joy';
+import { Box, Option, Select, selectClasses } from '@mui/joy';
 import { KeyboardArrowDown } from '@mui/icons-material';
 import { useAlert } from '@/contexts/alert-context';
 import { TodoDto, TodosRequestDto } from '@/types/todos/todos.dto';
@@ -122,7 +121,7 @@ export default function UpdateTodoModal({
                      minWidth={'400px'}
                   >
                      <DialogTitle>Update to-do</DialogTitle>
-                     <DialogContent>Fill in the information of the to-do.</DialogContent>
+                     <DialogContent>Update the information of the to-do.</DialogContent>
                      <form
                         onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
                            event.preventDefault();

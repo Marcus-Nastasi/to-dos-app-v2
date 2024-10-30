@@ -4,6 +4,7 @@ import MenuDrawer from '@/components/shared/menu-drawer';
 import AddIcon from '@mui/icons-material/Add';
 import EmojiObjectsIcon from '@mui/icons-material/EmojiObjects';
 import NightlightIcon from '@mui/icons-material/Nightlight';
+import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 import { Accordion, accordionClasses, AccordionDetails, AccordionGroup, AccordionSummary, accordionSummaryClasses, Box, Button, CssVarsProvider, extendTheme, Tooltip, Typography, useColorScheme } from "@mui/joy";
 import { Fragment, useEffect } from "react";
 
@@ -57,7 +58,7 @@ const theme = extendTheme({
       dark: {
          palette: {
             background: {
-               level1: 'white',
+               level2: 'white',
                body: '#2D2D2D', 
             },
             text: {
@@ -121,10 +122,10 @@ export default function About() {
                      width={{ 
                         xs: '95vw', 
                         sm: '85vw', 
-                        md: '70vw', 
-                        lg: '60vw' 
+                        md: '80vw', 
+                        lg: '65vw' 
                      }}
-                     paddingX={8}
+                     paddingX={{ xs: 3, sm: 4, lg: 5 }}
                      mb={5}
                      borderRadius={5}
                      sx={(theme) => ({
@@ -139,10 +140,9 @@ export default function About() {
                         paddingBottom={2}
                         sx={{
                            fontSize: {
-                              xs: 15,  
-                              md: 20, 
-                              lg: 25, 
-                              xl: 30
+                              xs: 25, 
+                              sm: 30, 
+                              md: 35, 
                            },
                            fontWeight: 'bold'
                         }}
@@ -172,18 +172,8 @@ export default function About() {
                            'Manage: Track the status of tasks, ensuring nothing falls through the cracks.'
                         ].map(s => 
                            <Typography
-                              textAlign={'center'}
-                              startDecorator={
-                                 <Box
-                                    component="span"
-                                    sx={{
-                                       bgcolor: 'neutral.400',
-                                       width: '0.5em',
-                                       height: '0.5em',
-                                       borderRadius: '50%',
-                                    }}
-                                 />
-                              }
+                              my={{ xs: 2, sm: 1, md: 0 }}
+                              startDecorator={<FiberManualRecordIcon sx={{ fontSize: 10 }} />}
                               sx={{
                                  fontSize: {
                                     xs: 15,  
@@ -217,10 +207,9 @@ export default function About() {
                         paddingBottom={2}
                         sx={{
                            fontSize: {
-                              xs: 15,  
-                              md: 20, 
-                              lg: 25, 
-                              xl: 30
+                              xs: 25, 
+                              sm: 30, 
+                              md: 35, 
                            },
                            fontWeight: 'bold'
                         }}
@@ -234,25 +223,25 @@ export default function About() {
                            mt: 2,
                            borderRadius: 5,
                            [`& .${accordionClasses.root}`]: {
-                           marginTop: '0.5rem',
-                           transition: '0.2s ease',
-                           '& button:not([aria-expanded="true"])': {
+                              marginTop: '0.5rem',
                               transition: '0.2s ease',
-                              paddingBottom: '0.625rem',
-                           },
-                           '& button:hover': {
-                              borderRadius: 'md',
-                              background: theme.palette.mode == 'light' ? 'background.level1' : '#000000'
-                           },
+                              '& button:not([aria-expanded="true"])': {
+                                 transition: '0.2s ease',
+                                 paddingBottom: '0.625rem',
+                              },
+                              '& button:hover': {
+                                 borderRadius: 'md',
+                                 background: theme.palette.mode == 'light' ? 'background.level2' : '#000000'
+                              },
                            },
                            [`& .${accordionClasses.root}.${accordionClasses.expanded}`]: {
-                           bgcolor: theme.palette.mode == 'light' ? 'background.level1' : '#000000',
-                           borderRadius: 'md',
-                           borderBottom: '1px solid',
-                           borderColor: 'background.level2',
+                              bgcolor: theme.palette.mode == 'light' ? 'background.level2' : '#000000',
+                              borderRadius: 'md',
+                              borderBottom: '1px solid',
+                              borderColor: 'background.level2',
                            },
                            '& [aria-expanded="true"]': {
-                           boxShadow: `inset 0 -1px 0 ${theme.vars.palette.divider}`,
+                              boxShadow: `inset 0 -1px 0 ${theme.vars.palette.divider}`,
                            },
                            [`& .${accordionSummaryClasses.indicator}`]: {
                               transition: '0.2s',

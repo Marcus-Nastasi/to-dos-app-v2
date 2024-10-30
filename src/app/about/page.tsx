@@ -125,7 +125,11 @@ export default function About() {
                         md: '80vw', 
                         lg: '65vw' 
                      }}
-                     paddingX={{ xs: 3, sm: 4, lg: 5 }}
+                     paddingX={{ 
+                        xs: 3, 
+                        sm: 4, 
+                        lg: 5 
+                     }}
                      mb={5}
                      borderRadius={5}
                      sx={(theme) => ({

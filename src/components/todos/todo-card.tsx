@@ -90,14 +90,19 @@ export default function TodoCard({
                <Tooltip variant='outlined' arrow title="Status" placement="top">
                   <MenuButton
                      slots={{ root: IconButton }}
-                     slotProps={{ root: { variant: 'plain', color: 'neutral' } }}
+                     slotProps={{ 
+                        root: { 
+                           variant: 'plain', 
+                           color: 'neutral' 
+                        } 
+                     }}
                   >
                      <MoreVert />
                   </MenuButton>
                </Tooltip>
                <Menu>
                   <MenuItem 
-                     color='warning' 
+                     color='neutral' 
                      onClick={() => updateSt('PENDING')}
                      sx={{ color: 'gray' }}
                   >
@@ -105,7 +110,7 @@ export default function TodoCard({
                      Pending
                   </MenuItem>
                   <MenuItem 
-                     color='primary' 
+                     color='neutral' 
                      onClick={() => updateSt('PROGRESS')}
                      sx={{ color: 'gray' }}
                   >
@@ -113,7 +118,7 @@ export default function TodoCard({
                      In progress
                   </MenuItem>
                   <MenuItem 
-                     color='success'
+                     color='neutral'
                      onClick={() => updateSt('DONE')} 
                      sx={{ color: 'gray' }}
                   >

@@ -227,7 +227,7 @@ export default function TodoModal({
                            <IconButton 
                               disabled={false} 
                               variant="plain"
-                              color='primary'
+                              color='neutral'
                               onClick={() => setOpenEdit(true)}
                               sx={{ mr: 1 }}
                            >

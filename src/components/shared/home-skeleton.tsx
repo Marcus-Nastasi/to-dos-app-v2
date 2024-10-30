@@ -10,7 +10,12 @@ export default function HomeSkeleton() {
             sx={(theme) => ({
                width: '99vw',
                height: 'fit-content',
-               px: 10,
+               px: { 
+                  xs: 1,
+                  sm: 2,
+                  md: 5,
+                  lg: 10
+               },
                py: 2,
                display: 'flex',
                justifyContent: 'center',
@@ -22,20 +27,45 @@ export default function HomeSkeleton() {
             <Skeleton 
                variant="text" 
                level="h1" 
-               sx={{ my: 8 }} 
+               sx={{
+                  width: {
+                     xs: '90%',
+                     sm: '80%', 
+                     md: '50%'
+                  }, 
+                  my: {
+                     xs: 2,
+                     md: 8
+                  } 
+               }} 
             />
             <Skeleton 
                variant="text" 
                level="h2" 
-               sx={{ mb: 8 }}
+               sx={{
+                  width: {
+                     xs: '70%',
+                     sm: '60%', 
+                     md: '50%'
+                  }, 
+                  my: {
+                     xs: 2,
+                     md: 8
+                  } 
+               }} 
             />
-
             {[
                '', '', '', '', '', '', '', '', '', '', '', ''
             ].map(() => 
                <AspectRatio 
                   variant="plain" 
-                  sx={{ width: '20vw', m: 2 }}
+                  sx={{ 
+                     width: { 
+                        xs: '100vw',
+                        md: '20vw' 
+                     }, 
+                     m: 2 
+                  }}
                >
                   <Skeleton loading={true}>
                   </Skeleton>

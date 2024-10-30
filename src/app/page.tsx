@@ -261,9 +261,15 @@ export default function Home() {
                            color='neutral'
                            variant='solid'
                            onClick={() => {
-                              setPage(0);
-                              setTodos(undefined);
-                              getTodosData(false);
+                              setLoading(true);
+                              setTimeout(() => {
+                                 setPage(0);
+                                 setTodos(undefined);
+                                 getTodosData(false);
+                              }, 3000);
+                              // setPage(0);
+                              // setTodos(undefined);
+                              // getTodosData(false);
                            }}
                         >
                            Search

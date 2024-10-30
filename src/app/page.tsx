@@ -12,7 +12,7 @@ import Cookie from '@/util/Cookies';
 import EmojiObjectsIcon from '@mui/icons-material/EmojiObjects';
 import NightlightIcon from '@mui/icons-material/Nightlight';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
-import { AspectRatio, Box, Button, CssVarsProvider, extendTheme, IconButton, Skeleton, Stack, Tooltip, Typography, useColorScheme } from "@mui/joy";
+import { Box, Button, CssVarsProvider, extendTheme, IconButton, Stack, Tooltip, Typography, useColorScheme } from "@mui/joy";
 import { Fragment, useEffect } from "react";
 import { useState } from 'react';
 import FilterDrawer from '@/components/shared/filter-drawer';
@@ -38,21 +38,36 @@ function ToggleThemeButton() {
                height: 'fit-content',
                padding: 0.3,
                position: 'absolute',
-               right: { xs: 10, md: 15 },
-               top: { xs: 10, md: 15 },
-               margin: { xs: 2, md: 3 },
+               right: { 
+                  xs: 10, 
+                  md: 15 
+               },
+               top: { 
+                  xs: 10, 
+                  md: 15 
+               },
+               margin: { 
+                  xs: 2, 
+                  md: 3 
+               },
             }}
          >
             {
                mode === "dark" 
                && <EmojiObjectsIcon  
                      sx={{
-                        fontSize: { xs: 27, md: 29 },
+                        fontSize: { 
+                           xs: 27, 
+                           md: 29 
+                        },
                      }}
                   />  
                || <NightlightIcon 
                      sx={{
-                        fontSize: { xs: 30, md: 32 },
+                        fontSize: { 
+                           xs: 30, 
+                           md: 32 
+                        },
                         ":hover": {
                            cursor: 'unset'
                         }
@@ -128,15 +143,12 @@ export default function Home() {
       return data;
    };
 
-   const callApi = async (): Promise<TodosResponseDto | null> => {
+   const callApi = async (user_id: number, token: string): Promise<TodosResponseDto | null> => {
       setLoading(true);
-      const userData: LoginResponseDto | null = getUserToken();
-      if (!userData) throw new Error();
-      setUser(userData.user);
       try {
          const response: TodosResponseDto = await getAll(
-            userData.user.id, 
-            userData.token, 
+            user_id, 
+            token, 
             page, 
             query,
             client,
@@ -149,8 +161,8 @@ export default function Home() {
          if (!response) throw new Error('Cannot get to-dos');
          return response;
       } catch (error) {
-         showAlert('Unable to get to-dos!', 'error');
          console.error(error);
+         showAlert('Unable to get to-dos!', 'error');
          return null;
       } finally {
          setLoadingMore(false);
@@ -158,56 +170,45 @@ export default function Home() {
       }
    }
 
-   const loadMoreTodos = async () => {
+   const loadMoreTodos = async (user_id: number, token: string): Promise<void> => {
       setLoading(true);
       setLoadingMore(true);
-      const userData = getUserToken();
-      if (!userData) throw new Error();
-      try {
-         const response: TodosResponseDto | null = await callApi();
-         if (!response) throw new Error();
-         if (todos) {
-            response.data.forEach((d: TodoDto) => todos.data.push(d));
-            setLoading(false);
-            return
-         }
-      } catch (error) {
-         showAlert('Unable to get to-dos!', 'error');
-         console.error(error);
-      } finally {
-         setLoadingMore(false);
-         setLoading(false);
+      const response: TodosResponseDto | null = await callApi(user_id, token);
+      if (!response) throw new Error('Unable to get to-dos.');
+      if (todos) {
+         response.data.forEach((d: TodoDto) => todos.data.push(d));
       }
+      setLoadingMore(false);
+      setLoading(false);
    }
 
-   const getTodosData = async (loadMore: boolean) => {
-      setLoading(true);
-      const userData = getUserToken();
-      if (!userData) throw new Error();
+   const getTodosData = async (loadMore: boolean): Promise<void> => {
       try {
+         setLoading(true);
+         const userData: LoginResponseDto | null = getUserToken();
+         if (!userData) throw new Error('Invalid user.');
          if (loadMore && todos) {
+            await loadMoreTodos(userData.user.id, userData.token);
             setLoading(false);
-            await loadMoreTodos();
             return
          }
-         const response: TodosResponseDto | null = await callApi();
-         if (!response) throw new Error();
+         const response: TodosResponseDto | null = await callApi(userData.user.id, userData.token);
+         if (!response) throw new Error('Unable to get to-dos');
          setTodos(response);
          setLoading(false);
-      } catch (error) {
-         showAlert('Unable to get to-dos!', 'error');
-         console.error(error);
-      } finally {
          setLoadingMore(false);
+      } catch(e) {
+         console.error(e);
+         showAlert('Unable to get to-dos!', 'error');
          setLoading(false);
+         setLoadingMore(false);
       }
    }
 
    return (
       <Fragment>
          <CssVarsProvider theme={theme} defaultMode={"light"} >
-            {
-               loading || !user || loadingMore ? <HomeSkeleton /> :
+            {loading || !user || loadingMore ? <HomeSkeleton /> :
                <Fragment>
                   <ToggleThemeButton />
                   <Box
@@ -300,14 +301,17 @@ export default function Home() {
                         />
                      </Box>
                      <Stack
+                        flexWrap={'wrap'}
                         direction={{ 
                            xs: 'column', 
                            md: 'row' 
                         }}
-                        flexWrap={'wrap'}
                         sx={{
                            width: '100%',
-                           padding: { xs: 2, md: 5 },
+                           padding: { 
+                              xs: 2, 
+                              md: 3 
+                           },
                            justifyContent: 'center',
                            alignItems: { 
                               xs: 'center', 
@@ -315,18 +319,16 @@ export default function Home() {
                            },
                         }}
                      >
-                        { 
-                           todos && !loading
-                           && todos.data.map((t: TodoDto) => 
-                              <TodoCard 
-                                 todo={t} 
-                                 refreshTodos={() => {
-                                    setPage(0);
-                                    setTodos(undefined);
-                                    getTodosData(false);
-                                 }} 
-                              />)
-                        }
+                        {todos && !loading && todos.data.map((t: TodoDto) => 
+                           <TodoCard 
+                              todo={t} 
+                              refreshTodos={() => {
+                                 setPage(0);
+                                 setTodos(undefined);
+                                 getTodosData(false);
+                              }} 
+                           />
+                        )}
                      </Stack>
                      <CreateTodoModal 
                         refreshTodos={() => {
@@ -335,8 +337,7 @@ export default function Home() {
                            getTodosData(false);
                         }}  
                      />
-                     {
-                        todos?.data && todos?.total > 1 && (todos.page + 1) <= todos.total 
+                     {todos?.data && todos?.total > 1 && (todos.page + 1) <= todos.total 
                         && <Box
                               width={'100%'}
                               pb={4}

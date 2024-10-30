@@ -17,6 +17,7 @@ import { Fragment, useEffect } from "react";
 import { useState } from 'react';
 import FilterDrawer from '@/components/shared/filter-drawer';
 import { useAlert } from '@/contexts/alert-context';
+import HomeSkeleton from '@/components/shared/home-skeleton';
 
 function ToggleThemeButton() {
    const { mode, setMode } = useColorScheme();
@@ -100,13 +101,21 @@ export default function Home() {
    const [ from, setFrom ] = useState<string>('');
    const [ to, setTo ] = useState<string>('');
    const [ due, setDue ] = useState<string>('');
-   const [ user, setUser ] = useState<UserDetails>();
+   const [ user, setUser ] = useState<UserDetails | null>(null);
    const [ openFilters, setOpenFilters ] = useState<boolean>(false);
    let [ page, setPage ] = useState<number>(0);
    const { showAlert } = useAlert();
 
    useEffect(() => {
+      setLoading(true);
+      const gettingUser = getUserToken();
+      if (!gettingUser) {
+         window.open('/login', '_self');
+         return
+      }
+      setUser(gettingUser.user);
       getTodosData(false);
+      setLoading(false);
    }, []);
 
    const getUserToken = (): LoginResponseDto | null => {
@@ -120,6 +129,7 @@ export default function Home() {
    };
 
    const callApi = async (): Promise<TodosResponseDto | null> => {
+      setLoading(true);
       const userData: LoginResponseDto | null = getUserToken();
       if (!userData) throw new Error();
       setUser(userData.user);
@@ -149,6 +159,7 @@ export default function Home() {
    }
 
    const loadMoreTodos = async () => {
+      setLoading(true);
       setLoadingMore(true);
       const userData = getUserToken();
       if (!userData) throw new Error();
@@ -170,6 +181,7 @@ export default function Home() {
    }
 
    const getTodosData = async (loadMore: boolean) => {
+      setLoading(true);
       const userData = getUserToken();
       if (!userData) throw new Error();
       try {
@@ -194,6 +206,161 @@ export default function Home() {
    return (
       <Fragment>
          <CssVarsProvider theme={theme} defaultMode={"light"} >
+            {
+               loading || !user || loadingMore ? <HomeSkeleton /> :
+               <Fragment>
+                  <ToggleThemeButton />
+                  <Box
+                     sx={{
+                        bgcolor: 'background.body',
+                        width: '100%',
+                        minHeight: '100vh',
+                        maxHeight: 'fit-content',
+                        transition: 'all ease-in-out 320ms'
+                     }}
+                  >
+                     <MenuDrawer />
+                     <Typography
+                        textAlign={'center'}
+                        paddingY={5}
+                        sx={{
+                           fontSize: {
+                              xs: 25, 
+                              sm: 30, 
+                              md: 35, 
+                              lg: 40, 
+                              xl: 45
+                           },
+                           fontWeight: 'bold'
+                        }}
+                     >
+                        Welcome, { user?.name }
+                     </Typography>
+                     <Box
+                        display={'flex'}
+                        justifyContent={'center'}
+                        alignItems={'center'}
+                     >
+                        <SearchBox 
+                           query={query} 
+                           setQuery={setQuery} 
+                        />
+                        <Button 
+                           sx={{ 
+                              ml: 1,
+                              mr: {
+                                 xs: 1,
+                                 sm: 2,
+                                 md: 3,
+                                 lg: 4
+                              },
+                              ":hover": { cursor: 'default' } 
+                           }}
+                           size='sm'
+                           color='neutral'
+                           variant='solid'
+                           onClick={() => {
+                              setPage(0);
+                              setTodos(undefined);
+                              getTodosData(false);
+                           }}
+                        >
+                           Search
+                        </Button>
+                        <Tooltip 
+                           arrow
+                           variant='outlined' 
+                           title="Filters" 
+                           placement="top"
+                        >
+                           <IconButton
+                              onClick={() => setOpenFilters(true)}
+                           >
+                              <FilterAltIcon />
+                           </IconButton>
+                        </Tooltip>
+                        <FilterDrawer 
+                           openFilters={openFilters} 
+                           setOpenFilters={setOpenFilters} 
+                           client={client}
+                           setClient={setClient}
+                           due={due}
+                           setDue={setDue}
+                           from={from}
+                           setFrom={setFrom}
+                           to={to}
+                           setTo={setTo}
+                           priority={priority}
+                           setPriority={setPriority}
+                           status={status}
+                           setStatus={setStatus}
+                           getTodosData={getTodosData}
+                           page={page}
+                           setPage={setPage}
+                        />
+                     </Box>
+                     <Stack
+                        direction={{ 
+                           xs: 'column', 
+                           md: 'row' 
+                        }}
+                        flexWrap={'wrap'}
+                        sx={{
+                           width: '100%',
+                           padding: { xs: 2, md: 5 },
+                           justifyContent: 'center',
+                           alignItems: { 
+                              xs: 'center', 
+                              lg: "flex-start" 
+                           },
+                        }}
+                     >
+                        { 
+                           todos && !loading
+                           && todos.data.map((t: TodoDto) => 
+                              <TodoCard 
+                                 todo={t} 
+                                 refreshTodos={() => {
+                                    setPage(0);
+                                    setTodos(undefined);
+                                    getTodosData(false);
+                                 }} 
+                              />)
+                        }
+                     </Stack>
+                     <CreateTodoModal 
+                        refreshTodos={() => {
+                           setTodos(undefined);
+                           setPage(0);
+                           getTodosData(false);
+                        }}  
+                     />
+                     {
+                        todos?.data && todos?.total > 1 && (todos.page + 1) <= todos.total 
+                        && <Box
+                              width={'100%'}
+                              pb={4}
+                              display={'flex'}
+                              justifyContent={'center'}
+                           >
+                              <Button 
+                                 variant='soft' 
+                                 color='neutral'
+                                 loading={loadingMore}
+                                 onClick={() => {
+                                    setPage(++page);
+                                    getTodosData(true);
+                                 }}
+                              >
+                                 Load more...
+                              </Button>
+                           </Box>
+                     }
+                  </Box>
+               </Fragment>
+            }
+         </CssVarsProvider>
+         {/* <CssVarsProvider theme={theme} defaultMode={"light"} >
             <ToggleThemeButton />
             <Box
                sx={{
@@ -311,41 +478,7 @@ export default function Home() {
                               getTodosData(false);
                            }} 
                         />) 
-                     || <Box
-                           sx={{
-                              display: 'flex',
-                              flexWrap: 'wrap'
-                           }}
-                        >
-                           <AspectRatio 
-                              variant="plain" 
-                              sx={{ width: '20vw', m: 2 }}
-                           >
-                              <Skeleton loading={loading}>
-                              </Skeleton>
-                           </AspectRatio>
-                           <AspectRatio 
-                              variant="plain" 
-                              sx={{ width: '20vw', m: 2 }}
-                           >
-                              <Skeleton loading={loading}>
-                              </Skeleton>
-                           </AspectRatio>
-                           <AspectRatio 
-                              variant="plain" 
-                              sx={{ width: '20vw', m: 2 }}
-                           >
-                              <Skeleton loading={loading}>
-                              </Skeleton>
-                           </AspectRatio>
-                           <AspectRatio 
-                              variant="plain" 
-                              sx={{ width: '20vw', m: 2 }}
-                           >
-                              <Skeleton loading={loading}>
-                              </Skeleton>
-                           </AspectRatio>
-                        </Box>
+                     || <HomeSkeleton />
                   }
                </Stack>
                <CreateTodoModal 
@@ -377,7 +510,7 @@ export default function Home() {
                      </Box>
                }
             </Box>
-         </CssVarsProvider>
+         </CssVarsProvider> */}
       </Fragment>
    );
 }

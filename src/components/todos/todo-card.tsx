@@ -23,13 +23,7 @@ import Cookie from '@/util/Cookies';
 import { useAlert } from '@/contexts/alert-context';
 import { updateStatus } from '@/service/todos/todos.service';
 
-export default function TodoCard({ 
-   todo, 
-   refreshTodos 
-}: { 
-   todo: TodoDto, 
-   refreshTodos: Function 
-}) {
+export default function TodoCard({ todo, refreshTodos }: { todo: TodoDto, refreshTodos: Function }) {
    const [open, setOpen] = React.useState<boolean>(false);
    const { showAlert } = useAlert();
 
@@ -43,7 +37,7 @@ export default function TodoCard({
       return data;
    };
 
-   const updateSt = async (status: 'PENDING' | 'PROGRESS' | 'DONE') => {
+   const updateSt = async (status: 'PENDING' | 'PROGRESS' | 'DONE'): Promise<TodosResponseDto | null> => {
       const userToken: LoginResponseDto | null = getUserToken();
       if (!userToken) throw new Error();
       try {

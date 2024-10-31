@@ -72,60 +72,65 @@ export default function MenuDrawer() {
             <Divider sx={{ mt: 'auto' }} />
             <DialogContent sx={{ gap: 2 }}>
                <FormControl>
-               <FormLabel sx={{ typography: 'title-md', fontWeight: 'bold' }}>
-                  App
-               </FormLabel>
-               <RadioGroup
-                  value={type || ''}
-                  onChange={(event) => {
-                     setType(event.target.value);
-                  }}
-               >
-                  <Box
-                     sx={{
-                        display: 'grid',
-                        gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
-                        gap: 1.5,
+                  <FormLabel sx={{ typography: 'title-md', fontWeight: 'bold' }}>
+                     App
+                  </FormLabel>
+                  <RadioGroup
+                     value={type || ''}
+                     onChange={(event) => {
+                        setType(event.target.value);
                      }}
                   >
-                     {[
-                        {
-                           name: 'Home',
-                           icon: <HomeRoundedIcon color='primary' />,
-                           link: '/'
-                        },
-                        {
-                           name: 'Dashboard',
-                           icon: <LineAxisRoundedIcon color='success' />,
-                           link: '/dashboard'
-                        }
-                     ].map((item) => (
-                        <a href={item.link}>
-                           <Card
-                              key={item.name}
-                              sx={{
-                                 boxShadow: 'none',
-                                 '&:hover': { bgcolor: 'background.level1' },
-                              }}
-                           >
-                              <CardContent>
-                                 {item.icon}
-                                 <Typography level="title-md">{item.name}</Typography>
-                              </CardContent>
-                           </Card>
-                        </a>
-                     ))}
-                  </Box>
-               </RadioGroup>
+                     <Box
+                        sx={{
+                           display: 'grid',
+                           gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
+                           gap: 1.5,
+                        }}
+                     >
+                        {[
+                           {
+                              name: 'Home',
+                              icon: <HomeRoundedIcon color='primary' />,
+                              link: '/'
+                           },
+                           {
+                              name: 'Dashboard',
+                              icon: <LineAxisRoundedIcon color='success' />,
+                              link: '/dashboard'
+                           }
+                        ].map((item) => (
+                           <a href={item.link}>
+                              <Card
+                                 key={item.name}
+                                 sx={{
+                                    boxShadow: 'none',
+                                    '&:hover': { bgcolor: 'background.level1' },
+                                 }}
+                              >
+                                 <CardContent>
+                                    {item.icon}
+                                    <Typography level="title-md">{item.name}</Typography>
+                                 </CardContent>
+                              </Card>
+                           </a>
+                        ))}
+                     </Box>
+                  </RadioGroup>
                </FormControl>
-               <Typography level="title-md" sx={{ fontWeight: 'bold', mt: 1 }}>
+               <Typography 
+                  level="title-md" 
+                  sx={{ 
+                     fontWeight: 'bold',  
+                  }}
+               >
                   Profile
                </Typography>
                <Box
                   sx={{
-                  display: 'grid',
-                  gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))',
-                  gap: 1.5,
+                     display: 'grid',
+                     gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
+                     gap: 1.5,
                   }}
                >
                   {[

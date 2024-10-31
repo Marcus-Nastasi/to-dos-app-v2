@@ -122,7 +122,6 @@ export default function Home() {
    const { showAlert } = useAlert();
 
    useEffect(() => {
-      setLoading(true);
       const gettingUser = getUserToken();
       if (!gettingUser) {
          window.open('/login', '_self');
@@ -130,7 +129,6 @@ export default function Home() {
       }
       setUser(gettingUser.user);
       getTodosData(false);
-      setLoading(false);
    }, []);
 
    const getUserToken = (): LoginResponseDto | null => {
@@ -189,17 +187,15 @@ export default function Home() {
          if (!userData) throw new Error('Invalid user.');
          if (loadMore && todos) {
             await loadMoreTodos(userData.user.id, userData.token);
-            setLoading(false);
             return
          }
          const response: TodosResponseDto | null = await callApi(userData.user.id, userData.token);
          if (!response) throw new Error('Unable to get to-dos');
          setTodos(response);
-         setLoading(false);
-         setLoadingMore(false);
       } catch(e) {
          console.error(e);
          showAlert('Unable to get to-dos!', 'error');
+      } finally {
          setLoading(false);
          setLoadingMore(false);
       }
@@ -208,7 +204,7 @@ export default function Home() {
    return (
       <Fragment>
          <CssVarsProvider theme={theme} defaultMode={"light"} >
-            {loading || !user || loadingMore ? <HomeSkeleton /> :
+            {loading || !user ? <HomeSkeleton /> : 
                <Fragment>
                   <ToggleThemeButton />
                   <Box
@@ -261,15 +257,9 @@ export default function Home() {
                            color='neutral'
                            variant='solid'
                            onClick={() => {
-                              setLoading(true);
-                              setTimeout(() => {
-                                 setPage(0);
-                                 setTodos(undefined);
-                                 getTodosData(false);
-                              }, 3000);
-                              // setPage(0);
-                              // setTodos(undefined);
-                              // getTodosData(false);
+                              setPage(0);
+                              setTodos(undefined);
+                              getTodosData(false);
                            }}
                         >
                            Search
@@ -325,7 +315,16 @@ export default function Home() {
                            },
                         }}
                      >
-                        {todos && !loading && todos.data.map((t: TodoDto) => 
+                        {todos?.data && todos?.data.length <= 0 
+                        && <Typography 
+                              sx={{ 
+                                 my: 5, 
+                                 fontWeight: 'bold' 
+                              }}
+                           >
+                              No to-dos to show...
+                           </Typography> 
+                        || todos && !loading && todos.data.map((t: TodoDto) => 
                            <TodoCard 
                               todo={t} 
                               refreshTodos={() => {
@@ -355,7 +354,7 @@ export default function Home() {
                                  color='neutral'
                                  loading={loadingMore}
                                  onClick={() => {
-                                    setPage(++page);
+                                    setPage(page < todos.total ? ++page : page);
                                     getTodosData(true);
                                  }}
                               >

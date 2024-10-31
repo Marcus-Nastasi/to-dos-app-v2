@@ -1,6 +1,6 @@
 'use client'
 
-import { AspectRatio, Box, extendTheme, Skeleton } from "@mui/joy";
+import { AspectRatio, Box, Skeleton } from "@mui/joy";
 import { Fragment } from "react";
 
 export default function HomeSkeleton() {
@@ -9,7 +9,8 @@ export default function HomeSkeleton() {
          <Box
             sx={(theme) => ({
                width: '99vw',
-               height: 'fit-content',
+               minHeight: '100vh',
+               maxHeight: 'fit-content',
                px: { 
                   xs: 1,
                   sm: 2,
@@ -24,36 +25,45 @@ export default function HomeSkeleton() {
                bgcolor: theme.palette.mode == 'dark' ? '#2D2D2D' : ''
             })}
          >
-            <Skeleton 
-               variant="text" 
-               level="h1" 
+            <Box
                sx={{
-                  width: {
-                     xs: '90%',
-                     sm: '80%', 
-                     md: '50%'
-                  }, 
-                  my: {
-                     xs: 2,
-                     md: 8
-                  } 
-               }} 
-            />
-            <Skeleton 
-               variant="text" 
-               level="h2" 
-               sx={{
-                  width: {
-                     xs: '70%',
-                     sm: '60%', 
-                     md: '50%'
-                  }, 
-                  my: {
-                     xs: 2,
-                     md: 8
-                  } 
-               }} 
-            />
+                  width: '100%',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center'
+               }}
+            >
+               <Skeleton 
+                  variant="text" 
+                  level="h1" 
+                  sx={{
+                     width: {
+                        xs: '90%',
+                        sm: '80%', 
+                        md: '50%'
+                     }, 
+                     my: {
+                        xs: 2,
+                        md: 5
+                     } 
+                  }} 
+               />
+               <Skeleton 
+                  variant="text" 
+                  level="h2" 
+                  sx={{
+                     width: {
+                        xs: '70%',
+                        sm: '60%', 
+                        md: '50%'
+                     }, 
+                     my: {
+                        xs: 2,
+                        md: 5
+                     } 
+                  }} 
+               />
+            </Box>
             {[
                '', '', '', '', '', '', '', '', '', '', '', ''
             ].map(() => 
@@ -70,8 +80,7 @@ export default function HomeSkeleton() {
                   <Skeleton loading={true}>
                   </Skeleton>
                </AspectRatio>
-            )
-            }
+            )}
          </Box>
       </Fragment>
    );

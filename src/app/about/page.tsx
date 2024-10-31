@@ -168,28 +168,30 @@ export default function About() {
                         Our goal is to simplify the management of tasks and allow users to focus on what truly matters. 
                         This application offers a robust and modern layout designed to maximize your user experience.
                      </Typography>
-                     {
-                        [
-                           'Create: Easily create new tasks with a user-friendly interface.',
-                           'Update: Modify your tasks as needed to reflect current progress.',
-                           'Delete: Remove tasks that are no longer relevant.',
-                           'Manage: Track the status of tasks, ensuring nothing falls through the cracks.'
-                        ].map(s => 
-                           <Typography
-                              my={{ xs: 2, sm: 1, md: 0 }}
-                              startDecorator={<FiberManualRecordIcon sx={{ fontSize: 10 }} />}
-                              sx={{
-                                 fontSize: {
-                                    xs: 15,  
-                                    md: 20, 
-                                 },
-                                 fontWeight: 'semibold'
-                              }}
-                           >
-                              { s }
-                           </Typography>
-                        )
-                     }
+                     {[
+                        'Create: Easily create new tasks with a user-friendly interface.',
+                        'Update: Modify your tasks as needed to reflect current progress.',
+                        'Delete: Remove tasks that are no longer relevant.',
+                        'Manage: Track the status of tasks, ensuring nothing falls through the cracks.'
+                     ].map(s => 
+                        <Typography
+                           my={{ 
+                              xs: 2, 
+                              sm: 1, 
+                              md: 0 
+                           }}
+                           startDecorator={<FiberManualRecordIcon sx={{ fontSize: 10 }} />}
+                           sx={{
+                              fontSize: {
+                                 xs: 15,  
+                                 md: 20, 
+                              },
+                              fontWeight: 'semibold'
+                           }}
+                        >
+                           { s }
+                        </Typography>
+                     )}
                      <Typography
                         marginTop={5}
                         textAlign={'center'}

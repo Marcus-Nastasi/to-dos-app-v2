@@ -17,6 +17,13 @@ export interface UserRequestDto {
    password: string;
 }
 
+export interface UserUpdateDto {
+   name: string;
+   email: string;
+   currentPassword: string;
+   newPassword: string;
+}
+
 export interface UserResponseDto {
    id: number,
    name: string,

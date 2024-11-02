@@ -4,13 +4,10 @@ import MenuDrawer from '@/components/shared/menu-drawer';
 import AddIcon from '@mui/icons-material/Add';
 import EmojiObjectsIcon from '@mui/icons-material/EmojiObjects';
 import NightlightIcon from '@mui/icons-material/Nightlight';
-import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
-import { Accordion, accordionClasses, AccordionDetails, AccordionGroup, AccordionSummary, accordionSummaryClasses, Box, Button, CssVarsProvider, extendTheme, Tooltip, Typography, useColorScheme } from "@mui/joy";
+import { Accordion, AccordionDetails, AccordionGroup, AccordionSummary, accordionSummaryClasses, Box, Button, CssVarsProvider, extendTheme, Tooltip, Typography, useColorScheme } from "@mui/joy";
 import { Fragment, useEffect, useState } from "react";
 import CredentialForm from '@/components/users/credential-form';
-import InformationForm from '@/components/users/information-form';
 import { UserDetails } from '@/types/user/user.dto';
 import { LoginResponseDto } from '@/types/auth/login.dto';
 import Cookie from '@/util/Cookies';
@@ -67,6 +64,7 @@ const theme = extendTheme({
             background: {
                level2: 'white',
                body: '#2D2D2D', 
+               level3: '#424242'
             },
             text: {
                primary: '#eaeaea',
@@ -88,7 +86,6 @@ const theme = extendTheme({
 });
 
 export default function Account() {
-   const [ user, setUser ] = useState<UserDetails>();
    const [ userCookie, setUserCookie ] = useState<LoginResponseDto>();
 
    useEffect(() => {
@@ -97,7 +94,6 @@ export default function Account() {
          window.open('/login', '_self');
          return
       }
-      setUser(gettingUser.user);
       setUserCookie(gettingUser);
    }, []);
 
@@ -164,42 +160,19 @@ export default function Account() {
                      }}
                      mb={5}
                      borderRadius={5}
-                     sx={(theme) => ({
-                        bgcolor: theme.palette.mode === 'light' 
-                        ? theme.palette.neutral[300] 
-                        : theme.palette.neutral[800]
-                     })}
+                     // sx={(theme) => ({
+                     //    bgcolor: theme.palette.mode === 'light' 
+                     //    ? theme.palette.neutral[300] 
+                     //    : theme.palette.neutral[800]
+                     // })}
                   >
                      <AccordionGroup
                         size='lg'
-                        sx={(theme) => ({
-                           my: 2,
-                           borderRadius: 5,
+                        sx={{
                            maxWidth: { 
                               xs: '100%', 
                               md: '50%',
                               xl: '60%'
-                           },
-                           [`& .${accordionClasses.root}`]: {
-                              marginTop: '0.5rem',
-                              transition: '0.2s ease',
-                              '& button:not([aria-expanded="true"])': {
-                                 transition: '0.2s ease',
-                                 paddingBottom: '0.625rem',
-                              },
-                              '& button:hover': {
-                                 borderRadius: 'md',
-                                 background: theme.palette.mode == 'light' ? 'background.level2' : '#000000'
-                              },
-                           },
-                           [`& .${accordionClasses.root}.${accordionClasses.expanded}`]: {
-                              bgcolor: theme.palette.mode == 'light' ? 'background.level2' : '#000000',
-                              borderRadius: 'md',
-                              borderBottom: '1px solid',
-                              borderColor: 'background.level2',
-                           },
-                           '& [aria-expanded="true"]': {
-                              boxShadow: `inset 0 -1px 0 ${theme.vars.palette.divider}`,
                            },
                            [`& .${accordionSummaryClasses.indicator}`]: {
                               transition: '0.2s',
@@ -207,7 +180,7 @@ export default function Account() {
                            [`& [aria-expanded="true"] .${accordionSummaryClasses.indicator}`]: {
                               transform: 'rotate(45deg)',
                            },
-                        })}
+                        }}
                      >
                         <Accordion>
                            <AccordionSummary indicator={<AddIcon />}>
@@ -247,8 +220,11 @@ export default function Account() {
                               onClick={(e) => {
                                  e.preventDefault();
                                  if (!confirm('Really want to leave?')) return
-                                 document.cookie = '';
-                                 window.open('/', '_self');
+                                 document.cookie.split(";").forEach((cookie) => {
+                                    const name = cookie.split("=")[0].trim();
+                                    document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/`;
+                                 });
+                                 window.open('/login', '_self');
                               }}
                               sx={{
                                  width: {

@@ -4,17 +4,29 @@ import { updateUser } from "@/service/users/user.service";
 import { LoginResponseDto } from "@/types/auth/login.dto";
 import { UserResponseDto } from "@/types/user/user.dto";
 import { Button, FormControl, FormLabel, Input, Stack } from "@mui/joy";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function CredentialForm({ userCookie }: { userCookie: LoginResponseDto | undefined }) {
-   const [ name, setName ] = useState<string | undefined>(userCookie?.user.name);
-   const [ email, setEmail ] = useState<string | undefined>(userCookie?.user.email);
+   const [ name, setName ] = useState<string | undefined>();
+   const [ email, setEmail ] = useState<string | undefined>();
    const [ currentPassword, setCurrentPassword ] = useState<string>();
    const [ newPassword, setNewPassword ] = useState<string>();
 
+   useEffect(() => {
+      setName(userCookie?.user.name);
+      setEmail(userCookie?.user.email);
+   }, []);
+
    const handleSubmit = async () => {
       try {
-         if (!userCookie) return
+         if (!userCookie) {
+            document.cookie.split(";").forEach((cookie) => {
+               const name = cookie.split("=")[0].trim();
+               document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/`;
+            });
+            window.open('/login', '_self');
+            return
+         }
          if (!name || !email || !currentPassword || !newPassword) return
          const response: UserResponseDto = await updateUser(
             userCookie.user.id,
@@ -40,7 +52,14 @@ export default function CredentialForm({ userCookie }: { userCookie: LoginRespon
                handleSubmit();
             }}
          >
-            <Stack spacing={2}>
+            <Stack 
+               spacing={2} 
+               sx={{ 
+                  bgcolor: 'background.level3', 
+                  p: 5,
+                  borderRadius: 5
+               }}
+            >
                <FormControl>
                   <FormLabel>
                      Name
@@ -85,9 +104,15 @@ export default function CredentialForm({ userCookie }: { userCookie: LoginRespon
                </FormControl>
                <Button 
                   size='sm'
-                  variant='soft'
+                  variant='solid'
                   color='success'
                   type="submit"
+                  sx={{
+                     width: {
+                        xs: '100%',
+                        sm: '20%' 
+                     }
+                  }}
                >
                   Submit
                </Button>

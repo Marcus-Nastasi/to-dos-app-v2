@@ -4,6 +4,7 @@ import { useAlert } from "@/contexts/alert-context";
 import { updateUser } from "@/service/users/user.service";
 import { LoginResponseDto } from "@/types/auth/login.dto";
 import { UserResponseDto } from "@/types/user/user.dto";
+import Cookie from "@/util/Cookies";
 import { Box, Button, FormControl, FormLabel, Input } from "@mui/joy";
 import { useEffect, useState } from "react";
 
@@ -15,8 +16,11 @@ export default function CredentialForm({ userCookie }: { userCookie: LoginRespon
    const { showAlert } = useAlert();
 
    useEffect(() => {
-      setName(userCookie?.user.name);
-      setEmail(userCookie?.user.email);
+      const cookie: string | null = Cookie.getCookie('todos_app_session');
+      if (!cookie) return
+      const cookieObject: LoginResponseDto = JSON.parse(cookie);
+      setName(cookieObject.user.name);
+      setEmail(cookieObject.user.email);
    }, []);
 
    const handleSubmit = async () => {
@@ -73,7 +77,15 @@ export default function CredentialForm({ userCookie }: { userCookie: LoginRespon
                bgcolor={'background.level1'}
             >
                <FormControl>
-                  <FormLabel>
+                  <FormLabel
+                     sx={{
+                        color: 'text.primary',
+                        fontSize: {
+                           xs: 15,
+                           lg: 17,
+                        }
+                     }}
+                  >
                      Name
                   </FormLabel>
                   <Input 
@@ -96,7 +108,15 @@ export default function CredentialForm({ userCookie }: { userCookie: LoginRespon
                      }
                   }}
                >
-                  <FormLabel>
+                  <FormLabel
+                     sx={{
+                        color: 'text.primary',
+                        fontSize: {
+                           xs: 15,
+                           lg: 17,
+                        }
+                     }}
+                  >
                      E-mail
                   </FormLabel>
                   <Input 
@@ -116,7 +136,15 @@ export default function CredentialForm({ userCookie }: { userCookie: LoginRespon
                      mt: 3
                   }}
                >
-                  <FormLabel>
+                  <FormLabel
+                     sx={{
+                        color: 'text.primary',
+                        fontSize: {
+                           xs: 15,
+                           lg: 17,
+                        }
+                     }}
+                  >
                      Current password
                   </FormLabel>
                   <Input 
@@ -137,7 +165,15 @@ export default function CredentialForm({ userCookie }: { userCookie: LoginRespon
                      mt: 3
                   }}
                >
-                  <FormLabel>
+                  <FormLabel
+                     sx={{
+                        color: 'text.primary',
+                        fontSize: {
+                           xs: 15,
+                           lg: 17,
+                        }
+                     }}
+                  >
                      New password
                   </FormLabel>
                   <Input 
@@ -154,9 +190,8 @@ export default function CredentialForm({ userCookie }: { userCookie: LoginRespon
                   />
                </FormControl>
                <Box
-                  sx={{
-                     width: '100%'
-                  }}
+                  paddingX={3}
+                  width={'100%'}
                >
                   <Button 
                      size='sm'

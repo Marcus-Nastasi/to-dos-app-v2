@@ -6,7 +6,7 @@ import EmojiObjectsIcon from '@mui/icons-material/EmojiObjects';
 import NightlightIcon from '@mui/icons-material/Nightlight';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import { Accordion, AccordionDetails, AccordionGroup, AccordionSummary, accordionSummaryClasses, Box, Button, CssVarsProvider, extendTheme, Tooltip, Typography, useColorScheme } from "@mui/joy";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, MouseEventHandler, useEffect, useState } from "react";
 import CredentialForm from '@/components/users/credential-form';
 import { UserDetails } from '@/types/user/user.dto';
 import { LoginResponseDto } from '@/types/auth/login.dto';
@@ -107,6 +107,16 @@ export default function Account() {
       return data;
    };
 
+   const handleLogOut = (e: MouseEvent) => {
+      e.preventDefault();
+      if (!confirm('Really want to leave?')) return
+      document.cookie.split(";").forEach((cookie) => {
+         const name = cookie.split("=")[0].trim();
+         document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/`;
+      });
+      window.open('/login', '_self');
+   };
+
    return (
       <Fragment>
          <CssVarsProvider theme={theme} defaultMode={"light"} >
@@ -130,8 +140,8 @@ export default function Account() {
                         xs: 25, 
                         sm: 30, 
                         md: 35, 
-                        lg: 40, 
-                        xl: 45
+                        // lg: 40, 
+                        // xl: 45
                      },
                      fontWeight: 'bold'
                   }}
@@ -160,11 +170,6 @@ export default function Account() {
                      }}
                      mb={5}
                      borderRadius={5}
-                     // sx={(theme) => ({
-                     //    bgcolor: theme.palette.mode === 'light' 
-                     //    ? theme.palette.neutral[300] 
-                     //    : theme.palette.neutral[800]
-                     // })}
                   >
                      <AccordionGroup
                         size='lg'
@@ -195,41 +200,25 @@ export default function Account() {
                               <CredentialForm userCookie={userCookie} />
                            </AccordionDetails>
                         </Accordion>
-                        {/* <Accordion>
-                           <AccordionSummary indicator={<AddIcon />}>
-                              <Typography
-                                 startDecorator={<InfoOutlinedIcon />}
-                                 fontWeight={'bold'}
-                              >
-                                 Information
-                              </Typography>
-                           </AccordionSummary>
-                           <AccordionDetails>
-                              <InformationForm />
-                           </AccordionDetails>
-                        </Accordion> */}
                         <Box
-                           display={{ xs: 'flex' }}
-                           justifyContent={{ xs: 'center', md: 'end' }}
+                           padding={3}
+                           display={{ 
+                              xs: 'flex' 
+                           }}
+                           justifyContent={{ 
+                              xs: 'center', 
+                              md: 'end' 
+                           }}
                            width={'100%'}
                            mt={5}
                         >
                            <Button
                               variant='soft'
                               color='danger'
-                              onClick={(e) => {
-                                 e.preventDefault();
-                                 if (!confirm('Really want to leave?')) return
-                                 document.cookie.split(";").forEach((cookie) => {
-                                    const name = cookie.split("=")[0].trim();
-                                    document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/`;
-                                 });
-                                 window.open('/login', '_self');
-                              }}
+                              onClick={(e: any) => handleLogOut(e)}
                               sx={{
                                  width: {
-                                    xs: '100%',
-                                    sm: '80%',
+                                    xs: '80%',
                                     md: 'fit-content'
                                  }
                               }}

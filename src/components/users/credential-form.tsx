@@ -1,9 +1,10 @@
 'use client'
 
+import { useAlert } from "@/contexts/alert-context";
 import { updateUser } from "@/service/users/user.service";
 import { LoginResponseDto } from "@/types/auth/login.dto";
 import { UserResponseDto } from "@/types/user/user.dto";
-import { Button, FormControl, FormLabel, Input, Stack } from "@mui/joy";
+import { Box, Button, FormControl, FormLabel, Input } from "@mui/joy";
 import { useEffect, useState } from "react";
 
 export default function CredentialForm({ userCookie }: { userCookie: LoginResponseDto | undefined }) {
@@ -11,6 +12,7 @@ export default function CredentialForm({ userCookie }: { userCookie: LoginRespon
    const [ email, setEmail ] = useState<string | undefined>();
    const [ currentPassword, setCurrentPassword ] = useState<string>();
    const [ newPassword, setNewPassword ] = useState<string>();
+   const { showAlert } = useAlert();
 
    useEffect(() => {
       setName(userCookie?.user.name);
@@ -38,9 +40,14 @@ export default function CredentialForm({ userCookie }: { userCookie: LoginRespon
             },
             userCookie.token
          );
+         showAlert(`Update successful! Please, log-in again...`, 'success');
+         setTimeout(() => {
+            window.open('/login', '_self');            
+         }, 1000);
          return response;
       } catch(e) {
          console.error(e);
+         showAlert(`Update not successful! Please, try again...`, 'error');
       }
    };
 
@@ -52,13 +59,18 @@ export default function CredentialForm({ userCookie }: { userCookie: LoginRespon
                handleSubmit();
             }}
          >
-            <Stack 
-               spacing={2} 
-               sx={{ 
-                  bgcolor: 'background.level3', 
-                  p: 5,
-                  borderRadius: 5
+            <Box
+               width={'100%'}
+               display={'flex'}
+               flexDirection={{ 
+                  xs: 'column', 
+                  md: 'row' 
                }}
+               flexWrap={'wrap'}
+               justifyContent={'space-evenly'}
+               padding={5}
+               borderRadius={5}
+               bgcolor={'background.level1'}
             >
                <FormControl>
                   <FormLabel>
@@ -68,9 +80,22 @@ export default function CredentialForm({ userCookie }: { userCookie: LoginRespon
                      value={name}
                      onChange={e => setName(e.target.value)}
                      required 
+                     sx={{
+                        width: {
+                           xs: '100%',
+                           md: 'fit-content'
+                        },
+                     }}
                   />
                </FormControl>
-               <FormControl>
+               <FormControl
+                  sx={{
+                     mt: {
+                        xs: 3,
+                        xl: 0
+                     }
+                  }}
+               >
                   <FormLabel>
                      E-mail
                   </FormLabel>
@@ -78,9 +103,19 @@ export default function CredentialForm({ userCookie }: { userCookie: LoginRespon
                      value={email}
                      onChange={e => setEmail(e.target.value)}
                      required 
+                     sx={{
+                        width: {
+                           xs: '100%',
+                           md: 'fit-content'
+                        },
+                     }}
                   />
                </FormControl>
-               <FormControl>
+               <FormControl
+                  sx={{
+                     mt: 3
+                  }}
+               >
                   <FormLabel>
                      Current password
                   </FormLabel>
@@ -89,9 +124,19 @@ export default function CredentialForm({ userCookie }: { userCookie: LoginRespon
                      onChange={e => setCurrentPassword(e.target.value)}
                      type='password'
                      required 
+                     sx={{
+                        width: {
+                           xs: '100%',
+                           md: 'fit-content'
+                        },
+                     }}
                   />
                </FormControl>
-               <FormControl>
+               <FormControl
+                  sx={{
+                     mt: 3
+                  }}
+               >
                   <FormLabel>
                      New password
                   </FormLabel>
@@ -100,23 +145,36 @@ export default function CredentialForm({ userCookie }: { userCookie: LoginRespon
                      onChange={e => setNewPassword(e.target.value)}
                      type='password' 
                      required 
+                     sx={{
+                        width: {
+                           xs: '100%',
+                           md: 'fit-content'
+                        },
+                     }}
                   />
                </FormControl>
-               <Button 
-                  size='sm'
-                  variant='solid'
-                  color='success'
-                  type="submit"
+               <Box
                   sx={{
-                     width: {
-                        xs: '100%',
-                        sm: '20%' 
-                     }
+                     width: '100%'
                   }}
                >
-                  Submit
-               </Button>
-            </Stack>
+                  <Button 
+                     size='sm'
+                     variant='soft'
+                     color='primary'
+                     type="submit"
+                     sx={{
+                        mt: 5,
+                        width: {
+                           xs: '100%',
+                           sm: 'fit-content' 
+                        }
+                     }}
+                  >
+                     Submit
+                  </Button>
+               </Box>
+            </Box>
          </form>
       </>
    );

@@ -139,11 +139,11 @@ export default function MenuDrawer() {
                         icon: <PersonPinIcon htmlColor='#A021F0' />,
                         link: '/account'
                      },
-                     {
-                        name: 'Configuration',
-                        icon: <MiscellaneousServicesRoundedIcon color='warning' />,
-                        link: '/configuration'
-                     }
+                     // {
+                     //    name: 'Configuration',
+                     //    icon: <MiscellaneousServicesRoundedIcon color='warning' />,
+                     //    link: '/configuration'
+                     // }
                   ].map((item) => (
                      <a href={item.link}>
                         <Card

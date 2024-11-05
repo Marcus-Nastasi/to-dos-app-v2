@@ -44,9 +44,12 @@ export default function TodoModal({
       return data;
    };
 
-   const handleDelete = async () => {
+   const handleDelete = async (): Promise<void> => {
       const userToken: LoginResponseDto | null = getUserToken();
-      if (!userToken) return;
+      if (!userToken) {
+         window.open('/login', '_self');
+         return
+      };
       try {
          const response = await deleteTodo(+todo.id, userToken.token);
          showAlert('To-do deleted successfully!', 'success');
@@ -188,23 +191,23 @@ export default function TodoModal({
                      <Typography fontWeight={'bold'} >
                         Due
                      </Typography>
-                     <Typography mb={1}>
+                     <Typography mt={-2}>
                         { `${todo.due[2]}/${todo.due[1]}/${todo.due[0]}` }
                      </Typography>
                      <Typography fontWeight={'bold'}>
                         Link
                      </Typography>
-                     <Typography mb={1}>{ todo.link }</Typography>
+                     <Typography mt={-2}>{ todo.link }</Typography>
                      <Typography fontWeight={'bold'} >
                         Created at
                      </Typography>
-                     <Typography mb={1}>
+                     <Typography mt={-2}>
                         { `${todo.creation[2]}/${todo.creation[1]}/${todo.creation[0]}` }
                      </Typography>
                      <Typography fontWeight={'bold'}>
                         Last Updated at
                      </Typography>
-                     <Typography>
+                     <Typography mt={-2}>
                         { `${todo.last_updated[2]}/${todo.last_updated[1]}/${todo.last_updated[0]}` }
                      </Typography>
                      <Box

@@ -16,7 +16,6 @@ import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 import MenuIcon from '@mui/icons-material/Menu';
 import { IconButton, Link, Tooltip } from '@mui/joy';
 import PersonPinIcon from '@mui/icons-material/PersonPin';
-import MiscellaneousServicesRoundedIcon from '@mui/icons-material/MiscellaneousServicesRounded';
 import LineAxisRoundedIcon from '@mui/icons-material/LineAxisRounded';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 

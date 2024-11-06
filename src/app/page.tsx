@@ -244,7 +244,6 @@ export default function Home() {
                         />
                         <Button 
                            sx={{ 
-                              ml: 1,
                               mr: {
                                  xs: 1,
                                  sm: 2,

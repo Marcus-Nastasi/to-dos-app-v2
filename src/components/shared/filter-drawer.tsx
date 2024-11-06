@@ -80,7 +80,7 @@ export default function FilterDrawer({
                      boxShadow: 'none',
                      height: {
                         xs: '80vh',
-                        md: '100vh'
+                        md: 'fit-content'
                      },
                      width: {
                         xs: '100%',
@@ -133,12 +133,20 @@ export default function FilterDrawer({
                }}
             >
                <FormControl>
-                  <FormLabel sx={{ typography: 'title-md', fontWeight: 'bold' }}>
+                  <FormLabel 
+                     sx={{ 
+                        typography: 'title-md', 
+                        fontWeight: 'bold' 
+                     }}
+                     >
                      Priority
                   </FormLabel>
                   <RadioGroup
                      value={priority || ''}
                      onChange={(event) => setPriority(event.target.value)}
+                     sx={{
+                        mt: -0.1
+                     }}
                   >
                      <Box
                         sx={{
@@ -204,12 +212,20 @@ export default function FilterDrawer({
                   </RadioGroup>
                </FormControl>
                <FormControl>
-                  <FormLabel sx={{ typography: 'title-md', fontWeight: 'bold' }}>
+                  <FormLabel 
+                     sx={{ 
+                        typography: 'title-md', 
+                        fontWeight: 'bold' 
+                     }}
+                  >
                      Status
                   </FormLabel>
                   <RadioGroup
                      value={status || ''}
                      onChange={(event) => setStatus(event.target.value)}
+                     sx={{
+                        mt: -0.1
+                     }}
                   >
                      <Box
                         sx={{
@@ -290,11 +306,25 @@ export default function FilterDrawer({
                   placeholder="Client's name..."
                   value={client}
                   onChange={(e) => setClient(e.target.value)}
+                  sx={{
+                     mt: -1
+                  }}
                />
-               <Typography level="title-md" sx={{ fontWeight: 'bold', mt: 2 }}>
+               <Typography 
+                  level="title-md" 
+                  sx={{ 
+                     fontWeight: 'bold', 
+                     mt: 2 
+                  }}
+               >
                   Creation date
                </Typography>
-               <FormControl orientation="horizontal">
+               <FormControl 
+                  orientation="horizontal"
+                  sx={{
+                     mt: -2
+                  }}
+               >
                   <FormLabel sx={{ m: 0.2 }}>From</FormLabel>
                   <Input
                      sx={{ m: 1 }}
@@ -312,11 +342,22 @@ export default function FilterDrawer({
                      onChange={e => setTo(e.target.value)}
                   />
                </FormControl>
-               <Typography level="title-md" sx={{ fontWeight: 'bold', mt: 2 }}>
+               <Typography 
+                  level="title-md" 
+                  sx={{ 
+                     fontWeight: 'bold', 
+                     mt: 1 
+                  }}
+               >
                   Due date
                </Typography>
-               <FormControl orientation="horizontal">
-                  <FormLabel sx={{ m: 0.2 }}>Until</FormLabel>
+               <FormControl 
+                  orientation="horizontal"
+                  sx={{
+                     mt: -2
+                  }}
+               >
+                  <FormLabel sx={{ mx: 0.2 }}>Until</FormLabel>
                   <Input
                      sx={{ m: 1, width: '100%' }}
                      required

@@ -294,7 +294,7 @@ export default function About() {
                                     />
                                  }
                               >
-                                 Click the 'plus' button or press Alt+T to create a new to-do.
+                                 Click the 'plus' button to create a new to-do.
                               </Typography>
                               <Typography
                                  startDecorator={
@@ -364,7 +364,7 @@ export default function About() {
                               View Task Details
                            </AccordionSummary>
                            <AccordionDetails>
-                              Click on the task summary to view detailed information about the task.
+                              Click on the task summary 'details' then on 'open' to view detailed information about the task.
                            </AccordionDetails>
                         </Accordion>
                         <Accordion>
@@ -386,7 +386,7 @@ export default function About() {
                                  }
                               >
                                  In the task details view, you can click the 'edit' button to update the task. 
-                                 This will take you to the update page.
+                                 This will take you to the update modal.
                               </Typography>
                               <Typography
                                  startDecorator={
@@ -407,7 +407,7 @@ export default function About() {
                         </Accordion>
                         <Accordion>
                            <AccordionSummary indicator={<AddIcon />}>
-                              Manage Configurations and Account Settings
+                              Manage Account Settings
                            </AccordionSummary>
                            <AccordionDetails>
                               <Typography
@@ -423,7 +423,7 @@ export default function About() {
                                     />
                                  }
                               >
-                                 On the home page, click the vertical three dots in the top right corner.
+                                 On the home page, click the hamburger menu in the top left corner.
                               </Typography>
                               <Typography
                                  startDecorator={
@@ -438,8 +438,8 @@ export default function About() {
                                     />
                                  }
                               >
-                                 From there, you can access the Configurations and Account 
-                                 pages to manage your application and account settings.
+                                 From there, you can access the Account 
+                                 page to manage your account settings.
                               </Typography>
                            </AccordionDetails>
                         </Accordion>

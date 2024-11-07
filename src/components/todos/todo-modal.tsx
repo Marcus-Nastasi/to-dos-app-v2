@@ -4,7 +4,7 @@ import * as React from 'react';
 import { Transition } from 'react-transition-group';
 import Modal from '@mui/joy/Modal';
 import ModalDialog from '@mui/joy/ModalDialog';
-import { Box, Chip, IconButton, Tooltip, Typography } from '@mui/joy';
+import { Box, Button, Chip, DialogActions, DialogContent, DialogTitle, Divider, IconButton, Tooltip, Typography } from '@mui/joy';
 import PendingActionsTwoToneIcon from '@mui/icons-material/PendingActionsTwoTone';
 import EditNoteRoundedIcon from '@mui/icons-material/EditNoteRounded';
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
@@ -19,6 +19,7 @@ import Cookie from '@/util/Cookies';
 import { deleteTodo } from '@/service/todos/todos.service';
 import { useAlert } from '@/contexts/alert-context';
 import UpdateTodoModal from './update-todo-modal';
+import WarningRoundedIcon from '@mui/icons-material/WarningRounded';
 
 export default function TodoModal({ 
    open, 
@@ -32,6 +33,7 @@ export default function TodoModal({
    refreshTodos: Function 
 }) {
    const [ openEdit, setOpenEdit ] = React.useState<boolean>(false);
+   const [ openDeleteConfirm, setOpenDeleteConfirm] = React.useState<boolean>(false);
    const { showAlert } = useAlert();
 
    const getUserToken = (): LoginResponseDto | null => {
@@ -89,32 +91,72 @@ export default function TodoModal({
                   ]}
                >
                   <ModalDialog
-                  sx={{
-                     opacity: 0,
-                     transition: `opacity 300ms`,
-                     ...{
-                        entering: { opacity: 1 },
-                        entered: { opacity: 1 },
-                     }[state],
-                     width: { xs: '90%', sm: '80%', md: '60%', lg: '40%', xl: '30%' },
-                     maxHeight: '98vh',
-                     minHeight: 'fit-content',
-                     overflowY: "scroll",
-                     "&::-webkit-scrollbar": {
-                        width: "6px",
-                     },
-                     "&::-webkit-scrollbar-track": {
-                        backgroundColor: "#f1f1f1",
-                     },
-                     "&::-webkit-scrollbar-thumb": {
-                        backgroundColor: "#888",
-                        borderRadius: "10px",
-                     },
-                     "&::-webkit-scrollbar-thumb:hover": {
-                        backgroundColor: "#555",
-                     },
-                  }}
+                     sx={{
+                        opacity: 0,
+                        transition: `opacity 300ms`,
+                        ...{
+                           entering: { opacity: 1 },
+                           entered: { opacity: 1 },
+                        }[state],
+                        width: { xs: '90%', sm: '80%', md: '60%', lg: '40%', xl: '30%' },
+                        maxHeight: '98vh',
+                        minHeight: 'fit-content',
+                        overflowY: "scroll",
+                        "&::-webkit-scrollbar": {
+                           width: "6px",
+                        },
+                        "&::-webkit-scrollbar-track": {
+                           backgroundColor: "#f1f1f1",
+                        },
+                        "&::-webkit-scrollbar-thumb": {
+                           backgroundColor: "#888",
+                           borderRadius: "10px",
+                        },
+                        "&::-webkit-scrollbar-thumb:hover": {
+                           backgroundColor: "#555",
+                        },
+                     }}
                   >
+                     
+                     {/* Confirm deletion */}
+                     <Modal 
+                        open={openDeleteConfirm} 
+                        onClose={() => setOpenDeleteConfirm(false)}
+                     >
+                        <ModalDialog 
+                           variant="outlined" 
+                           role="alertdialog"
+                        >
+                           <DialogTitle>
+                              <WarningRoundedIcon />
+                              Confirmation
+                           </DialogTitle>
+                           <Divider />
+                           <DialogContent>
+                              Are you sure you want to delete your to-do?
+                           </DialogContent>
+                           <DialogActions>
+                              <Button 
+                                 size='sm'
+                                 variant="solid" 
+                                 color="danger" 
+                                 onClick={handleDelete}
+                              >
+                                 Delete
+                              </Button>
+                              <Button 
+                                 size='sm'
+                                 variant="plain" 
+                                 color="neutral" 
+                                 onClick={() => setOpenDeleteConfirm(false)}
+                              >
+                                 Cancel
+                              </Button>
+                           </DialogActions>
+                        </ModalDialog>
+                     </Modal>
+                     {/* end */}
+
                      <Typography level="h1">
                         { todo.title }
                      </Typography>
@@ -248,7 +290,7 @@ export default function TodoModal({
                               disabled={false} 
                               variant="plain"
                               color='danger'
-                              onClick={handleDelete}
+                              onClick={() => setOpenDeleteConfirm(true)}
                            >
                               <DeleteRoundedIcon />
                            </IconButton>

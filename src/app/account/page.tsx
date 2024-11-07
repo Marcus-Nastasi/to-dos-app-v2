@@ -5,12 +5,13 @@ import AddIcon from '@mui/icons-material/Add';
 import EmojiObjectsIcon from '@mui/icons-material/EmojiObjects';
 import NightlightIcon from '@mui/icons-material/Nightlight';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
-import { Accordion, AccordionDetails, AccordionGroup, AccordionSummary, accordionSummaryClasses, Box, Button, CssVarsProvider, extendTheme, Tooltip, Typography, useColorScheme } from "@mui/joy";
+import { Accordion, AccordionDetails, AccordionGroup, AccordionSummary, accordionSummaryClasses, Box, Button, CssVarsProvider, DialogActions, DialogContent, DialogTitle, Divider, extendTheme, Modal, ModalDialog, Tooltip, Typography, useColorScheme } from "@mui/joy";
 import { Fragment, MouseEventHandler, useEffect, useState } from "react";
 import CredentialForm from '@/components/users/credential-form';
 import { UserDetails } from '@/types/user/user.dto';
 import { LoginResponseDto } from '@/types/auth/login.dto';
 import Cookie from '@/util/Cookies';
+import WarningRoundedIcon from '@mui/icons-material/WarningRounded';
 
 function ToggleThemeButton() {
    const { mode, setMode } = useColorScheme();
@@ -87,6 +88,7 @@ const theme = extendTheme({
 
 export default function Account() {
    const [ userCookie, setUserCookie ] = useState<LoginResponseDto>();
+   const [ openLogOff, setOpenLogOff] = useState<boolean>(false);
 
    useEffect(() => {
       const gettingUser = getUserToken();
@@ -107,9 +109,8 @@ export default function Account() {
       return data;
    };
 
-   const handleLogOut = (e: MouseEvent) => {
+   const handleLogOff = (e: MouseEvent) => {
       e.preventDefault();
-      if (!confirm('Really want to leave?')) return
       document.cookie.split(";").forEach((cookie) => {
          const name = cookie.split("=")[0].trim();
          document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/`;
@@ -119,6 +120,46 @@ export default function Account() {
 
    return (
       <Fragment>
+
+         {/* Confirm log off */}
+         <Modal
+            open={openLogOff} 
+            onClose={() => setOpenLogOff(false)}
+         >
+            <ModalDialog 
+               variant="outlined" 
+               role="alertdialog"
+            >
+               <DialogTitle>
+                  <WarningRoundedIcon />
+                  Confirmation
+               </DialogTitle>
+               <Divider />
+               <DialogContent>
+                  Are you sure you want to log off?
+               </DialogContent>
+               <DialogActions>
+                  <Button 
+                     size='sm'
+                     variant="solid" 
+                     color="danger" 
+                     onClick={(e: any) => handleLogOff(e)}
+                  >
+                     Log off
+                  </Button>
+                  <Button 
+                     size='sm'
+                     variant="plain" 
+                     color="neutral" 
+                     onClick={() => setOpenLogOff(false)}
+                  >
+                     Cancel
+                  </Button>
+               </DialogActions>
+            </ModalDialog>
+         </Modal>
+         {/* end */}
+
          <CssVarsProvider theme={theme} defaultMode={"light"} >
             <ToggleThemeButton />
             <Box
@@ -215,7 +256,7 @@ export default function Account() {
                            <Button
                               variant='soft'
                               color='danger'
-                              onClick={(e: any) => handleLogOut(e)}
+                              onClick={() => setOpenLogOff(true)}
                               sx={{
                                  width: {
                                     xs: '80%',
@@ -223,7 +264,7 @@ export default function Account() {
                                  }
                               }}
                            >
-                              Log out
+                              Log off
                            </Button>
                         </Box>
                      </AccordionGroup>

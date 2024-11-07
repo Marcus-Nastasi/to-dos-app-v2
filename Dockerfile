@@ -1,17 +1,17 @@
 # Dockerfile
 FROM node:latest
 
-# Criar diretório da aplicação
+# Creating workdir
 WORKDIR /app
 
-# Copiar arquivos da aplicação para o container
+# Copy files to container
 COPY . /app
 
-# Instalar dependências da aplicação
+# Install application dependencies
 RUN npm install
 
-# Expor a porta 3000
+# Expose port 3000 
 EXPOSE 3000
 
-# Comando para rodar a aplicação
+# Run application
 CMD ["npm", "run", "dev"]

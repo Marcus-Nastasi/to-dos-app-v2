@@ -381,12 +381,9 @@ export default function FilterDrawer({
                   onClick={async () => {
                      setLoading(true);
                      setPage(0);
-                     // to remove setTimeout... 
-                     setTimeout(async () => {
-                        await getTodosData(false);
-                        setLoading(false);
-                        setOpenFilters(false);
-                     }, 2000);
+                     await getTodosData(false);
+                     setLoading(false);
+                     setOpenFilters(false);
                   }}
                >
                   Apply filters

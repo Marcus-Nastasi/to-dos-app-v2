@@ -122,6 +122,7 @@ export default function Home() {
    const { showAlert } = useAlert();
 
    useEffect(() => {
+      setLoading(true);
       const gettingUser = getUserToken();
       if (!gettingUser) {
          window.open('/login', '_self');
@@ -129,6 +130,7 @@ export default function Home() {
       }
       setUser(gettingUser.user);
       getTodosData(false);
+      setLoading(false);
    }, []);
 
    const getUserToken = (): LoginResponseDto | null => {
@@ -142,7 +144,6 @@ export default function Home() {
    };
 
    const callApi = async (user_id: number, token: string): Promise<TodosResponseDto | null> => {
-      setLoading(true);
       try {
          const response: TodosResponseDto = await getAll(
             user_id, 
@@ -169,7 +170,6 @@ export default function Home() {
    }
 
    const loadMoreTodos = async (user_id: number, token: string): Promise<void> => {
-      setLoading(true);
       setLoadingMore(true);
       const response: TodosResponseDto | null = await callApi(user_id, token);
       if (!response) throw new Error('Unable to get to-dos.');
@@ -182,7 +182,6 @@ export default function Home() {
 
    const getTodosData = async (loadMore: boolean): Promise<void> => {
       try {
-         setLoading(true);
          const userData: LoginResponseDto | null = getUserToken();
          if (!userData) throw new Error('Invalid user.');
          if (loadMore && todos) {
@@ -258,6 +257,7 @@ export default function Home() {
                            onClick={() => {
                               setPage(0);
                               setTodos(undefined);
+                              setLoading(true);
                               getTodosData(false);
                            }}
                         >

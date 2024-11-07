@@ -2,8 +2,6 @@
 
 import MenuDrawer from '@/components/shared/menu-drawer';
 import SearchBox from '@/components/shared/search-box';
-import CreateTodoModal from '@/components/todos/create-todo-modal';
-import TodoCard from '@/components/todos/todo-card';
 import { getAll } from '@/service/todos/todos.service';
 import { LoginResponseDto } from '@/types/auth/login.dto';
 import { TodoDto, TodosResponseDto } from '@/types/todos/todos.dto';
@@ -18,6 +16,7 @@ import { useState } from 'react';
 import FilterDrawer from '@/components/shared/filter-drawer';
 import { useAlert } from '@/contexts/alert-context';
 import HomeSkeleton from '@/components/shared/home-skeleton';
+import OverdueGraph from '@/components/dashboard/overdue-graph';
 
 function ToggleThemeButton() {
    const { mode, setMode } = useColorScheme();
@@ -318,25 +317,7 @@ export default function Dashboard() {
                            },
                         }}
                      >
-                        {/* {todos?.data && todos?.data.length <= 0 
-                        && <Typography 
-                              sx={{ 
-                                 my: 5, 
-                                 fontWeight: 'bold' 
-                              }}
-                           >
-                              No to-dos to show...
-                           </Typography> 
-                        || todos && !loading && todos.data.map((t: TodoDto) => 
-                           <TodoCard 
-                              todo={t} 
-                              refreshTodos={() => {
-                                 setPage(0);
-                                 setTodos(undefined);
-                                 getTodosData(false);
-                              }} 
-                           />
-                        )} */}
+                        <OverdueGraph />
                      </Stack>
                   </Box>
                </Fragment>

@@ -2,6 +2,8 @@
 
 import * as React from 'react';
 import { pieArcLabelClasses, PieChart } from '@mui/x-charts/PieChart';
+import { Box } from '@mui/joy';
+import { ChartsColorPalette } from '@mui/x-charts-pro';
 
 export const priorities = [
    {
@@ -21,42 +23,53 @@ export const priorities = [
 export const valueFormatter = (item: { value: number }) => `${item.value}%`;
  
 export default function PriorityGraph() {
-  return (
-    <PieChart
-      tooltip={{ trigger: 'none' }}
-      {...size}
-      series={[
-         {
-            data: priorities,
-            highlightScope: { 
-               fade: 'global', 
-               highlight: 'item' 
-            },
-            faded: { 
-               innerRadius: 30, 
-               additionalRadius: -30, 
-               color: 'gray' 
-            },
-            valueFormatter,
-            arcLabel: (item) => `${item.value}%`,
-            arcLabelMinAngle: 35,
-            arcLabelRadius: '60%',
-            innerRadius: 30,
-            outerRadius: 100,
-            paddingAngle: 5,
-            cornerRadius: 5,
-            startAngle: -45,
-         },
-      ]}
-      sx={{
-         justifySelf: 'center',
-         [`& .${pieArcLabelClasses.root}`]: {
-            fontWeight: 'bold',
-            fontSize: 13
-         },
-      }}
-    />
-  );
+   return (
+      <Box
+         padding={3}
+         borderRadius={8}
+         m={2}
+         boxShadow={'0px 0px 3px 0.1px gray'}
+         sx={(theme) => ({
+            bgcolor: theme.palette.mode == 'light' ? 'white' : 'black'
+         })}
+      >
+         <PieChart
+            colors={[ '#D83A3A', '#3386D5', '#179917' ]}
+            tooltip={{ trigger: 'none' }}
+            {...size}
+            series={[
+               {
+                  data: priorities,
+                  highlightScope: { 
+                     fade: 'global', 
+                     highlight: 'item' 
+                  },
+                  faded: { 
+                     innerRadius: 30, 
+                     additionalRadius: -30, 
+                     color: 'gray' 
+                  },
+                  valueFormatter,
+                  arcLabel: (item) => `${item.value}%`,
+                  arcLabelMinAngle: 35,
+                  arcLabelRadius: '60%',
+                  innerRadius: 30,
+                  outerRadius: 100,
+                  paddingAngle: 5,
+                  cornerRadius: 5,
+                  startAngle: -45,
+               },
+            ]}
+            sx={{
+               justifySelf: 'center',
+               [`& .${pieArcLabelClasses.root}`]: {
+                  fontWeight: 'bold',
+                  fontSize: 13
+               },
+            }}
+         />
+      </Box>
+   );
 }
 
 const size = {

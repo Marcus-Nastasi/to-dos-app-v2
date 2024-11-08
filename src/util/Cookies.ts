@@ -18,4 +18,9 @@ export default class Cookie {
    public static create(key: string, value: string, expiration: number): void {
       document.cookie = `${key}=${value}; ${this.getCookieExpirationString(expiration)}; path=/;`;
    }
+
+   public static cleanCookies() {
+      document.cookie.split(";").forEach((cookie) => 
+         document.cookie = `${cookie.split("=")[0].trim()}=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/`);
+   }
 }

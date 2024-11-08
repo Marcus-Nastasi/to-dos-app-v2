@@ -6,9 +6,8 @@ import EmojiObjectsIcon from '@mui/icons-material/EmojiObjects';
 import NightlightIcon from '@mui/icons-material/Nightlight';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import { Accordion, AccordionDetails, AccordionGroup, AccordionSummary, accordionSummaryClasses, Box, Button, CssVarsProvider, DialogActions, DialogContent, DialogTitle, Divider, extendTheme, Modal, ModalDialog, Tooltip, Typography, useColorScheme } from "@mui/joy";
-import { Fragment, MouseEventHandler, useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import CredentialForm from '@/components/users/credential-form';
-import { UserDetails } from '@/types/user/user.dto';
 import { LoginResponseDto } from '@/types/auth/login.dto';
 import Cookie from '@/util/Cookies';
 import WarningRoundedIcon from '@mui/icons-material/WarningRounded';
@@ -93,6 +92,7 @@ export default function Account() {
    useEffect(() => {
       const gettingUser = getUserToken();
       if (!gettingUser) {
+         Cookie.cleanCookies();
          window.open('/login', '_self');
          return
       }
@@ -102,6 +102,7 @@ export default function Account() {
    const getUserToken = (): LoginResponseDto | null => {
       const cookie_token: string | null = Cookie.getCookie('todos_app_session');
       if (!cookie_token || cookie_token == null) {
+         Cookie.cleanCookies();
          window.open('/login', '_blank');
          return null;
       }
@@ -111,10 +112,7 @@ export default function Account() {
 
    const handleLogOff = (e: MouseEvent) => {
       e.preventDefault();
-      document.cookie.split(";").forEach((cookie) => {
-         const name = cookie.split("=")[0].trim();
-         document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/`;
-      });
+      Cookie.cleanCookies();
       window.open('/login', '_self');
    };
 
@@ -180,9 +178,7 @@ export default function Account() {
                      fontSize: {
                         xs: 25, 
                         sm: 30, 
-                        md: 35, 
-                        // lg: 40, 
-                        // xl: 45
+                        md: 35,
                      },
                      fontWeight: 'bold'
                   }}
@@ -254,7 +250,8 @@ export default function Account() {
                            mt={5}
                         >
                            <Button
-                              variant='soft'
+                              size='sm'
+                              variant='solid'
                               color='danger'
                               onClick={() => setOpenLogOff(true)}
                               sx={{

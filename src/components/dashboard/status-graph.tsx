@@ -6,22 +6,22 @@ import { Box, Typography } from '@mui/joy';
 
 export const priorities = [
    {
-      label: 'Pending',
-      value: 72.72,
+      label: 'High',
+      value: 20,
    },
    {
-      label: 'In Progress',
-      value: 13.38,
+      label: 'Medium',
+      value: 10,
    },
    {
-      label: 'Done',
-      value: 10.83,
+      label: 'Low',
+      value: 70,
    },
 ];
 
 export const valueFormatter = (item: { value: number }) => `${item.value}%`;
  
-export default function PriorityGraph() {
+export default function StatusGraph() {
    return (
       <Box
          padding={3}
@@ -38,7 +38,7 @@ export default function PriorityGraph() {
             fontSize={{ xs: 15, md: 20 }}
             mb={-2}
          >
-            Priority
+            Status
          </Typography>
          <PieChart
             colors={[ '#ff6d38', '#3386D5', '#179917' ]}

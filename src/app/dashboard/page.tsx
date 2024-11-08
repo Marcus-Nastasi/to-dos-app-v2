@@ -18,6 +18,8 @@ import { useAlert } from '@/contexts/alert-context';
 import HomeSkeleton from '@/components/shared/home-skeleton';
 import OverdueGraph from '@/components/dashboard/overdue-graph';
 import PriorityGraph from '@/components/dashboard/priority-graph';
+import StatusGraph from '@/components/dashboard/status-graph';
+import CompletionRateGraph from '@/components/dashboard/completion-rate-graph';
 
 function ToggleThemeButton() {
    const { mode, setMode } = useColorScheme();
@@ -320,6 +322,8 @@ export default function Dashboard() {
                      >
                         <OverdueGraph />
                         <PriorityGraph />
+                        <StatusGraph />
+                        <CompletionRateGraph />
                      </Stack>
                   </Box>
                </Fragment>

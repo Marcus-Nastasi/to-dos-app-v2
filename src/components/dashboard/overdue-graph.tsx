@@ -14,7 +14,7 @@ export default function OverdueGraph() {
          })}
       >
          <BarChart
-            colors={[ '#D83A3A', '#179917' ]}
+            colors={[ '#ff6d38', '#179917' ]}
             tooltip={{ trigger: 'none' }}
             xAxis={[{ scaleType: 'band', data: ['To-dos'] }]}
             series={[
@@ -27,16 +27,5 @@ export default function OverdueGraph() {
             borderRadius={5}
          />
       </Box>
-      // <BarChart
-      //    tooltip={{ trigger: 'none' }}
-      //    xAxis={[{ scaleType: 'band', data: ['To-dos'] }]}
-      //    series={[
-      //       { data: [10], label: 'To-dos' },
-      //       // { data: [10], label: 'Future' }
-      //    ]}
-      //    borderRadius={5}
-      //    width={400}
-      //    height={350}
-      // />
    );
 }

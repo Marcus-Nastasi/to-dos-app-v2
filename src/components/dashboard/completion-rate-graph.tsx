@@ -38,7 +38,11 @@ export default function CompletionRateGraph() {
                fontSize: 40,
             },
             [`& .${gaugeClasses.valueArc}`]: {
+               ":hover": {
+                  fill: 'darkgreen'
+               },
                fill: '#179917',
+               transition: 'all 200ms ease-in-out'
             },
             [`& .${gaugeClasses.referenceArc}`]: {
                fill: theme.palette.text.disabled,

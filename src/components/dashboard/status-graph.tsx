@@ -6,16 +6,16 @@ import { Box, Typography } from '@mui/joy';
 
 export const priorities = [
    {
-      label: 'High',
-      value: 20,
+      label: 'Pending',
+      value: 72.72,
    },
    {
-      label: 'Medium',
-      value: 10,
+      label: 'In Progress',
+      value: 13.38,
    },
    {
-      label: 'Low',
-      value: 70,
+      label: 'Done',
+      value: 10.83,
    },
 ];
 

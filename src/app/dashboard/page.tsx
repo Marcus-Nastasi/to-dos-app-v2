@@ -10,16 +10,17 @@ import Cookie from '@/util/Cookies';
 import EmojiObjectsIcon from '@mui/icons-material/EmojiObjects';
 import NightlightIcon from '@mui/icons-material/Nightlight';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
-import { Box, Button, CssVarsProvider, extendTheme, IconButton, Stack, Tooltip, Typography, useColorScheme } from "@mui/joy";
-import { Fragment, useEffect } from "react";
+import { Box, Button, CssVarsProvider, extendTheme, FormControl, FormLabel, IconButton, Input, Stack, TextField, Tooltip, Typography, useColorScheme } from "@mui/joy";
+import { Fragment, useEffect, useRef } from "react";
 import { useState } from 'react';
-import FilterDrawer from '@/components/shared/filter-drawer';
 import { useAlert } from '@/contexts/alert-context';
 import HomeSkeleton from '@/components/shared/home-skeleton';
 import OverdueGraph from '@/components/dashboard/overdue-graph';
-import PriorityGraph from '@/components/dashboard/priority-graph';
-import StatusGraph from '@/components/dashboard/status-graph';
+import PriorityGraph from '@/components/dashboard/status-graph';
+import StatusGraph from '@/components/dashboard/priority-graph';
 import CompletionRateGraph from '@/components/dashboard/completion-rate-graph';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import SearchClient from '@/components/shared/search-client-box';
 
 function ToggleThemeButton() {
    const { mode, setMode } = useColorScheme();
@@ -119,10 +120,9 @@ export default function Dashboard() {
    const [ to, setTo ] = useState<string>('');
    const [ due, setDue ] = useState<string>('');
    const [ user, setUser ] = useState<UserDetails | null>(null);
-   const [ openFilters, setOpenFilters ] = useState<boolean>(false);
    let [ page, setPage ] = useState<number>(0);
    const { showAlert } = useAlert();
-
+   
    useEffect(() => {
       const gettingUser = getUserToken();
       if (!gettingUser) {
@@ -236,20 +236,57 @@ export default function Dashboard() {
                      >
                         Dashboard
                      </Typography>
-
-
                      <Box
                         display={'flex'}
                         justifyContent={'center'}
                         alignItems={'center'}
                      >
-                        <SearchBox 
+                        <SearchClient 
                            query={query} 
                            setQuery={setQuery} 
                         />
-                        <Button 
+                        <Box
+                           display={'flex'}
+                           justifyContent={'center'}
+                           alignItems={'center'}
+                        >
+                           <FormControl orientation="horizontal">
+                              <FormLabel sx={{ m: 2 }}>From</FormLabel>
+                              <Input
+                                 required
+                                 type="date"
+                                 value={from}
+                                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFrom(e.target.value)}
+                                 endDecorator={ <CalendarMonthIcon /> }
+                                 sx={{
+                                    "& input::-webkit-calendar-picker-indicator": {
+                                       display: "none",
+                                    },
+                                    "& input[type='date']": {
+                                       appearance: "none",
+                                    },
+                                 }}
+                              />
+                              <FormLabel sx={{ m: 2 }}>To</FormLabel>
+                              <Input
+                                 required
+                                 type="date"
+                                 value={to}
+                                 onChange={e => setTo(e.target.value)}
+                                 endDecorator={ <CalendarMonthIcon /> }
+                                 sx={{
+                                    "& input::-webkit-calendar-picker-indicator": {
+                                       display: "none",
+                                    },
+                                    "& input[type='date']": {
+                                       appearance: "none",
+                                    },
+                                 }}
+                              />
+                           </FormControl>
+                           <Button 
                            sx={{ 
-                              mr: {
+                              ml: {
                                  xs: 1,
                                  sm: 2,
                                  md: 3,
@@ -266,41 +303,10 @@ export default function Dashboard() {
                               getTodosData(false);
                            }}
                         >
-                           Search
+                           Filter
                         </Button>
-                        <Tooltip 
-                           arrow
-                           variant='outlined' 
-                           title="Filters" 
-                           placement="top"
-                        >
-                           <IconButton
-                              onClick={() => setOpenFilters(true)}
-                           >
-                              <FilterAltIcon />
-                           </IconButton>
-                        </Tooltip>
-                        <FilterDrawer 
-                           openFilters={openFilters} 
-                           setOpenFilters={setOpenFilters} 
-                           client={client}
-                           setClient={setClient}
-                           due={due}
-                           setDue={setDue}
-                           from={from}
-                           setFrom={setFrom}
-                           to={to}
-                           setTo={setTo}
-                           priority={priority}
-                           setPriority={setPriority}
-                           status={status}
-                           setStatus={setStatus}
-                           getTodosData={getTodosData}
-                           page={page}
-                           setPage={setPage}
-                        />
+                        </Box>
                      </Box>
-
                      <Stack
                         flexWrap={'wrap'}
                         direction={{ 

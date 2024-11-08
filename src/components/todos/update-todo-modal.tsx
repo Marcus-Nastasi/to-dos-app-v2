@@ -23,11 +23,13 @@ export default function UpdateTodoModal({
    refreshTodos,
    open,
    setOpen,
+   setLoading,
    todo
 }: { 
    refreshTodos: Function,
    open: boolean,
    setOpen: Function,
+   setLoading: Function,
    todo: TodoDto
 }) {
    const [ title, setTitle ] = useState<string>(todo.title);
@@ -49,6 +51,7 @@ export default function UpdateTodoModal({
    };
 
    const handleSubmit = async (e: FormEvent) => {
+      setLoading(true);
       if (!title && !client && !description && !link && !due && !priority)
          throw new Error();
       const userToken: LoginResponseDto | null = getUserToken();
@@ -68,10 +71,12 @@ export default function UpdateTodoModal({
          const response: TodoDto = await updateTodo(data, +todo.id, userToken.token);
          console.log(response);
          showAlert('To-do updated successfully!', 'success');
-         refreshTodos();
+         await refreshTodos();
       } catch (error) {
-         showAlert('Not able to create to-do! Try again!', 'error');
+         showAlert('Not able to update to-do! Try again!', 'error');
          console.error(error);
+      } finally {
+         setLoading(false);
       }
    };
 

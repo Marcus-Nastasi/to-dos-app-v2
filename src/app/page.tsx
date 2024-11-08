@@ -326,6 +326,7 @@ export default function Home() {
                         || todos && !loading && todos.data.map((t: TodoDto) => 
                            <TodoCard 
                               todo={t} 
+                              setLoading={setLoading}
                               refreshTodos={() => {
                                  setPage(0);
                                  setTodos(undefined);

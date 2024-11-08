@@ -23,7 +23,7 @@ import Cookie from '@/util/Cookies';
 import { useAlert } from '@/contexts/alert-context';
 import { updateStatus } from '@/service/todos/todos.service';
 
-export default function TodoCard({ todo, refreshTodos }: { todo: TodoDto, refreshTodos: Function }) {
+export default function TodoCard({ todo, refreshTodos, setLoading }: { todo: TodoDto, refreshTodos: Function, setLoading: Function }) {
    const [open, setOpen] = React.useState<boolean>(false);
    const { showAlert } = useAlert();
 
@@ -37,11 +37,11 @@ export default function TodoCard({ todo, refreshTodos }: { todo: TodoDto, refres
       return data;
    };
 
-   const updateSt = async (status: 'PENDING' | 'PROGRESS' | 'DONE'): Promise<TodosResponseDto | null> => {
+   const updateSt = async (status: 'PENDING' | 'PROGRESS' | 'DONE'): Promise<TodoDto | null> => {
       const userToken: LoginResponseDto | null = getUserToken();
       if (!userToken) throw new Error();
       try {
-         const response: TodosResponseDto = await updateStatus(status, todo.id, userToken.token);
+         const response: TodoDto = await updateStatus(status, todo.id, userToken.token);
          if (!response) throw new Error('cannot update to-do');
          refreshTodos();
          return response;
@@ -238,6 +238,7 @@ export default function TodoCard({ todo, refreshTodos }: { todo: TodoDto, refres
                      todo={todo} 
                      open={open} 
                      setOpen={setOpen} 
+                     setLoading={setLoading}
                      refreshTodos={refreshTodos} 
                   />
                </AccordionDetails>

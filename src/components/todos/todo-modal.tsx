@@ -25,12 +25,14 @@ export default function TodoModal({
    open, 
    setOpen,
    todo,
-   refreshTodos
+   refreshTodos,
+   setLoading
 }: { 
    open: boolean, 
    setOpen: Function,
    todo: TodoDto,
-   refreshTodos: Function 
+   refreshTodos: Function,
+   setLoading: Function 
 }) {
    const [ openEdit, setOpenEdit ] = React.useState<boolean>(false);
    const [ openDeleteConfirm, setOpenDeleteConfirm] = React.useState<boolean>(false);
@@ -47,6 +49,7 @@ export default function TodoModal({
    };
 
    const handleDelete = async (): Promise<void> => {
+      setLoading(true);
       const userToken: LoginResponseDto | null = getUserToken();
       if (!userToken) {
          window.open('/login', '_self');
@@ -56,10 +59,12 @@ export default function TodoModal({
          const response = await deleteTodo(+todo.id, userToken.token);
          showAlert('To-do deleted successfully!', 'success');
          setOpen(false);
-         refreshTodos();
+         await refreshTodos();
       } catch (error) {
          console.error(error);
          showAlert('Not able to delete to-do! Try again!', 'error');
+      } finally {
+         setLoading(false);
       }
    };
 
@@ -261,6 +266,7 @@ export default function TodoModal({
                            refreshTodos={refreshTodos} 
                            open={openEdit} 
                            setOpen={setOpenEdit} 
+                           setLoading={setLoading}
                            todo={todo}
                         />
                         <Tooltip 

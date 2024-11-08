@@ -17,6 +17,7 @@ import FilterDrawer from '@/components/shared/filter-drawer';
 import { useAlert } from '@/contexts/alert-context';
 import HomeSkeleton from '@/components/shared/home-skeleton';
 import OverdueGraph from '@/components/dashboard/overdue-graph';
+import PriorityGraph from '@/components/dashboard/priority-graph';
 
 function ToggleThemeButton() {
    const { mode, setMode } = useColorScheme();
@@ -318,6 +319,7 @@ export default function Dashboard() {
                         }}
                      >
                         <OverdueGraph />
+                        <PriorityGraph />
                      </Stack>
                   </Box>
                </Fragment>

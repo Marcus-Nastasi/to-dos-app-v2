@@ -3,25 +3,26 @@
 import * as React from 'react';
 import { pieArcLabelClasses, PieChart } from '@mui/x-charts/PieChart';
 import { Box, Typography } from '@mui/joy';
-
-export const priorities = [
-   {
-      label: 'Pending',
-      value: 72.72,
-   },
-   {
-      label: 'In Progress',
-      value: 13.38,
-   },
-   {
-      label: 'Done',
-      value: 10.83,
-   },
-];
-
-export const valueFormatter = (item: { value: number }) => `${item.value}%`;
  
-export default function StatusGraph() {
+export default function StatusGraph({ pending, progress, done }: { pending: number, progress: number, done: number }) {
+
+   const priorities = [
+      {
+         label: 'Pending',
+         value: +((pending / (pending + progress + done)) * 100).toFixed(2),
+      },
+      {
+         label: 'In Progress',
+         value: +((progress / (pending + progress + done)) * 100).toFixed(2),
+      },
+      {
+         label: 'Done',
+         value: +((done / (pending + progress + done)) * 100).toFixed(2),
+      },
+   ];
+   
+   const valueFormatter = (item: { value: number }) => `${item.value}%`;
+
    return (
       <Box
          padding={3}

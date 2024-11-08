@@ -2,7 +2,7 @@ import * as React from 'react';
 import { BarChart } from '@mui/x-charts/BarChart';
 import { Box } from '@mui/joy';
 
-export default function OverdueGraph() {
+export default function OverdueGraph({ overdue, future }: { overdue: number, future: number }) {
    return (
       <Box
          padding={3}
@@ -18,8 +18,8 @@ export default function OverdueGraph() {
             tooltip={{ trigger: 'none' }}
             xAxis={[{ scaleType: 'band', data: ['To-dos'] }]}
             series={[
-               { data: [4], label: 'Overdue      ' }, 
-               { data: [1], label: 'Future' } ,
+               { data: [overdue], label: 'Overdue      ' }, 
+               { data: [future], label: 'Future' } ,
             ]}
             width={400}
             height={300}

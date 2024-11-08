@@ -3,25 +3,26 @@
 import * as React from 'react';
 import { pieArcLabelClasses, PieChart } from '@mui/x-charts/PieChart';
 import { Box, Typography } from '@mui/joy';
-
-export const priorities = [
-   {
-      label: 'High',
-      value: 20,
-   },
-   {
-      label: 'Medium',
-      value: 10,
-   },
-   {
-      label: 'Low',
-      value: 70,
-   },
-];
-
-export const valueFormatter = (item: { value: number }) => `${item.value}%`;
  
-export default function PriorityGraph() {
+export default function PriorityGraph({ high, medium, low }: { high: number, medium: number, low: number }) {
+
+   const priorities = [
+      {
+         label: 'High',
+         value: +((high / (high + medium + low)) * 100).toFixed(2),
+      },
+      {
+         label: 'Medium',
+         value: +((medium / (high + medium + low)) * 100).toFixed(2),
+      },
+      {
+         label: 'Low',
+         value: +((low / (high + medium + low)) * 100).toFixed(2),
+      },
+   ];
+   
+   const valueFormatter = (item: { value: number }) => `${item.value}%`;
+
    return (
       <Box
          padding={3}

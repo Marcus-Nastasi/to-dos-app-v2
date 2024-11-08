@@ -2,13 +2,14 @@ import * as React from 'react';
 import { Gauge, gaugeClasses } from '@mui/x-charts/Gauge';
 import { Box, Typography } from '@mui/joy';
 
-const settings = {
-  width: 400,
-  height: 200,
-  value: (0.75*100),
-};
+export default function CompletionRateGraph({ completion_rate }: { completion_rate: number }) {
 
-export default function CompletionRateGraph() {
+   const settings = {
+      width: 400,
+      height: 200,
+      value: (completion_rate*100),
+   };
+
    return (
       <Box
          padding={3}

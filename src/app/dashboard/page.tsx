@@ -16,11 +16,13 @@ import { useState } from 'react';
 import { useAlert } from '@/contexts/alert-context';
 import HomeSkeleton from '@/components/shared/home-skeleton';
 import OverdueGraph from '@/components/dashboard/overdue-graph';
-import PriorityGraph from '@/components/dashboard/status-graph';
-import StatusGraph from '@/components/dashboard/priority-graph';
 import CompletionRateGraph from '@/components/dashboard/completion-rate-graph';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import SearchClient from '@/components/shared/search-client-box';
+import { MetricsResponseDto } from '@/types/metrics/metrics.dto';
+import { getAllMetrics } from '@/service/metrics/metrics.service';
+import StatusGraph from '@/components/dashboard/status-graph';
+import PriorityGraph from '@/components/dashboard/priority-graph';
 
 function ToggleThemeButton() {
    const { mode, setMode } = useColorScheme();
@@ -109,18 +111,12 @@ const theme = extendTheme({
 });
 
 export default function Dashboard() {
-   const [ todos, setTodos ] = useState<TodosResponseDto>();
+   const [ metrics, setMetrics ] = useState<MetricsResponseDto>();
    const [ loading, setLoading ] = useState<boolean>();
-   const [ loadingMore, setLoadingMore ] = useState<boolean>(false);
-   const [ query, setQuery ] = useState<string>('');
    const [ client, setClient ] = useState<string>('');
-   const [ status, setStatus ] = useState<string>('');
-   const [ priority, setPriority ] = useState<string>('');
    const [ from, setFrom ] = useState<string>('');
    const [ to, setTo ] = useState<string>('');
-   const [ due, setDue ] = useState<string>('');
-   const [ user, setUser ] = useState<UserDetails | null>(null);
-   let [ page, setPage ] = useState<number>(0);
+   const [ user, setUser ] = useState<UserDetails>();
    const { showAlert } = useAlert();
    
    useEffect(() => {
@@ -130,12 +126,13 @@ export default function Dashboard() {
          return
       }
       setUser(gettingUser.user);
-      getTodosData(false);
+      getMetrics();
    }, []);
 
    const getUserToken = (): LoginResponseDto | null => {
       const cookie_token: string | null = Cookie.getCookie('todos_app_session');
       if (!cookie_token || cookie_token == null) {
+         Cookie.cleanCookies();
          window.open('/login', '_blank');
          return null;
       }
@@ -143,63 +140,27 @@ export default function Dashboard() {
       return data;
    };
 
-   const callApi = async (user_id: number, token: string): Promise<TodosResponseDto | null> => {
+   const getMetrics = async (): Promise<MetricsResponseDto | null> => {
       setLoading(true);
+      const userToken: LoginResponseDto | null = getUserToken();
+      if (!userToken) return null;
       try {
-         const response: TodosResponseDto = await getAll(
-            user_id, 
-            token, 
-            page, 
-            query,
+         const response: MetricsResponseDto = await getAllMetrics(
+            userToken.user.id, 
+            userToken.token, 
             client,
-            status, 
-            priority, 
             from, 
             to, 
-            due
          );
-         if (!response) throw new Error('Cannot get to-dos');
+         if (!response) throw new Error('Cannot get metrics!');
+         setMetrics(response);
          return response;
       } catch (error) {
          console.error(error);
-         showAlert('Unable to get to-dos!', 'error');
+         showAlert('Unable to get metrics!', 'error');
          return null;
       } finally {
-         setLoadingMore(false);
          setLoading(false);
-      }
-   }
-
-   const loadMoreTodos = async (user_id: number, token: string): Promise<void> => {
-      setLoading(true);
-      setLoadingMore(true);
-      const response: TodosResponseDto | null = await callApi(user_id, token);
-      if (!response) throw new Error('Unable to get to-dos.');
-      if (todos) {
-         response.data.forEach((d: TodoDto) => todos.data.push(d));
-      }
-      setLoadingMore(false);
-      setLoading(false);
-   }
-
-   const getTodosData = async (loadMore: boolean): Promise<void> => {
-      try {
-         setLoading(true);
-         const userData: LoginResponseDto | null = getUserToken();
-         if (!userData) throw new Error('Invalid user.');
-         if (loadMore && todos) {
-            await loadMoreTodos(userData.user.id, userData.token);
-            return
-         }
-         const response: TodosResponseDto | null = await callApi(userData.user.id, userData.token);
-         if (!response) throw new Error('Unable to get to-dos');
-         setTodos(response);
-      } catch(e) {
-         console.error(e);
-         showAlert('Unable to get to-dos!', 'error');
-      } finally {
-         setLoading(false);
-         setLoadingMore(false);
       }
    }
 
@@ -242,8 +203,8 @@ export default function Dashboard() {
                         alignItems={'center'}
                      >
                         <SearchClient 
-                           query={query} 
-                           setQuery={setQuery} 
+                           query={client} 
+                           setQuery={setClient} 
                         />
                         <Box
                            display={'flex'}
@@ -298,9 +259,7 @@ export default function Dashboard() {
                            color='neutral'
                            variant='solid'
                            onClick={() => {
-                              setPage(0);
-                              setTodos(undefined);
-                              getTodosData(false);
+                              getMetrics();
                            }}
                         >
                            Filter
@@ -326,10 +285,23 @@ export default function Dashboard() {
                            },
                         }}
                      >
-                        <OverdueGraph />
-                        <PriorityGraph />
-                        <StatusGraph />
-                        <CompletionRateGraph />
+                        <OverdueGraph 
+                           overdue={metrics ? metrics.overdue : 0} 
+                           future={metrics ? metrics.future : 0} 
+                        />
+                        <StatusGraph 
+                           pending={metrics ? metrics.pending : 0}
+                           progress={metrics ? metrics.in_progress : 0}
+                           done={metrics ? metrics.done : 0}
+                        />
+                        <PriorityGraph
+                           high={metrics ? metrics.high : 0}
+                           medium={metrics ? metrics.medium : 0}
+                           low={metrics ? metrics.low : 0}
+                        />
+                        <CompletionRateGraph
+                           completion_rate={metrics ? metrics.completion_rate : 0}
+                        />
                      </Stack>
                   </Box>
                </Fragment>

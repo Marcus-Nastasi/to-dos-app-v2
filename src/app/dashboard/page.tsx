@@ -1,17 +1,13 @@
 'use client'
 
 import MenuDrawer from '@/components/shared/menu-drawer';
-import SearchBox from '@/components/shared/search-box';
-import { getAll } from '@/service/todos/todos.service';
 import { LoginResponseDto } from '@/types/auth/login.dto';
-import { TodoDto, TodosResponseDto } from '@/types/todos/todos.dto';
 import { UserDetails } from '@/types/user/user.dto';
 import Cookie from '@/util/Cookies';
 import EmojiObjectsIcon from '@mui/icons-material/EmojiObjects';
 import NightlightIcon from '@mui/icons-material/Nightlight';
-import FilterAltIcon from '@mui/icons-material/FilterAlt';
-import { Box, Button, CssVarsProvider, extendTheme, FormControl, FormLabel, IconButton, Input, Stack, TextField, Tooltip, Typography, useColorScheme } from "@mui/joy";
-import { Fragment, useEffect, useRef } from "react";
+import { Box, Button, CssVarsProvider, extendTheme, FormControl, FormLabel, IconButton, Input, Stack, Tooltip, Typography, useColorScheme } from "@mui/joy";
+import { Fragment, useEffect } from "react";
 import { useState } from 'react';
 import { useAlert } from '@/contexts/alert-context';
 import HomeSkeleton from '@/components/shared/home-skeleton';
@@ -23,6 +19,7 @@ import { MetricsResponseDto } from '@/types/metrics/metrics.dto';
 import { getAllMetrics } from '@/service/metrics/metrics.service';
 import StatusGraph from '@/components/dashboard/status-graph';
 import PriorityGraph from '@/components/dashboard/priority-graph';
+import ClearRoundedIcon from '@mui/icons-material/ClearRounded';
 
 function ToggleThemeButton() {
    const { mode, setMode } = useColorScheme();
@@ -122,6 +119,7 @@ export default function Dashboard() {
    useEffect(() => {
       const gettingUser = getUserToken();
       if (!gettingUser) {
+         Cookie.cleanCookies();
          window.open('/login', '_self');
          return
       }
@@ -245,7 +243,7 @@ export default function Dashboard() {
                                  }}
                               />
                            </FormControl>
-                           <Button 
+                        <Button 
                            sx={{ 
                               ml: {
                                  xs: 1,
@@ -264,6 +262,27 @@ export default function Dashboard() {
                         >
                            Filter
                         </Button>
+                        <IconButton
+                           sx={{ 
+                              ml: {
+                                 xs: 1,
+                                 sm: 2,
+                                 md: 3,
+                                 lg: 4
+                              },
+                           }}
+                           size='sm'
+                           color='neutral'
+                           variant='soft'
+                           onClick={async () => {
+                              setClient('');
+                              setFrom('');
+                              setTo('');
+                              await getMetrics();
+                           }}
+                        >
+                           <ClearRoundedIcon />
+                        </IconButton>
                         </Box>
                      </Box>
                      <Stack

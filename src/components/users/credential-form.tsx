@@ -72,7 +72,9 @@ export default function CredentialForm({ userCookie }: { userCookie: LoginRespon
                justifyContent={'space-evenly'}
                padding={5}
                borderRadius={5}
-               bgcolor={'background.level1'}
+               sx={(theme) => ({
+                  bgcolor: theme.palette.mode == 'light' ? '#FFFFFF' : '#000000'
+               })}
             >
                <FormControl>
                   <FormLabel
@@ -193,18 +195,18 @@ export default function CredentialForm({ userCookie }: { userCookie: LoginRespon
                >
                   <Button 
                      size='sm'
-                     variant='soft'
-                     color='primary'
+                     variant='solid'
+                     color='neutral'
                      type="submit"
                      sx={{
                         mt: 5,
                         width: {
                            xs: '100%',
-                           sm: 'fit-content' 
+                           xl: 'fit-content' 
                         }
                      }}
                   >
-                     Submit
+                     Save
                   </Button>
                </Box>
             </Box>

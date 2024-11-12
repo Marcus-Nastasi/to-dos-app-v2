@@ -33,7 +33,10 @@ export default function CredentialForm({ userCookie }: { userCookie: LoginRespon
             window.open('/login', '_self');
             return
          }
-         if (!name || !email || !currentPassword || !newPassword) return
+         if (!name || !email || !currentPassword || !newPassword) {
+            showAlert('To save, update the information and confirm your password.', 'error');
+            return
+         }
          const response: UserResponseDto = await updateUser(
             userCookie.user.id,
             {
@@ -45,6 +48,7 @@ export default function CredentialForm({ userCookie }: { userCookie: LoginRespon
             userCookie.token
          );
          showAlert(`Update successful! Please, log-in again...`, 'success');
+         Cookie.cleanCookies();
          window.open('/login', '_self');
          return response;
       } catch(e) {

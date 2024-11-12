@@ -5,7 +5,7 @@ import { updateUser } from "@/service/users/user.service";
 import { LoginResponseDto } from "@/types/auth/login.dto";
 import { UserResponseDto } from "@/types/user/user.dto";
 import Cookie from "@/util/Cookies";
-import { Box, Button, FormControl, FormLabel, Input } from "@mui/joy";
+import { Box, Button, Divider, FormControl, FormLabel, Input, Typography } from "@mui/joy";
 import { useEffect, useState } from "react";
 
 export default function CredentialForm({ userCookie }: { userCookie: LoginResponseDto | undefined }) {
@@ -64,150 +64,169 @@ export default function CredentialForm({ userCookie }: { userCookie: LoginRespon
             <Box
                width={'100%'}
                display={'flex'}
-               flexDirection={{ 
-                  xs: 'column', 
-                  md: 'row' 
-               }}
-               flexWrap={'wrap'}
-               justifyContent={'space-evenly'}
-               padding={5}
+               flexDirection={'column'}
                borderRadius={5}
                sx={(theme) => ({
-                  bgcolor: theme.palette.mode == 'light' ? '#FFFFFF' : '#000000'
+                  bgcolor: theme.palette.mode == 'light' ? '#FFFFFF' : '#000000',
+                  border: theme.palette.mode == 'light' ? '0.1px solid lightgray' : '0.1px solid #3e3e3e'
                })}
             >
-               <FormControl>
-                  <FormLabel
-                     sx={{
-                        color: 'text.primary',
-                        fontSize: {
-                           xs: 15,
-                           lg: 17,
-                        }
-                     }}
+               <Box>
+                  <Typography
+                     padding={3}
+                     textAlign={'center'}
+                     level='h4'
                   >
-                     Name
-                  </FormLabel>
-                  <Input 
-                     value={name}
-                     onChange={e => setName(e.target.value)}
-                     required 
-                     sx={{
-                        width: {
-                           xs: '100%',
-                           md: 'fit-content'
-                        },
-                     }}
-                  />
-               </FormControl>
-               <FormControl
-                  sx={{
-                     mt: {
-                        xs: 3,
-                        xl: 0
-                     }
-                  }}
-               >
-                  <FormLabel
-                     sx={{
-                        color: 'text.primary',
-                        fontSize: {
-                           xs: 15,
-                           lg: 17,
-                        }
-                     }}
-                  >
-                     E-mail
-                  </FormLabel>
-                  <Input 
-                     value={email}
-                     onChange={e => setEmail(e.target.value)}
-                     required 
-                     sx={{
-                        width: {
-                           xs: '100%',
-                           md: 'fit-content'
-                        },
-                     }}
-                  />
-               </FormControl>
-               <FormControl
-                  sx={{
-                     mt: 3
-                  }}
-               >
-                  <FormLabel
-                     sx={{
-                        color: 'text.primary',
-                        fontSize: {
-                           xs: 15,
-                           lg: 17,
-                        }
-                     }}
-                  >
-                     Current password
-                  </FormLabel>
-                  <Input 
-                     value={currentPassword}
-                     onChange={e => setCurrentPassword(e.target.value)}
-                     type='password'
-                     required 
-                     sx={{
-                        width: {
-                           xs: '100%',
-                           md: 'fit-content'
-                        },
-                     }}
-                  />
-               </FormControl>
-               <FormControl
-                  sx={{
-                     mt: 3
-                  }}
-               >
-                  <FormLabel
-                     sx={{
-                        color: 'text.primary',
-                        fontSize: {
-                           xs: 15,
-                           lg: 17,
-                        }
-                     }}
-                  >
-                     New password
-                  </FormLabel>
-                  <Input 
-                     value={newPassword}
-                     onChange={e => setNewPassword(e.target.value)}
-                     type='password' 
-                     required 
-                     sx={{
-                        width: {
-                           xs: '100%',
-                           md: 'fit-content'
-                        },
-                     }}
-                  />
-               </FormControl>
+                     Update your Credentials
+                  </Typography>
+                  <Divider />
+               </Box>
                <Box
-                  paddingX={3}
                   width={'100%'}
+                  display={'flex'}
+                  flexDirection={{ 
+                     xs: 'column', 
+                     md: 'row' 
+                  }}
+                  flexWrap={'wrap'}
+                  justifyContent={'space-evenly'}
+                  paddingY={3}
+                  paddingX={4}
                >
-                  <Button 
-                     size='sm'
-                     variant='solid'
-                     color='neutral'
-                     type="submit"
+                  <FormControl>
+                     <FormLabel
+                        sx={{
+                           color: 'text.primary',
+                           fontSize: {
+                              xs: 15,
+                              lg: 17,
+                           }
+                        }}
+                     >
+                        Name
+                     </FormLabel>
+                     <Input 
+                        value={name}
+                        onChange={e => setName(e.target.value)}
+                        required 
+                        sx={{
+                           width: {
+                              xs: '100%',
+                              md: 'fit-content'
+                           },
+                        }}
+                     />
+                  </FormControl>
+                  <FormControl
                      sx={{
-                        mt: 5,
-                        width: {
-                           xs: '100%',
-                           xl: 'fit-content' 
+                        mt: {
+                           xs: 3,
+                           xl: 0
                         }
                      }}
                   >
-                     Save
-                  </Button>
+                     <FormLabel
+                        sx={{
+                           color: 'text.primary',
+                           fontSize: {
+                              xs: 15,
+                              lg: 17,
+                           }
+                        }}
+                     >
+                        E-mail
+                     </FormLabel>
+                     <Input 
+                        value={email}
+                        onChange={e => setEmail(e.target.value)}
+                        required 
+                        sx={{
+                           width: {
+                              xs: '100%',
+                              md: 'fit-content'
+                           },
+                        }}
+                     />
+                  </FormControl>
+                  <FormControl
+                     sx={{
+                        mt: 3
+                     }}
+                  >
+                     <FormLabel
+                        sx={{
+                           color: 'text.primary',
+                           fontSize: {
+                              xs: 15,
+                              lg: 17,
+                           }
+                        }}
+                     >
+                        Current password
+                     </FormLabel>
+                     <Input 
+                        value={currentPassword}
+                        onChange={e => setCurrentPassword(e.target.value)}
+                        type='password'
+                        required 
+                        sx={{
+                           width: {
+                              xs: '100%',
+                              md: 'fit-content'
+                           },
+                        }}
+                     />
+                  </FormControl>
+                  <FormControl
+                     sx={{
+                        mt: 3
+                     }}
+                  >
+                     <FormLabel
+                        sx={{
+                           color: 'text.primary',
+                           fontSize: {
+                              xs: 15,
+                              lg: 17,
+                           }
+                        }}
+                     >
+                        New password
+                     </FormLabel>
+                     <Input 
+                        value={newPassword}
+                        onChange={e => setNewPassword(e.target.value)}
+                        type='password' 
+                        required 
+                        sx={{
+                           width: {
+                              xs: '100%',
+                              md: 'fit-content'
+                           },
+                        }}
+                     />
+                  </FormControl>
+                  <Box
+                     paddingX={3}
+                     width={'100%'}
+                  >
+                     <Button 
+                        size='sm'
+                        variant='solid'
+                        color='neutral'
+                        type="submit"
+                        sx={{
+                           paddingX: 3,
+                           mt: 5,
+                           width: {
+                              xs: '100%',
+                              xl: 'fit-content' 
+                           }
+                        }}
+                     >
+                        Save
+                     </Button>
+                  </Box>
                </Box>
             </Box>
          </form>

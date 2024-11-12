@@ -51,11 +51,11 @@ Follow the steps below to set up and run the project on your local machine.
 
 **Make sure you have opened the ports 8080, 3000 and 5432 on your machine locally**
 
-1. **Clone this front-end repo with the name 'todos-front'':**
+1. **Clone this front-end repo with the name 'todos-front':**
    ```bash
    git clone https://github.com/Marcus-Nastasi/to-dos-app-v2.git
 
-2. **Clone front-end repo on the same folder, with the name 'todos-front':**
+2. **Clone back-end repo on the same folder, with the name 'todos':**
    ```bash
    git clone https://github.com/Marcus-Nastasi/java-backend-todos-app.git
 - **Configure the 'application.properties' file on back-end:**

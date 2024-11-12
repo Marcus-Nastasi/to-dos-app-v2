@@ -1,36 +1,169 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# To-dos Application
 
-## Getting Started
+## About the project
 
-First, run the development server:
+Task Management System.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+This is an application developed to facilitate task management.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The application allows for viewing tasks with pagination, searches, and filters by title, description, client, status, priority, creation date, and delivery date.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+The application enables the registration, editing, and deletion of tasks, as well as the management of their status and priority, offering a user-friendly interface on the front end and a robust API on the back end.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Additionally, the API is documented with Swagger API to make the available routes, payloads, and responses easy to understand.
 
-## Learn More
+## Entity model
+![todos_app drawio](https://github.com/user-attachments/assets/4418b910-998b-4418-bd1e-23fcc7c8a7fe)
 
-To learn more about Next.js, take a look at the following resources:
+## Techs
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Front-end
+- **Framework**: Next.js and React.js
+- **Language**: TypeScript
+- **Styles**: Material UI and Tailwind CSS
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Back-end
+- **Framework**: Spring
+- **Language**: Java
+- **Tests**: JUnit and Mockito
 
-## Deploy on Vercel
+### Database
+- **Database**: PostgreSQL
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### API Documentation
+- **Tool**: Swagger API
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Containers
+- **Docker** and **Docker Compose**
+
+## How to run
+
+Follow the steps below to set up and run the project on your local machine.
+
+### Prerequisites
+
+- Git
+- Node.js and npm (for front-end)
+- java 21 (JDK) e Maven
+- Docker and Docker Compose
+
+### Steps
+
+**Make sure you have opened the ports 8080, 3000 and 5432 on your machine locally**
+
+1. **Clone this front-end repo with the name 'todos-front'':**
+   ```bash
+   git clone https://github.com/Marcus-Nastasi/to-dos-app-v2.git
+
+2. **Clone front-end repo on the same folder, with the name 'todos-front':**
+   ```bash
+   git clone https://github.com/Marcus-Nastasi/java-backend-todos-app.git
+- **Configure the 'application.properties' file on back-end:**
+   ```bash
+   spring.application.name=todos
+
+   spring.jpa.hibernate.show-sql=true
+   spring.datasource.url=jdbc:postgresql://localhost:5432/postgres
+   spring.datasource.username=postgres
+   spring.datasource.password=123
+   spring.datasource.driver-class-name=org.postgresql.Driver
+   spring.jpa.properties.hibernate.dialect = org.hibernate.dialect.PostgreSQLDialect
+   
+   # Hibernate properties
+   spring.security.token.secret = [your_token_secret].
+   
+   spring.jpa.hibernate.ddl-auto=update
+   
+3. **On the root folder, create a 'docker' folder, and create the docker-compose.yml file:**
+    ```yml
+    version: '3.8'
+
+    services:
+    postgres:
+    image: postgres:15
+    environment:
+    POSTGRES_USER: postgres
+    POSTGRES_PASSWORD: 123
+    POSTGRES_DB: postgres
+    volumes:
+    - postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    
+    backend:
+    build: ../todos
+    environment:
+    SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/postgres
+    SPRING_DATASOURCE_USERNAME: postgres
+    SPRING_DATASOURCE_PASSWORD: 123
+    depends_on:
+    - postgres
+    ports:
+      - "8080:8080"
+    
+    frontend:
+    build: ../todos-front
+    environment:
+    API_URL: http://backend:8080
+    ports:
+    - "3000:3000"
+    
+    volumes:
+    postgres-data:
+
+4. **Run the application with Docker: Ensure you're in the project's root directory and execute Docker Compose to start all services automatically:**
+    ```bash
+    [sudo] docker-compose up --d
+
+5. **Wait for the build to complete and access the application: Once the build is finished, the application will be available in your browser:**
+   ```bash
+    http://localhost:3000/
+
+6. **You can access the API documentation created with Swagger at the route:**
+   ```bash
+    http://localhost:8080/swagger-ui/index.html
+   
+7. **Once you've built the images for the first time, you can create in the root folder of your computer's user, this bash script to run or stop the app easily (make sure you write your own information on [] marked fields):**
+    ```bash
+    usage() {
+        echo "Uso: $0 --s"
+        exit 1
+    }
+    
+    if [ "$1" == "--s" ]; then
+        action="stop"
+    else
+        action="start"
+        access='Access http://localhost:3000/ or http://localhost:8080/swagger-ui/index.html'
+    fi
+    
+    cd [/your/path/to/the/app/docker/folder/]
+    
+    echo ''
+    echo 'Insert your password to run...'
+    echo ''
+    
+    [sudo] docker-compose $action
+    
+    echo ''
+    echo "Application ${action}ed!"
+    
+    if [ "$action" != "stop" ]; then
+        echo ''
+        echo "${access}"
+    fi
+    
+    cd [/your/path/to/user/root/]
+
+8. **Once created the bash script, from your root dir you can start the app just by running:**
+    ```bash
+    . [bash_file_name].sh
+
+9. **From your root dir you can stop the app just by running:**
+    ```bash
+    . [bash_file_name].sh --s
+
+## Unit tests
+
+###  Build and execution with unit tests
+- **To run the unit tests or build without skipping the tests, make sure you have a postgres database on your 5432 port.**

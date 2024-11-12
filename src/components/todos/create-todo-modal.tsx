@@ -33,6 +33,7 @@ export default function CreateTodoModal({ refreshTodos }: { refreshTodos: Functi
    const getUserToken = (): LoginResponseDto | null => {
       const cookie_token: string | null = Cookie.getCookie('todos_app_session');
       if (!cookie_token || cookie_token == null) {
+         Cookie.cleanCookies();
          window.open('/login', '_blank');
          return null;
       }
@@ -40,12 +41,12 @@ export default function CreateTodoModal({ refreshTodos }: { refreshTodos: Functi
       return data;
    };
 
-   const handleSubmit = async (e: FormEvent) => {
+   const handleSubmit = async (e: FormEvent): Promise<void> => {
       if (!title && !client && !description && !link && !due && !priority)
          throw new Error();
       const userToken: LoginResponseDto | null = getUserToken();
       if (!userToken) {
-         window.open('/login', '_self');
+         Cookie.cleanCookies();
          throw new Error('Invalid user');
       }
       const data: TodosRequestDto = {
@@ -58,7 +59,7 @@ export default function CreateTodoModal({ refreshTodos }: { refreshTodos: Functi
          priority
       };
       try {
-         const response = await create(data, userToken.token);
+         await create(data, userToken.token);
          showAlert('To-do created successfully!', 'success');
          refreshTodos();
       } catch (error) {

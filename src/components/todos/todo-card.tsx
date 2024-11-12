@@ -17,7 +17,7 @@ import PendingActionsTwoToneIcon from '@mui/icons-material/PendingActionsTwoTone
 import MoreVert from '@mui/icons-material/MoreVert';
 import { AddCircleOutline } from '@mui/icons-material';
 import TodoModal from './todo-modal';
-import { TodoDto, TodosResponseDto } from '@/types/todos/todos.dto';
+import { TodoDto } from '@/types/todos/todos.dto';
 import { LoginResponseDto } from '@/types/auth/login.dto';
 import Cookie from '@/util/Cookies';
 import { useAlert } from '@/contexts/alert-context';
@@ -30,6 +30,7 @@ export default function TodoCard({ todo, refreshTodos, setLoading }: { todo: Tod
    const getUserToken = (): LoginResponseDto | null => {
       const cookie_token: string | null = Cookie.getCookie('todos_app_session');
       if (!cookie_token || cookie_token == null) {
+         Cookie.cleanCookies();
          window.open('/login', '_blank');
          return null;
       }
@@ -39,7 +40,11 @@ export default function TodoCard({ todo, refreshTodos, setLoading }: { todo: Tod
 
    const updateSt = async (status: 'PENDING' | 'PROGRESS' | 'DONE'): Promise<TodoDto | null> => {
       const userToken: LoginResponseDto | null = getUserToken();
-      if (!userToken) throw new Error();
+      if (!userToken) {
+         Cookie.cleanCookies();
+         window.open('/login', "_self");
+         throw new Error();
+      }
       try {
          const response: TodoDto = await updateStatus(status, todo.id, userToken.token);
          if (!response) throw new Error('cannot update to-do');

@@ -116,11 +116,15 @@ export default function Dashboard() {
    const [ user, setUser ] = useState<UserDetails>();
    const { showAlert } = useAlert();
    
+   const logOff = (): void => {
+      Cookie.cleanCookies();
+      window.open('/login', '_self');
+   };
+   
    useEffect(() => {
       const gettingUser = getUserToken();
       if (!gettingUser) {
-         Cookie.cleanCookies();
-         window.open('/login', '_self');
+         logOff();
          return
       }
       setUser(gettingUser.user);
@@ -130,8 +134,7 @@ export default function Dashboard() {
    const getUserToken = (): LoginResponseDto | null => {
       const cookie_token: string | null = Cookie.getCookie('todos_app_session');
       if (!cookie_token || cookie_token == null) {
-         Cookie.cleanCookies();
-         window.open('/login', '_blank');
+         logOff();
          return null;
       }
       const data: LoginResponseDto = JSON.parse(cookie_token);
@@ -141,7 +144,10 @@ export default function Dashboard() {
    const getMetrics = async (): Promise<MetricsResponseDto | null> => {
       setLoading(true);
       const userToken: LoginResponseDto | null = getUserToken();
-      if (!userToken) return null;
+      if (!userToken) {
+         logOff();
+         return null;
+      };
       try {
          const response: MetricsResponseDto = await getAllMetrics(
             userToken.user.id, 
@@ -178,7 +184,6 @@ export default function Dashboard() {
                      }}
                   >
                      <MenuDrawer />
-
                      <Typography
                         textAlign={'center'}
                         paddingY={5}

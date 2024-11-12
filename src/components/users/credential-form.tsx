@@ -17,7 +17,10 @@ export default function CredentialForm({ userCookie }: { userCookie: LoginRespon
 
    useEffect(() => {
       const cookie: string | null = Cookie.getCookie('todos_app_session');
-      if (!cookie) return
+      if (!cookie) {
+         Cookie.cleanCookies();
+         return
+      }
       const cookieObject: LoginResponseDto = JSON.parse(cookie);
       setName(cookieObject.user.name);
       setEmail(cookieObject.user.email);
@@ -26,10 +29,7 @@ export default function CredentialForm({ userCookie }: { userCookie: LoginRespon
    const handleSubmit = async () => {
       try {
          if (!userCookie) {
-            document.cookie.split(";").forEach((cookie) => {
-               const name = cookie.split("=")[0].trim();
-               document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/`;
-            });
+            Cookie.cleanCookies();
             window.open('/login', '_self');
             return
          }
@@ -45,9 +45,7 @@ export default function CredentialForm({ userCookie }: { userCookie: LoginRespon
             userCookie.token
          );
          showAlert(`Update successful! Please, log-in again...`, 'success');
-         setTimeout(() => {
-            window.open('/login', '_self');            
-         }, 1000);
+         window.open('/login', '_self');
          return response;
       } catch(e) {
          console.error(e);

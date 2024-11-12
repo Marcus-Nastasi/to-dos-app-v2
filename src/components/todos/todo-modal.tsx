@@ -41,6 +41,7 @@ export default function TodoModal({
    const getUserToken = (): LoginResponseDto | null => {
       const cookie_token: string | null = Cookie.getCookie('todos_app_session');
       if (!cookie_token || cookie_token == null) {
+         Cookie.cleanCookies();
          window.open('/login', '_blank');
          return null;
       }
@@ -52,11 +53,12 @@ export default function TodoModal({
       setLoading(true);
       const userToken: LoginResponseDto | null = getUserToken();
       if (!userToken) {
+         Cookie.cleanCookies();
          window.open('/login', '_self');
          return
       };
       try {
-         const response = await deleteTodo(+todo.id, userToken.token);
+         await deleteTodo(+todo.id, userToken.token);
          showAlert('To-do deleted successfully!', 'success');
          setOpen(false);
          await refreshTodos();

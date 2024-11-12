@@ -43,6 +43,7 @@ export default function UpdateTodoModal({
    const getUserToken = (): LoginResponseDto | null => {
       const cookie_token: string | null = Cookie.getCookie('todos_app_session');
       if (!cookie_token || cookie_token == null) {
+         Cookie.cleanCookies();
          window.open('/login', '_blank');
          return null;
       }
@@ -56,6 +57,7 @@ export default function UpdateTodoModal({
          throw new Error();
       const userToken: LoginResponseDto | null = getUserToken();
       if (!userToken) {
+         Cookie.cleanCookies();
          window.open('/login', '_self');
          throw new Error('Invalid user');
       }
@@ -68,8 +70,7 @@ export default function UpdateTodoModal({
          priority
       };
       try {
-         const response: TodoDto = await updateTodo(data, +todo.id, userToken.token);
-         console.log(response);
+         await updateTodo(data, +todo.id, userToken.token);
          showAlert('To-do updated successfully!', 'success');
          await refreshTodos();
       } catch (error) {

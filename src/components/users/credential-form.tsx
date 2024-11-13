@@ -5,15 +5,20 @@ import { updateUser } from "@/service/users/user.service";
 import { LoginResponseDto } from "@/types/auth/login.dto";
 import { UserResponseDto } from "@/types/user/user.dto";
 import Cookie from "@/util/Cookies";
-import { Box, Button, Divider, FormControl, FormLabel, Input, Typography } from "@mui/joy";
+import { Box, Button, Card, Divider, FormControl, FormLabel, Input, Typography } from "@mui/joy";
 import { useEffect, useState } from "react";
 import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded';
+import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
+import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined';
 
 export default function CredentialForm({ userCookie }: { userCookie: LoginResponseDto | undefined }) {
    const [ name, setName ] = useState<string | undefined>();
    const [ email, setEmail ] = useState<string | undefined>();
    const [ currentPassword, setCurrentPassword ] = useState<string>();
+   const [ viewCurrentPassword, setViewCurrentPassword ] = useState<boolean>();
    const [ newPassword, setNewPassword ] = useState<string>();
+   const [ viewNewPassword, setViewNewPassword ] = useState<boolean>();
+   const [ loading, setLoading ] = useState<boolean>(false);
    const { showAlert } = useAlert();
 
    useEffect(() => {
@@ -28,6 +33,7 @@ export default function CredentialForm({ userCookie }: { userCookie: LoginRespon
    }, []);
 
    const handleSubmit = async () => {
+      setLoading(true);
       try {
          if (!userCookie) {
             Cookie.cleanCookies();
@@ -55,31 +61,31 @@ export default function CredentialForm({ userCookie }: { userCookie: LoginRespon
       } catch(e) {
          console.error(e);
          showAlert(`Update not successful! Please, try again...`, 'error');
+      } finally {
+         setLoading(false);
       }
    };
 
    return (
       <>
          <form
+            style={{ display: 'flex', justifyContent: 'center' }}
             onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
                event.preventDefault();
                handleSubmit();
             }}
          >
-            <Box
-               width={'100%'}
-               display={'flex'}
-               flexDirection={'column'}
-               borderRadius={5}
-               sx={(theme) => ({
-                  bgcolor: theme.palette.mode == 'light' ? '#FFFFFF' : '#000000',
-                  border: theme.palette.mode == 'light' ? '0.1px solid lightgray' : '0.1px solid #3e3e3e'
-               })}
+            <Card
+               sx={{
+                  width: '70%',
+                  display: 'flex',
+                  flexDirection: 'column',
+               }}
             >
                <Box>
                   <Typography
                      startDecorator={<AccountCircleRoundedIcon />}
-                     padding={3}
+                     padding={2}
                      level='title-md'
                   >
                      Update your credentials
@@ -89,14 +95,12 @@ export default function CredentialForm({ userCookie }: { userCookie: LoginRespon
                <Box
                   width={'100%'}
                   display={'flex'}
-                  flexDirection={{ 
-                     xs: 'column', 
-                     md: 'row' 
-                  }}
+                  flexDirection={'column'}
                   flexWrap={'wrap'}
                   justifyContent={'space-evenly'}
-                  paddingY={3}
-                  paddingX={4}
+                  alignItems={'center'}
+                  paddingY={1}
+                  paddingX={3}
                >
                   <FormControl>
                      <FormLabel
@@ -117,18 +121,13 @@ export default function CredentialForm({ userCookie }: { userCookie: LoginRespon
                         sx={{
                            width: {
                               xs: '100%',
-                              md: 'fit-content'
+                              sm: 'fit-content'
                            },
                         }}
                      />
                   </FormControl>
                   <FormControl
-                     sx={{
-                        mt: {
-                           xs: 3,
-                           xl: 0
-                        }
-                     }}
+                     sx={{ mt: 3 }}
                   >
                      <FormLabel
                         sx={{
@@ -148,7 +147,7 @@ export default function CredentialForm({ userCookie }: { userCookie: LoginRespon
                         sx={{
                            width: {
                               xs: '100%',
-                              md: 'fit-content'
+                              sm: 'fit-content'
                            },
                         }}
                      />
@@ -170,15 +169,23 @@ export default function CredentialForm({ userCookie }: { userCookie: LoginRespon
                         Current password
                      </FormLabel>
                      <Input 
+                        required 
                         value={currentPassword}
                         onChange={e => setCurrentPassword(e.target.value)}
-                        type='password'
-                        required 
+                        type={ !viewCurrentPassword ? "password" : 'text' }
+                        endDecorator={ 
+                           !viewCurrentPassword 
+                           ?  <VisibilityOutlinedIcon 
+                                 sx={{ ":hover": { cursor: 'pointer' } }} 
+                                 onClick={() => setViewCurrentPassword(true)} 
+                              /> 
+                           :  <VisibilityOffOutlinedIcon 
+                                 sx={{ ":hover": { cursor: 'pointer' } }} 
+                                 onClick={() => setViewCurrentPassword(false)} 
+                              /> 
+                        }
                         sx={{
-                           width: {
-                              xs: '100%',
-                              md: 'fit-content'
-                           },
+                           width: { xs: '80%', sm: 'fit-content' }
                         }}
                      />
                   </FormControl>
@@ -199,23 +206,34 @@ export default function CredentialForm({ userCookie }: { userCookie: LoginRespon
                         New password
                      </FormLabel>
                      <Input 
+                        required 
                         value={newPassword}
                         onChange={e => setNewPassword(e.target.value)}
-                        type='password' 
-                        required 
+                        type={ !viewNewPassword ? "password" : 'text' }
+                        endDecorator={ 
+                           !viewNewPassword 
+                           ?  <VisibilityOutlinedIcon 
+                                 sx={{ ":hover": { cursor: 'pointer' } }} 
+                                 onClick={() => setViewNewPassword(true)} 
+                              /> 
+                           :  <VisibilityOffOutlinedIcon 
+                                 sx={{ ":hover": { cursor: 'pointer' } }} 
+                                 onClick={() => setViewNewPassword(false)} 
+                              /> 
+                        }
                         sx={{
-                           width: {
-                              xs: '100%',
-                              md: 'fit-content'
-                           },
+                           width: { xs: '80%', sm: 'fit-content' }
                         }}
                      />
                   </FormControl>
                   <Box
                      paddingX={3}
                      width={'100%'}
+                     display={'flex'}
+                     justifyContent={'center'}
                   >
                      <Button 
+                        loading={loading}
                         size='sm'
                         variant='solid'
                         color='neutral'
@@ -224,16 +242,15 @@ export default function CredentialForm({ userCookie }: { userCookie: LoginRespon
                            paddingX: 3,
                            mt: 5,
                            width: {
-                              xs: '100%',
-                              xl: 'fit-content' 
-                           }
+                              xs: '70%',
+                           },
                         }}
                      >
                         Save
                      </Button>
                   </Box>
                </Box>
-            </Box>
+            </Card>
          </form>
       </>
    );

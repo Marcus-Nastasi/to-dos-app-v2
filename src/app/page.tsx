@@ -9,7 +9,6 @@ import { LoginResponseDto } from '@/types/auth/login.dto';
 import { TodoDto, TodosResponseDto } from '@/types/todos/todos.dto';
 import { UserDetails } from '@/types/user/user.dto';
 import Cookie from '@/util/Cookies';
-import EmojiObjectsIcon from '@mui/icons-material/EmojiObjects';
 import NightlightIcon from '@mui/icons-material/Nightlight';
 import Brightness5RoundedIcon from '@mui/icons-material/Brightness5Rounded';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';

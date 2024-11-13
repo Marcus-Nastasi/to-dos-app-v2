@@ -2,7 +2,6 @@
 
 import MenuDrawer from '@/components/shared/menu-drawer';
 import AddIcon from '@mui/icons-material/Add';
-import EmojiObjectsIcon from '@mui/icons-material/EmojiObjects';
 import NightlightIcon from '@mui/icons-material/Nightlight';
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 import { Accordion, accordionClasses, AccordionDetails, AccordionGroup, AccordionSummary, accordionSummaryClasses, Box, Button, CssVarsProvider, extendTheme, Tooltip, Typography, useColorScheme } from "@mui/joy";

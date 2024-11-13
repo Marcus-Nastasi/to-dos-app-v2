@@ -4,7 +4,6 @@ import MenuDrawer from '@/components/shared/menu-drawer';
 import { LoginResponseDto } from '@/types/auth/login.dto';
 import { UserDetails } from '@/types/user/user.dto';
 import Cookie from '@/util/Cookies';
-import EmojiObjectsIcon from '@mui/icons-material/EmojiObjects';
 import NightlightIcon from '@mui/icons-material/Nightlight';
 import { Box, Button, CssVarsProvider, extendTheme, FormControl, FormLabel, IconButton, Input, Stack, Tooltip, Typography, useColorScheme } from "@mui/joy";
 import { Fragment, useEffect } from "react";

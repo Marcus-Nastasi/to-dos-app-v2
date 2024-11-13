@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { Box, Button, Card, CssVarsProvider, Divider, extendTheme, FormControl, FormHelperText, Input, Link, Tooltip, Typography, useColorScheme } from "@mui/joy";
-import EmojiObjectsIcon from '@mui/icons-material/EmojiObjects';
 import NightlightIcon from '@mui/icons-material/Nightlight';
 import Brightness5RoundedIcon from '@mui/icons-material/Brightness5Rounded';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';

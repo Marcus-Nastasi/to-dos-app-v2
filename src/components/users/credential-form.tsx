@@ -7,6 +7,7 @@ import { UserResponseDto } from "@/types/user/user.dto";
 import Cookie from "@/util/Cookies";
 import { Box, Button, Divider, FormControl, FormLabel, Input, Typography } from "@mui/joy";
 import { useEffect, useState } from "react";
+import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded';
 
 export default function CredentialForm({ userCookie }: { userCookie: LoginResponseDto | undefined }) {
    const [ name, setName ] = useState<string | undefined>();
@@ -77,11 +78,11 @@ export default function CredentialForm({ userCookie }: { userCookie: LoginRespon
             >
                <Box>
                   <Typography
+                     startDecorator={<AccountCircleRoundedIcon />}
                      padding={3}
-                     textAlign={'center'}
-                     level='h4'
+                     level='title-md'
                   >
-                     Update your Credentials
+                     Update your credentials
                   </Typography>
                   <Divider />
                </Box>

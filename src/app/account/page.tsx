@@ -4,13 +4,13 @@ import MenuDrawer from '@/components/shared/menu-drawer';
 import AddIcon from '@mui/icons-material/Add';
 import EmojiObjectsIcon from '@mui/icons-material/EmojiObjects';
 import NightlightIcon from '@mui/icons-material/Nightlight';
-import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import { Accordion, AccordionDetails, AccordionGroup, AccordionSummary, accordionSummaryClasses, Box, Button, CssVarsProvider, DialogActions, DialogContent, DialogTitle, Divider, extendTheme, Modal, ModalDialog, Tooltip, Typography, useColorScheme } from "@mui/joy";
 import { Fragment, useEffect, useState } from "react";
 import CredentialForm from '@/components/users/credential-form';
 import { LoginResponseDto } from '@/types/auth/login.dto';
 import Cookie from '@/util/Cookies';
 import WarningRoundedIcon from '@mui/icons-material/WarningRounded';
+import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded';
 
 function ToggleThemeButton() {
    const { mode, setMode } = useColorScheme();
@@ -227,7 +227,8 @@ export default function Account() {
                         <Accordion>
                            <AccordionSummary indicator={<AddIcon />}>
                               <Typography
-                                 startDecorator={<AccountCircleOutlinedIcon />}
+                                 // startDecorator={<AccountCircleOutlinedIcon />}
+                                 startDecorator={<AccountCircleRoundedIcon />}
                                  fontWeight={'bold'}
                               >
                                  Credentials

@@ -143,9 +143,9 @@ export default function Login() {
                sx={(theme) => ({
                   width: {
                      xs: '95%',
-                     sm: '75%',
-                     md: '65%',
-                     lg: '50%',
+                     sm: '65%',
+                     md: '50%',
+                     lg: '40%',
                      xl: '30%'
                   },
                   mt: 10,
@@ -167,6 +167,7 @@ export default function Login() {
                   <Input 
                      id="input_name"  
                      placeholder="E-mail"
+                     required
                      value={email}
                      onChange={(e: any) => setEmail(e.target.value)} 
                   />
@@ -174,6 +175,7 @@ export default function Login() {
                   <Input 
                      id="input_password" 
                      placeholder="Password" 
+                     required
                      type="password"
                      value={password}
                      onChange={(e: any) => setPassword(e.target.value)} 
@@ -193,8 +195,18 @@ export default function Login() {
                               variant='solid'
                               color='primary'
                               sx={{
-                                 width: { sm: "80%", lg: '30%' }, 
-                                 alignSelf: 'center'
+                                 width: { 
+                                    xs: '90%', 
+                                    sm: '20%' 
+                                 }, 
+                                 alignSelf: {
+                                    xs: 'center',
+                                    lg: 'end'
+                                 },
+                                 mt: {
+                                    xs: 2,
+                                    md: 3
+                                 }
                               }}
                            >
                               loading...
@@ -207,7 +219,7 @@ export default function Login() {
                               sx={{ 
                                  width: { 
                                     xs: '90%', 
-                                    lg: '20%' 
+                                    sm: '20%' 
                                  }, 
                                  alignSelf: {
                                     xs: 'center',
@@ -222,7 +234,12 @@ export default function Login() {
                               Enter
                            </Button>
                      }
-                     <FormHelperText sx={{ alignSelf: 'flex-end' }} >
+                     <FormHelperText 
+                        sx={{ 
+                           alignSelf: { xs: 'flex-start', sm: 'flex-end'},
+                           mt: { xs: 2, sm: 0 }
+                        }} 
+                     >
                         if you don't have an account, 
                         <Link href="/register" underline="always" color="primary">
                            register

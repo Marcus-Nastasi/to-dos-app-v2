@@ -7,6 +7,7 @@ import NightlightIcon from '@mui/icons-material/Nightlight';
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 import { Accordion, accordionClasses, AccordionDetails, AccordionGroup, AccordionSummary, accordionSummaryClasses, Box, Button, CssVarsProvider, extendTheme, Tooltip, Typography, useColorScheme } from "@mui/joy";
 import { Fragment, useEffect } from "react";
+import Brightness5RoundedIcon from '@mui/icons-material/Brightness5Rounded';
 
 function ToggleThemeButton() {
    const { mode, setMode } = useColorScheme();
@@ -34,7 +35,7 @@ function ToggleThemeButton() {
          >
             {
                mode === "dark" 
-               && <EmojiObjectsIcon  
+               && <Brightness5RoundedIcon  
                      sx={{
                         fontSize: { xs: 27, md: 29 },
                      }}

@@ -3,7 +3,7 @@ import { Fragment } from "react";
 import Register from "./page";
 
 export const metadata: Metadata = {
-   title: "Registre - To-dos App",
+   title: "Register - To-dos App",
 };
 
 export default function LoginLayout() {

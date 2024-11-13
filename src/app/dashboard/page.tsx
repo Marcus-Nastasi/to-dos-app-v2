@@ -20,6 +20,7 @@ import { getAllMetrics } from '@/service/metrics/metrics.service';
 import StatusGraph from '@/components/dashboard/status-graph';
 import PriorityGraph from '@/components/dashboard/priority-graph';
 import ClearRoundedIcon from '@mui/icons-material/ClearRounded';
+import Brightness5RoundedIcon from '@mui/icons-material/Brightness5Rounded';
 
 function ToggleThemeButton() {
    const { mode, setMode } = useColorScheme();
@@ -56,7 +57,7 @@ function ToggleThemeButton() {
          >
             {
                mode === "dark" 
-               && <EmojiObjectsIcon  
+               && <Brightness5RoundedIcon  
                      sx={{
                         fontSize: { 
                            xs: 27, 

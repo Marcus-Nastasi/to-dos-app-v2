@@ -2,8 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { Box, Button, Card, CssVarsProvider, Divider, extendTheme, FormControl, FormHelperText, Input, Link, Theme, Tooltip, Typography, useColorScheme } from "@mui/joy";
-import EmojiObjectsIcon from '@mui/icons-material/EmojiObjects';
 import NightlightIcon from '@mui/icons-material/Nightlight';
+import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
+import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined';
+import Brightness5RoundedIcon from '@mui/icons-material/Brightness5Rounded';
 import { LoginResponseDto } from "@/types/auth/login.dto";
 import { login } from "@/service/auth/auth.service";
 import { useAlert } from "@/contexts/alert-context";
@@ -44,7 +46,7 @@ function ToggleThemeButton() {
          >
             {
                mode === "dark" 
-               && <EmojiObjectsIcon  
+               && <Brightness5RoundedIcon  
                      sx={{
                         fontSize: { 
                            xs: 27, 
@@ -99,6 +101,7 @@ export default function Login() {
    const [ email, setEmail ] = useState<string>('');
    const [ password, setPassword ] = useState<string>('');
    const [ loading, setLoading ] = useState<boolean>();
+   const [ viewPassword, setViewPassword ] = useState<boolean>(false);
    const { showAlert } = useAlert();
 
    const handleSignIn = async (): Promise<void> => {
@@ -176,8 +179,19 @@ export default function Login() {
                      id="input_password" 
                      placeholder="Password" 
                      required
-                     type="password"
                      value={password}
+                     type={ !viewPassword ? "password" : 'text' }
+                     endDecorator={ 
+                        !viewPassword 
+                        ?  <VisibilityOutlinedIcon 
+                              sx={{ ":hover": { cursor: 'pointer' } }} 
+                              onClick={() => setViewPassword(true)} 
+                           /> 
+                        :  <VisibilityOffOutlinedIcon 
+                              sx={{ ":hover": { cursor: 'pointer' } }} 
+                              onClick={() => setViewPassword(false)} 
+                           /> 
+                     }
                      onChange={(e: any) => setPassword(e.target.value)} 
                   />
                   <FormHelperText sx={{ marginBottom: 2 }}>enter your password</FormHelperText>

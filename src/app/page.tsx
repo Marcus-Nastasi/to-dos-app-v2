@@ -11,6 +11,7 @@ import { UserDetails } from '@/types/user/user.dto';
 import Cookie from '@/util/Cookies';
 import EmojiObjectsIcon from '@mui/icons-material/EmojiObjects';
 import NightlightIcon from '@mui/icons-material/Nightlight';
+import Brightness5RoundedIcon from '@mui/icons-material/Brightness5Rounded';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import { Box, Button, CssVarsProvider, extendTheme, IconButton, Stack, Tooltip, Typography, useColorScheme } from "@mui/joy";
 import { Fragment, useEffect } from "react";
@@ -54,7 +55,7 @@ function ToggleThemeButton() {
          >
             {
                mode === "dark" 
-               && <EmojiObjectsIcon  
+               && <Brightness5RoundedIcon  
                      sx={{
                         fontSize: { 
                            xs: 27, 

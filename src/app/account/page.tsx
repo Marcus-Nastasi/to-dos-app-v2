@@ -11,6 +11,7 @@ import { LoginResponseDto } from '@/types/auth/login.dto';
 import Cookie from '@/util/Cookies';
 import WarningRoundedIcon from '@mui/icons-material/WarningRounded';
 import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded';
+import Brightness5RoundedIcon from '@mui/icons-material/Brightness5Rounded';
 
 function ToggleThemeButton() {
    const { mode, setMode } = useColorScheme();
@@ -38,7 +39,7 @@ function ToggleThemeButton() {
          >
             {
                mode === "dark" 
-               && <EmojiObjectsIcon  
+               && <Brightness5RoundedIcon  
                      sx={{
                         fontSize: { xs: 27, md: 29 },
                      }}

@@ -248,46 +248,50 @@ export default function Dashboard() {
                                  }}
                               />
                            </FormControl>
-                        <Button 
-                           sx={{ 
-                              ml: {
-                                 xs: 1,
-                                 sm: 2,
-                                 md: 3,
-                                 lg: 4
-                              },
-                              ":hover": { cursor: 'default' } 
-                           }}
-                           size='sm'
-                           color='neutral'
-                           variant='solid'
-                           onClick={() => {
-                              getMetrics();
-                           }}
-                        >
-                           Filter
-                        </Button>
-                        <IconButton
-                           sx={{ 
-                              ml: {
-                                 xs: 1,
-                                 sm: 2,
-                                 md: 3,
-                                 lg: 4
-                              },
-                           }}
-                           size='sm'
-                           color='neutral'
-                           variant='soft'
-                           onClick={async () => {
-                              setClient('');
-                              setFrom('');
-                              setTo('');
-                              await getMetrics();
-                           }}
-                        >
-                           <ClearRoundedIcon />
-                        </IconButton>
+                           <Tooltip arrow variant='outlined' title="Apply filters" placement="top-start">
+                              <Button 
+                                 sx={{ 
+                                    ml: {
+                                       xs: 1,
+                                       sm: 2,
+                                       md: 3,
+                                       lg: 4
+                                    },
+                                    ":hover": { cursor: 'default' } 
+                                 }}
+                                 size='sm'
+                                 color='neutral'
+                                 variant='solid'
+                                 onClick={() => {
+                                    getMetrics();
+                                 }}
+                              >
+                                 Filter
+                              </Button>
+                           </Tooltip>
+                           <Tooltip arrow variant='outlined' title="Clear filters" placement="right-start">
+                              <IconButton
+                                 sx={{ 
+                                    ml: {
+                                       xs: 1,
+                                       sm: 2,
+                                       md: 3,
+                                       lg: 4
+                                    },
+                                 }}
+                                 size='sm'
+                                 color='neutral'
+                                 variant='soft'
+                                 onClick={async () => {
+                                    setClient('');
+                                    setFrom('');
+                                    setTo('');
+                                    await getMetrics();
+                                 }}
+                              >
+                                 <ClearRoundedIcon />
+                              </IconButton>
+                           </Tooltip>
                         </Box>
                      </Box>
                      <Stack

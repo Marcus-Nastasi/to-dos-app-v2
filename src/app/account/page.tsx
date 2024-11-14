@@ -143,7 +143,7 @@ export default function Account() {
                      color="danger" 
                      onClick={(e: any) => handleLogOff(e)}
                   >
-                     Log off
+                     Logout
                   </Button>
                   <Button 
                      size='sm'
@@ -251,17 +251,18 @@ export default function Account() {
                         >
                            <Button
                               size='sm'
-                              variant='plain'
+                              variant='solid'
                               color='danger'
                               onClick={() => setOpenLogOff(true)}
                               sx={{
                                  width: {
                                     xs: '80%',
                                     md: 'fit-content'
-                                 }
+                                 },
+                                 borderRadius: 4
                               }}
                            >
-                              Log off
+                              Logout
                            </Button>
                         </Box>
                      </AccordionGroup>

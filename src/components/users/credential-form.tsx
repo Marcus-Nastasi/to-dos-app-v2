@@ -239,11 +239,11 @@ export default function CredentialForm({ userCookie }: { userCookie: LoginRespon
                         color='neutral'
                         type="submit"
                         sx={{
-                           paddingX: 3,
                            mt: 5,
                            width: {
                               xs: '70%',
                            },
+                           borderRadius: 4
                         }}
                      >
                         Save

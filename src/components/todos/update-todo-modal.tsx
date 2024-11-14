@@ -9,6 +9,9 @@ import Modal from '@mui/joy/Modal';
 import ModalDialog from '@mui/joy/ModalDialog';
 import DialogTitle from '@mui/joy/DialogTitle';
 import DialogContent from '@mui/joy/DialogContent';
+import KeyboardDoubleArrowUpRoundedIcon from '@mui/icons-material/KeyboardDoubleArrowUpRounded';
+import KeyboardDoubleArrowRightRoundedIcon from '@mui/icons-material/KeyboardDoubleArrowRightRounded';
+import KeyboardDoubleArrowDownRoundedIcon from '@mui/icons-material/KeyboardDoubleArrowDownRounded';
 import Stack from '@mui/joy/Stack';
 import { Transition } from 'react-transition-group';
 import { Box, Option, Select, selectClasses } from '@mui/joy';
@@ -182,7 +185,14 @@ export default function UpdateTodoModal({
                            <FormLabel>Priority</FormLabel>
                            <Select
                               placeholder="Select a priority…"
-                              indicator={<KeyboardArrowDown />}
+                              indicator={
+                                 priority == 'HIGH' ? 
+                                 <KeyboardDoubleArrowUpRoundedIcon color='warning' /> :
+                                 priority == 'MEDIUM' ?
+                                 <KeyboardDoubleArrowRightRoundedIcon color='primary' /> :
+                                 priority == 'LOW' ?
+                                 <KeyboardDoubleArrowDownRoundedIcon color='success' /> : <KeyboardArrowDown/>
+                              }
                               value={priority}
                               sx={{
                                  width: 240,
@@ -195,12 +205,15 @@ export default function UpdateTodoModal({
                               }}
                            >
                               <Option value="HIGH" onClick={() => setPriority('HIGH')}>
+                                 <KeyboardDoubleArrowUpRoundedIcon color='warning' />
                                  High
                               </Option>
                               <Option value="MEDIUM" onClick={() => setPriority('MEDIUM')}>
+                                 <KeyboardDoubleArrowRightRoundedIcon color='primary' />
                                  Medium
                               </Option>
                               <Option value="LOW" onClick={() => setPriority('LOW')}>
+                                 <KeyboardDoubleArrowDownRoundedIcon color='success' />
                                  Low
                               </Option>
                            </Select>

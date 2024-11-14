@@ -227,7 +227,6 @@ export default function Account() {
                         <Accordion>
                            <AccordionSummary indicator={<AddIcon />}>
                               <Typography
-                                 // startDecorator={<AccountCircleOutlinedIcon />}
                                  startDecorator={<AccountCircleRoundedIcon />}
                                  fontWeight={'bold'}
                               >
@@ -252,7 +251,7 @@ export default function Account() {
                         >
                            <Button
                               size='sm'
-                              variant='solid'
+                              variant='plain'
                               color='danger'
                               onClick={() => setOpenLogOff(true)}
                               sx={{

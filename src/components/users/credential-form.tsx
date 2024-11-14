@@ -77,7 +77,7 @@ export default function CredentialForm({ userCookie }: { userCookie: LoginRespon
          >
             <Card
                sx={{
-                  width: '70%',
+                  width: { xs: '100%', xl: '70%' },
                   display: 'flex',
                   flexDirection: 'column',
                }}
@@ -97,10 +97,9 @@ export default function CredentialForm({ userCookie }: { userCookie: LoginRespon
                   display={'flex'}
                   flexDirection={'column'}
                   flexWrap={'wrap'}
-                  justifyContent={'space-evenly'}
+                  justifyContent={'center'}
                   alignItems={'center'}
                   paddingY={1}
-                  paddingX={3}
                >
                   <FormControl>
                      <FormLabel
@@ -144,6 +143,7 @@ export default function CredentialForm({ userCookie }: { userCookie: LoginRespon
                         value={email}
                         onChange={e => setEmail(e.target.value)}
                         required 
+                        type='email'
                         sx={{
                            width: {
                               xs: '100%',
@@ -154,16 +154,18 @@ export default function CredentialForm({ userCookie }: { userCookie: LoginRespon
                   </FormControl>
                   <FormControl
                      sx={{
-                        mt: 3
+                        mt: 3,
+                        alignItems: 'center'
                      }}
                   >
                      <FormLabel
                         sx={{
+                           pl: 2,
                            color: 'text.primary',
                            fontSize: {
                               xs: 15,
                               lg: 17,
-                           }
+                           },
                         }}
                      >
                         Current password
@@ -184,18 +186,18 @@ export default function CredentialForm({ userCookie }: { userCookie: LoginRespon
                                  onClick={() => setViewCurrentPassword(false)} 
                               /> 
                         }
-                        sx={{
-                           width: { xs: '80%', sm: 'fit-content' }
-                        }}
+                        sx={{ width: '90%' }}
                      />
                   </FormControl>
                   <FormControl
                      sx={{
-                        mt: 3
+                        mt: 3,
+                        alignItems: 'center'
                      }}
                   >
                      <FormLabel
                         sx={{
+                           pl: 2,
                            color: 'text.primary',
                            fontSize: {
                               xs: 15,
@@ -221,9 +223,7 @@ export default function CredentialForm({ userCookie }: { userCookie: LoginRespon
                                  onClick={() => setViewNewPassword(false)} 
                               /> 
                         }
-                        sx={{
-                           width: { xs: '80%', sm: 'fit-content' }
-                        }}
+                        sx={{ width: { xs: '90%' } }}
                      />
                   </FormControl>
                   <Box

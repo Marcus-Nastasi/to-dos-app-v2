@@ -32,7 +32,21 @@ export const updateUser = async (
       },
       body: JSON.stringify(request)
    });
-   if (response.status !== 200) throw new Error('error while updating new user');
+   if (response.status !== 200) throw new Error('error while updating user');
+   const data: UserResponseDto = await response.json();
+   return data;
+};
+
+export const deleteUser = async (user_id: number, token: string): Promise<UserResponseDto> => {
+   const api_url: string = `${url}/api/user/delete/${user_id}`;
+   const response: Response = await fetch(api_url, {
+      method: 'DELETE',
+      headers: {
+         'Content-Type': 'application/json',
+         'Authorization': `Bearer ${token}`
+      }
+   });
+   if (response.status !== 200) throw new Error('error while deleting user');
    const data: UserResponseDto = await response.json();
    return data;
 };

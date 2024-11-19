@@ -11,6 +11,9 @@ import Cookie from '@/util/Cookies';
 import WarningRoundedIcon from '@mui/icons-material/WarningRounded';
 import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded';
 import Brightness5RoundedIcon from '@mui/icons-material/Brightness5Rounded';
+import BadgeRoundedIcon from '@mui/icons-material/BadgeRounded';
+import { deleteUser } from '@/service/users/user.service';
+import { useAlert } from '@/contexts/alert-context';
 
 function ToggleThemeButton() {
    const { mode, setMode } = useColorScheme();
@@ -87,7 +90,9 @@ const theme = extendTheme({
 
 export default function Account() {
    const [ userCookie, setUserCookie ] = useState<LoginResponseDto>();
-   const [ openLogOff, setOpenLogOff] = useState<boolean>(false);
+   const [ openLogOut, setOpenLogOut] = useState<boolean>(false);
+   const [ openDeleteAccount, setOpenDeleteAccount] = useState<boolean>(false);
+   const { showAlert } = useAlert();
 
    useEffect(() => {
       const gettingUser = getUserToken();
@@ -110,19 +115,31 @@ export default function Account() {
       return data;
    };
 
-   const handleLogOff = (e: MouseEvent) => {
+   const handleLogOut = (e: MouseEvent) => {
       e.preventDefault();
       Cookie.cleanCookies();
       window.open('/login', '_self');
    };
+
+   const handleDeleteAccount = async (): Promise<void> => {
+      try {
+         const userCookie: LoginResponseDto | null = getUserToken();
+         if (userCookie) await deleteUser(userCookie.user.id, userCookie.token);
+         Cookie.cleanCookies();
+         window.open('/register', '_self');
+      } catch (error: any) {
+         console.error(error);
+         showAlert(error.message(), 'error');
+      }
+   }
 
    return (
       <Fragment>
 
          {/* Confirm log off */}
          <Modal
-            open={openLogOff} 
-            onClose={() => setOpenLogOff(false)}
+            open={openLogOut} 
+            onClose={() => setOpenLogOut(false)}
          >
             <ModalDialog 
                variant="outlined" 
@@ -134,14 +151,14 @@ export default function Account() {
                </DialogTitle>
                <Divider />
                <DialogContent>
-                  Are you sure you want to log off?
+                  Are you sure you want to logout?
                </DialogContent>
                <DialogActions>
                   <Button 
                      size='sm'
                      variant="solid" 
                      color="danger" 
-                     onClick={(e: any) => handleLogOff(e)}
+                     onClick={(e: any) => handleLogOut(e)}
                   >
                      Logout
                   </Button>
@@ -149,7 +166,49 @@ export default function Account() {
                      size='sm'
                      variant="plain" 
                      color="neutral" 
-                     onClick={() => setOpenLogOff(false)}
+                     onClick={() => setOpenLogOut(false)}
+                  >
+                     Cancel
+                  </Button>
+               </DialogActions>
+            </ModalDialog>
+         </Modal>
+         {/* end */}
+
+         {/* Confirm delete account */}
+         <Modal
+            open={openDeleteAccount} 
+            onClose={() => setOpenDeleteAccount(false)}
+         >
+            <ModalDialog 
+               variant="outlined" 
+               role="alertdialog"
+            >
+               <DialogTitle>
+                  <WarningRoundedIcon />
+                  Confirmation
+               </DialogTitle>
+               <Divider />
+               <DialogContent sx={{ fontWeight: 'bold' }}>
+                  Are you sure you want to delete your account? 
+               </DialogContent>
+               <DialogContent sx={{ fontWeight: 'bold' }} >
+                  You can not undo this operaition and your to-dos will be lost.
+               </DialogContent>
+               <DialogActions>
+                  <Button 
+                     size='sm'
+                     variant="solid" 
+                     color="danger" 
+                     onClick={() => handleDeleteAccount()}
+                  >
+                     Delete
+                  </Button>
+                  <Button 
+                     size='sm'
+                     variant="plain" 
+                     color="neutral" 
+                     onClick={() => setOpenDeleteAccount(false)}
                   >
                      Cancel
                   </Button>
@@ -237,6 +296,33 @@ export default function Account() {
                               <CredentialForm userCookie={userCookie} />
                            </AccordionDetails>
                         </Accordion>
+                        <Accordion>
+                           <AccordionSummary indicator={<AddIcon />}>
+                              <Typography
+                                 startDecorator={<BadgeRoundedIcon />}
+                                 fontWeight={'bold'}
+                              >
+                                 Account
+                              </Typography>
+                           </AccordionSummary>
+                           <AccordionDetails
+                              sx={{ pt: 3 }}
+                           >
+                              <Button
+                                 size='sm'
+                                 variant='solid'
+                                 color='danger'
+                                 sx={{ 
+                                    width: 'fit-content', 
+                                    alignSelf: 'center',
+                                    borderRadius: 4 
+                                 }}
+                                 onClick={() => setOpenDeleteAccount(true)}
+                              >
+                                 Delete account
+                              </Button>
+                           </AccordionDetails>
+                        </Accordion>
                         <Box
                            padding={3}
                            display={{ 
@@ -253,7 +339,7 @@ export default function Account() {
                               size='sm'
                               variant='solid'
                               color='danger'
-                              onClick={() => setOpenLogOff(true)}
+                              onClick={() => setOpenLogOut(true)}
                               sx={{
                                  width: {
                                     xs: '80%',

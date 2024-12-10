@@ -143,7 +143,7 @@ export default function Home() {
       return data;
    };
 
-   const callApi = async (user_id: number, token: string): Promise<TodosResponseDto | null> => {
+   const getAllTodos = async (user_id: number, token: string): Promise<TodosResponseDto | null> => {
       try {
          const response: TodosResponseDto = await getAll(
             user_id, 
@@ -171,7 +171,7 @@ export default function Home() {
 
    const loadMoreTodos = async (user_id: number, token: string): Promise<void> => {
       setLoadingMore(true);
-      const response: TodosResponseDto | null = await callApi(user_id, token);
+      const response: TodosResponseDto | null = await getAllTodos(user_id, token);
       if (!response) throw new Error('Unable to get to-dos.');
       if (todos) {
          response.data.forEach((d: TodoDto) => todos.data.push(d));
@@ -188,7 +188,7 @@ export default function Home() {
             await loadMoreTodos(userData.user.id, userData.token);
             return
          }
-         const response: TodosResponseDto | null = await callApi(userData.user.id, userData.token);
+         const response: TodosResponseDto | null = await getAllTodos(userData.user.id, userData.token);
          if (!response) throw new Error('Unable to get to-dos');
          setTodos(response);
       } catch(e) {

@@ -141,6 +141,7 @@ export default function CreateTodoModal({ refreshTodos }: { refreshTodos: Functi
                            <Input 
                               autoFocus 
                               required 
+                              placeholder='Title...'
                               value={title}
                               onChange={(e: any) => setTitle(e.target.value)} 
                            />
@@ -149,6 +150,7 @@ export default function CreateTodoModal({ refreshTodos }: { refreshTodos: Functi
                            <FormLabel>Client</FormLabel>
                            <Input 
                               required
+                              placeholder='Client...'
                               value={client}
                               onChange={(e: any) => setClient(e.target.value)} 
                            />
@@ -157,6 +159,7 @@ export default function CreateTodoModal({ refreshTodos }: { refreshTodos: Functi
                            <FormLabel>Description</FormLabel>
                            <Input 
                               required
+                              placeholder='Description...'
                               value={description}
                               onChange={(e: any) => setDescription(e.target.value)} 
                            />
@@ -165,6 +168,7 @@ export default function CreateTodoModal({ refreshTodos }: { refreshTodos: Functi
                            <FormLabel>Link</FormLabel>
                            <Input 
                               required 
+                              placeholder='Link...'
                               value={link}
                               onChange={(e: any) => setLink(e.target.value)} 
                            />
